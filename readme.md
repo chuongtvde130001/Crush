@@ -14,4 +14,4 @@
 ### To Down run:
 	```console
 		foo@bar:~$ git pull 
-	```(No message no run).
+	```
