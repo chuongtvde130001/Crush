@@ -1,5 +1,5 @@
 # Crush Project
-#### NOTE: BẠN SẼ BỊ ĂN VẢ NẾU UP BẰNG COMMAND LINE!
+### NOTE: BẠN SẼ BỊ ĂN VẢ NẾU UP BẰNG COMMAND LINE!
 
 ### To UP use up2git.bash:
 	
