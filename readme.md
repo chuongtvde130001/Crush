@@ -6,9 +6,8 @@
 	1.Go to git directory before /Assignment.
 	2.Run 
 ```console
-foo@bar:~$ ./up2git.bash [message] 
+foo@bar:~$ ./up2git.bash [message] (No message no run)
 ```
-	(No message no run).
 	Note: u can custom but it's standard!
 
 ### To DOWN run:
