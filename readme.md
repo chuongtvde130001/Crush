@@ -1,5 +1,5 @@
-# Crush
-### NOTE: ---BẠN SẼ BỊ ĂN VẢ NẾU UP BẰNG COMMAND LINE!---
+# Crush Project
+### NOTE: BẠN SẼ BỊ ĂN VẢ NẾU UP BẰNG COMMAND LINE!
 
 ### To UP use up2git.bash:
 	
@@ -8,4 +8,5 @@
 	
 	Note: u can custom but it's standard!
 
-### To Down use "git pull"
+### To Down use:
+	"git pull"
