@@ -8,7 +8,7 @@
 ```console
 foo@bar:~$ ./up2git.bash [message] #(No message no run)
 ```
-	Note: u can custom but it's standard!
+- Note: u can custom but it's standard!
 
 ### To DOWN run:
 ```console
