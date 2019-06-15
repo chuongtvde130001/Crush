@@ -8,10 +8,10 @@
 ```console
 foo@bar:~$ ./up2git.bash [message] 
 ```
-(No message no run).
+	(No message no run).
 	Note: u can custom but it's standard!
 
-### To Down run:
+### To DOWN run:
 ```console
 foo@bar:~$ git pull 
 ```
