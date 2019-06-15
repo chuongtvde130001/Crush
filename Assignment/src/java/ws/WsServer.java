@@ -1,4 +1,4 @@
-package ws;
+package java.ws;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

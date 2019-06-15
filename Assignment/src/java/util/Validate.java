@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package util;
+package java.util;
 
-/**
- *
- * @author Do Duong
- */
 public class Validate {
     //check thông tin người dùng nhập register có thíc hợp với CSDL
     public static boolean checkName(String name) {

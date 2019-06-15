@@ -1,21 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package dao;
+package java.dao;
 
-import dbconfig.DBConfig;
+import java.dbconfig.DBConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import model.User;
-import util.MD5;
+import java.util.MD5;
 
-/**
- *
- * @author Do Duong
- */
 public class UserDAO {
     // Đăng kí User
     public static boolean register(String username,String email,String password){
