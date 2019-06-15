@@ -1,4 +1,5 @@
-﻿---BẠN SẼ BỊ ĂN VẢ NẾU UP BẰNG COMMAND LINE!---
+#Crush
+---BẠN SẼ BỊ ĂN VẢ NẾU UP BẰNG COMMAND LINE!---
 
 ** To UP use up2git.bash:
 	
