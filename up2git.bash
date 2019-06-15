@@ -5,7 +5,7 @@ then
 else
 	cd Assignment
 	git add src web
-	git reset -- src/dbconfig/DBConfig.java
+	git reset -- src/java/dbconfig/DBConfig.java
 	git commit -m $1
 	git push
 	cd ..
