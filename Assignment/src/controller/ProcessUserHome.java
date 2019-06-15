@@ -30,17 +30,6 @@ public class ProcessUserHome extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        // User đã đăng nhập
-        if(session.getAttribute("user")!=null){
-            // Nên bỏ trang chat vào mục WEB-INF để tránh user gõ đường linnk trực
-            // tiếp trên thanh URL
-            request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
-        }else{
-            // User chưa đăng nhập chuyển về home.jsp
-            response.sendRedirect("home.jsp");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,7 +44,15 @@ public class ProcessUserHome extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        // User đã đăng nhập
+        if(session.getAttribute("user")!=null){
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }else{
+            // User chưa đăng nhập chuyển về home.jsp
+            response.sendRedirect("home.jsp");
+        }
     }
 
     /**

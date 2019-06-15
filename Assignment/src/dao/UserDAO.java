@@ -50,7 +50,6 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 u = new User(rs.getString("UserName"),
-                        rs.getString("PassWord"),
                         rs.getString("FullName"),
                         rs.getString("Gender"),
                         rs.getString("Email"),
@@ -80,6 +79,6 @@ public class UserDAO {
         return null;
     }
     public static void main(String[] args) {
-        System.out.println(getProfile("tomcat123","1234").getEmail());
+        System.out.println(checkLogin("tomcat123","1234").getEmail());
     }
 }

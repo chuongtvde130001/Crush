@@ -10,15 +10,14 @@ package model;
  * @author Do Duong
  */
 public class User {
-    private String userName,passWord,fullName,gender,email;
+    private String userName,fullName,gender,email;
     private int uid,age;
 
     public User() {
     }
 
-    public User(String userName, String passWord, String fullName, String gender, String email, int uID, int age) {
+    public User(String userName, String fullName, String gender, String email, int uID, int age) {
         this.userName = userName;
-        this.passWord = passWord;
         this.fullName = fullName;
         this.gender = gender;
         this.email = email;
@@ -32,14 +31,6 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
     }
 
     public String getFullName() {
@@ -66,11 +57,11 @@ public class User {
         this.email = email;
     }
 
-    public int getuID() {
+    public int getUid() {
         return uid;
     }
 
-    public void setuID(int uID) {
+    public void setUid(int uID) {
         this.uid = uID;
     }
 

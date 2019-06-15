@@ -14,7 +14,7 @@
     <body id="home">
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <div class="container">
-                <a href="home.html" class="navbar-brand">
+                <a href="home.jsp" class="navbar-brand">
                     <button class="btn btn-danger">Back To Home Page</button>
                 </a>
                 </button>

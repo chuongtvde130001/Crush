@@ -8,10 +8,8 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
+
 import model.User;
 import dao.UserDAO;
 
@@ -74,7 +72,12 @@ public class ProcessLogin extends HttpServlet {
         User user = UserDAO.checkLogin(username, password);
         if (user != null) {
             session.setAttribute("user", user);
-            response.sendRedirect("ProcessUserHome");
+            Cookie uid = new Cookie("uid",String.valueOf(user.getUid()));
+            uid.setMaxAge(-1);
+            response.addCookie(uid);
+            response.sendRedirect("home.jsp");
+        }else{
+            response.sendRedirect(  "home.jsp");
         }
     }
 }
