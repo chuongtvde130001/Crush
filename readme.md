@@ -13,5 +13,5 @@
 
 ### To Down run:
 ```console
-	foo@bar:~$ git pull 
+foo@bar:~$ git pull 
 ```
