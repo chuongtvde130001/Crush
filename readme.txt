@@ -1,1 +1,6 @@
-readme
+** To use up2git.bash:
+	
+	1.Go to git directory before /Assignment.
+	2.Run "./up2git.bash [message]" (No message no run).
+	
+	Note: u can custom but it's standard!
