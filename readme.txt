@@ -1,3 +1,5 @@
+﻿---BẠN SẼ BỊ ĂN VẢ NẾU UP BẰNG COMMAND LINE!---
+
 ** To use up2git.bash:
 	
 	1.Go to git directory before /Assignment.
