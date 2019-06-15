@@ -3,8 +3,8 @@
 
 ### To UP use up2git.bash:
 	
-	1.Go to git directory before /Assignment.
-	2.Run 
+- Go to git directory before /Assignment.
+- Run 
 ```console
 foo@bar:~$ ./up2git.bash [message] #(No message no run)
 ```
