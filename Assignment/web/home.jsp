@@ -24,7 +24,7 @@
                             <a href="#home" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="login.html" class="nav-link">Login</a>
+                            <a href="login.jsp" class="nav-link">Login</a>
                         </li>
                         <li class="nav-item">
                             <a href="#explore-head-section" class="nav-link">About Us</a>

@@ -40,7 +40,7 @@
 
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                                             <p class="mt-2">Dont have account?</p>
-                                            <button class="btn btn-dark btn-block"><a href="home.html" class="text-white">Register Now</a></button>
+                                            <button class="btn btn-dark btn-block"><a href="home.jsp" class="text-white">Register Now</a></button>
                                         </form>
                                     </div>
                                 </div>

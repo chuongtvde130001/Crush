@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import model.User;
+import util.MD5;
 
 /**
  *
@@ -22,7 +23,7 @@ public class UserDAO {
         try (Connection conn =  DBConfig.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
-            ps.setString(2, password);
+            ps.setString(2, MD5.getMd5(password));
             ps.setString(3, email);
             ps.executeUpdate();
             ps.close();
@@ -45,7 +46,7 @@ public class UserDAO {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
-            ps.setString(2, password);
+            ps.setString(2, MD5.getMd5(password));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 u = new User(rs.getString("UserName"),
@@ -54,8 +55,7 @@ public class UserDAO {
                         rs.getString("Gender"),
                         rs.getString("Email"),
                         rs.getInt("UID"),
-                        rs.getInt("Age"),
-                        rs.getInt("WID"));
+                        rs.getInt("Age"));
             }
             rs.close();
             ps.close();
@@ -80,6 +80,6 @@ public class UserDAO {
         return null;
     }
     public static void main(String[] args) {
-        System.out.println(register("haha","@gmail.com", "1234"));
+        System.out.println(getProfile("tomcat123","1234").getEmail());
     }
 }

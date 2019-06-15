@@ -76,10 +76,5 @@ public class ProcessLogin extends HttpServlet {
             session.setAttribute("user", user);
             response.sendRedirect("ProcessUserHome");
         }
-        /**
-         * Returns a short description of the servlet.
-         *
-         * @return a String containing servlet description
-         */
     }
 }

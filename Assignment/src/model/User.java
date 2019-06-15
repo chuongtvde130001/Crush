@@ -11,20 +11,19 @@ package model;
  */
 public class User {
     private String userName,passWord,fullName,gender,email;
-    private int uID,age,wID;
+    private int uid,age;
 
     public User() {
     }
 
-    public User(String userName, String passWord, String fullName, String gender, String email, int uID, int age, int wID) {
+    public User(String userName, String passWord, String fullName, String gender, String email, int uID, int age) {
         this.userName = userName;
         this.passWord = passWord;
         this.fullName = fullName;
         this.gender = gender;
         this.email = email;
-        this.uID = uID;
+        this.uid = uID;
         this.age = age;
-        this.wID = wID;
     }
 
     public String getUserName() {
@@ -68,11 +67,11 @@ public class User {
     }
 
     public int getuID() {
-        return uID;
+        return uid;
     }
 
     public void setuID(int uID) {
-        this.uID = uID;
+        this.uid = uID;
     }
 
     public int getAge() {
@@ -81,13 +80,5 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public int getwID() {
-        return wID;
-    }
-
-    public void setwID(int wID) {
-        this.wID = wID;
     }
 }
