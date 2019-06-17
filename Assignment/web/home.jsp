@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
-<%
-%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,6 +12,12 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body id="home">
+        <%
+            if (session.getAttribute("user") != null) {
+                response.sendRedirect("ProcessUserHome");
+            }
+        %>
+        
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <div class="container">
                 <a href="home.html" class="navbar-brand">Crush</a>
@@ -80,6 +84,9 @@
                                         <h3>Sign Up Today</h3>
                                         <p>Please fill out this form to register</p>
                                         <form action="ProcessRegister" method="post">
+                                            <div class="alert-danger" role="alert">
+                                                ${requestScope.error}
+                                            </div><br>
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-lg" placeholder="Username" name="username">
                                             </div>

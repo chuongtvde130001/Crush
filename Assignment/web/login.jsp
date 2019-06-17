@@ -12,6 +12,11 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body id="home">
+        <%
+            if (session.getAttribute("user") != null) {
+                response.sendRedirect("ProcessUserHome");
+            }
+        %>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <div class="container">
                 <a href="home.jsp" class="navbar-brand">
@@ -32,15 +37,24 @@
                                         <h3>Login Your Account</h3>
                                         <form action="ProcessLogin" method="post">
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-lg" placeholder="Username" name="username">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Username" name="username" value=${cookie['username'].value}>
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" class="form-control form-control-lg" placeholder="Password" name="password">
+                                                <input type="password" class="form-control form-control-lg" placeholder="Password" name="password" value=${cookie['password'].value}>
                                             </div>
-
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-2 text-right p-0">
+                                                        <input type="checkbox" class="form-check-input" name="remember" checked="checked">
+                                                    </div>
+                                                    <div class="col-10 text-left p-0">
+                                                       Remember Me
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                                             <p class="mt-2">Dont have account?</p>
-                                            <button class="btn btn-dark btn-block"><a href="home.jsp" class="text-white">Register Now</a></button>
+                                            <button class="btn btn-dark btn-block"><a href="home.html" class="text-white">Register Now</a></button>
                                         </form>
                                     </div>
                                 </div>
