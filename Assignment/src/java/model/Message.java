@@ -5,7 +5,7 @@ import java.util.Date;
 public class Message {
     private int mid, fid, fr, status;
     private String content;
-    private Date time;
+    private Date time;//
 
     public Message(int fid, int fr, String content) {
         this.fid = fid;
