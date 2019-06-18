@@ -1,4 +1,4 @@
-package model;
+package java.model;
 
 import java.util.Date;
 
@@ -6,6 +6,11 @@ public class Message {
     private int mid, fid, from, status;
     private String content;
     private Date time;
+
+    public Message(){
+        this.time = new Date();
+        this.status = 0;
+    }
 
     public Message(int fid, int from, String content) {
         this.fid = fid;

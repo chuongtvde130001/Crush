@@ -1,23 +1,22 @@
-package dao;
+package java.dao;
 
 import com.google.gson.Gson;
-import dbconfig.DBConfig;
-import model.Message;
+import java.dbconfig.DBConfig;
+import java.model.Message;
 
 import java.sql.*;
-import java.util.Calendar;
 
 public class MessageDAO {
 
-    private static final String writeMesSt = "INSERT INTO MESSAGES (FID,FR,Content,Time,Status) VALUES (?,?,?,?,0)";
+    private static final String writeMesSt = "INSERT INTO MESSAGES (FID,FR,Content,Time,Status) VALUES (?,?,?,getdate(),0)";
 
-    public static boolean writeMes(Message mes){
+    public static boolean writeMessage(Message mes){
+        System.out.println(mes.getFid()+"XXX"+mes.getFrom());
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(writeMesSt);
-            ps.setString(1, String.valueOf(mes.getFid()));
-            ps.setString(2, String.valueOf(mes.getFrom()));
+            ps.setInt(1, mes.getFid());
+            ps.setInt(2, mes.getFrom());
             ps.setString(3, mes.getContent());
-            ps.setTimestamp(4, new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis()));
             ps.execute();
             ps.close();
             return true;
@@ -27,7 +26,7 @@ public class MessageDAO {
         return false;
     }
     public static void main(String[] args){
-        new Gson().toJson(new Message(1,1,"hi"));
+        writeMessage(new Gson().fromJson("{\"fid\":1,\"from\":1,\"content\":\"hi\"}",Message.class));
     }
     public void getAllUnreadMes(){
 

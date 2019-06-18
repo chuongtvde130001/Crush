@@ -5,8 +5,9 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import model.User;
+import java.model.User;
 import java.dao.UserDAO;
+import java.util.MD5;
 
 /**
  *
@@ -64,15 +65,19 @@ public class ProcessLogin extends HttpServlet {
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
         // Lưu user vào session
+        System.out.println("XX"+ MD5.getMd5(password));
         User user = UserDAO.checkLogin(username, password);
         if (user != null) {
             session.setAttribute("user", user);
-            Cookie uid = new Cookie("uid",String.valueOf(user.getUid()));
-            uid.setMaxAge(-1);
-            response.addCookie(uid);
+            Cookie uidCk = new Cookie("uid",String.valueOf(user.getUid()));
+            Cookie usrCk = new Cookie("username",user.getUserName());
+            uidCk.setMaxAge(-1);
+            usrCk.setMaxAge(-1);
+            response.addCookie(uidCk);
+            response.addCookie(usrCk);
             response.sendRedirect("home.jsp");
         }else{
-            response.sendRedirect(  "home.jsp");
+            response.sendRedirect("home.jsp");
         }
     }
 }

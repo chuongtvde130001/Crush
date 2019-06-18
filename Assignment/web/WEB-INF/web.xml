@@ -2,28 +2,28 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>ProcessRegister</servlet-name>
-        <servlet-class>controller.ProcessRegister</servlet-class>
+        <servlet-class>java.controller.ProcessRegister</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessLogin</servlet-name>
-        <servlet-class>controller.ProcessLogin</servlet-class>
+        <servlet-class>java.controller.ProcessLogin</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessUserHome</servlet-name>
-        <servlet-class>controller.ProcessUserHome</servlet-class>
+        <servlet-class>java.controller.ProcessUserHome</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessAvatar</servlet-name>
-        <servlet-class>controller.ProcessAvatar</servlet-class>
+        <servlet-class>java.controller.ProcessAvatar</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessLogout</servlet-name>
-        <servlet-class>controller.ProcessLogout</servlet-class>
+        <servlet-class>java.controller.ProcessLogout</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>UploadFileServlet</servlet-name>
-        <servlet-class>controller.UploadFileServlet</servlet-class>
-    </servlet>
+<!--    <servlet>-->
+<!--        <servlet-name>UploadFileServlet</servlet-name>-->
+<!--        <servlet-class>java.controller.UploadFileServlet</servlet-class>-->
+<!--    </servlet>-->
     <servlet-mapping>
         <servlet-name>ProcessRegister</servlet-name>
         <url-pattern>/ProcessRegister</url-pattern>
@@ -44,22 +44,19 @@
         <servlet-name>ProcessLogout</servlet-name>
         <url-pattern>/ProcessLogout</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UploadFileServlet</servlet-name>
-        <url-pattern>/UploadFileServlet</url-pattern>
-    </servlet-mapping>
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>UploadFileServlet</servlet-name>-->
+<!--        <url-pattern>/UploadFileServlet</url-pattern>-->
+<!--    </servlet-mapping>-->
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-<<<<<<< HEAD
     <error-page>
         <location>/error.jsp</location>
     </error-page>
     <welcome-file-list>
-        <welcome-file>chat.jsp</welcome-file>
+        <welcome-file>home.jsp</welcome-file>
     </welcome-file-list>
-=======
->>>>>>> ba4885a62f11ba4c001eb30f1fb0f0430ac2d394
 </web-app>

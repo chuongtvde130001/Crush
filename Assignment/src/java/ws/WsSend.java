@@ -1,8 +1,9 @@
-package ws;
+package java.ws;
 
 import com.google.gson.Gson;
-import jdk.nashorn.internal.parser.JSONParser;
-import model.Message;
+
+import java.dao.MessageDAO;
+import java.model.Message;
 
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.OnClose;
@@ -13,6 +14,8 @@ import javax.websocket.Session;
 
 @ServerEndpoint("/sendMessage")
 public class WsSend {
+    public static Gson gson = new Gson();
+    public static Message mesObj;
 
     @OnOpen
     public void onOpen(Session session) {
@@ -25,10 +28,10 @@ public class WsSend {
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
+    public synchronized void onMessage(String message, Session session) {
         System.out.println("onMessage::From=" + session.getId() + " Message=" + message);
-        new Gson().toJson(message);
-//        Message mes = new Message();
+        mesObj = gson.fromJson(message,Message.class);
+        MessageDAO.writeMessage(mesObj);
     }
 
     @OnError

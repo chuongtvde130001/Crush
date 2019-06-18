@@ -1,4 +1,4 @@
-package ws;
+package java.ws;
 
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.OnClose;

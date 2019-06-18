@@ -1,12 +1,12 @@
-package dao;
+package java.dao;
 
-import dbconfig.DBConfig;
+import java.dbconfig.DBConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Md5Encryptor;
+import java.util.MD5;
 
-import model.User;
+import java.model.User;
 
 public class UserDAO {
     private static final String getUsrSt = "select * from USERS where UserName = ? and PassWord = ?";
@@ -36,7 +36,7 @@ public class UserDAO {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getUsrSt);
             ps.setString(1, username);
-            ps.setString(2, Md5Encryptor.getMd5(password));
+            ps.setString(2, MD5.getMd5(password));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 u = new User(rs.getString("UserName"),

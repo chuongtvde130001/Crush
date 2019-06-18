@@ -1,11 +1,8 @@
-package ws;
+package java.ws;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import model.Message;
-
-import java.util.Date;
+import java.model.Message;
 
 public class Test {
     public static void ppp(String s){

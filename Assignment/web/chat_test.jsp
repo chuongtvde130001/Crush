@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Spring Boot WebSocket Chat Application | CalliCoder</title>
+    <title>Chat Demo</title>
     <link rel="stylesheet" href="css/chat-test.css" />
 </head>
 <body>
@@ -43,7 +43,6 @@
         </form>
     </div>
 </div>
-
 <script src="js/chat.js"></script>
 </body>
 </html>

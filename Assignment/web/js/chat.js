@@ -8,9 +8,9 @@ var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
 
 var socket = null;
-var uid = getCookie("uid")
+var uid = getCookie("uid");
+var fid = getCookie("fid");
 var username = getCookie("username");
-
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
@@ -18,13 +18,6 @@ var colors = [
 
 window.onload = connect();
 function connect() {
-    // usernamePage.classList.add('hidden');
-    // chatPage.classList.remove('hidden');
-    // username = document.querySelector('#name').value.trim();
-    //
-    // if(username) {
-    //
-    // }
 }
 
 
@@ -45,16 +38,16 @@ function sendMessage(evt) {
 
     if(messageContent) {
         var message = {
-            sender: uid,
+            fid: fid,
+            from: uid,
             content: messageInput.value,
-            type: 'CHAT'
         };
-        socket = new WebSocket("ws://localhost:8080/Assignment/sendMessage");
+        socket = new WebSocket("java.ws://localhost:8080/Assignment/sendMessage");
         socket.onopen = function () {
             socket.send(JSON.stringify(message));
             socket.close()
         }
-        message.sender=username;
+        message['sender']=username;
         addMessage(message);
         messageInput.value = '';
     }
@@ -86,9 +79,6 @@ function addMessage(message){
     messageArea.scrollTop = messageArea.scrollHeight;
 }
 
-
-// function onMessageReceived(payload) {
-// }
 function getAvatarColor(messageSender) {
     var hash = 0;
     for (var i = 0; i < messageSender.length; i++) {
