@@ -1,8 +1,4 @@
-package java.ws;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+package ws;
 
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.OnClose;
@@ -10,17 +6,15 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import java.io.IOException;
-
-import static ws.Test.ppp;
 
 @ServerEndpoint("/sendMessage")
-public class WsServer {
+public class WsSend {
 
     @OnOpen
     public void onOpen(Session session) {
         System.out.println("Open:" + session.getId());
     }
+
     @OnClose
     public void onClose(Session session) {
         System.out.println("Close:" +  session.getId());
