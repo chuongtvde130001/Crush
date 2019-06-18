@@ -53,4 +53,13 @@
             30
         </session-timeout>
     </session-config>
+<<<<<<< HEAD
+    <error-page>
+        <location>/error.jsp</location>
+    </error-page>
+    <welcome-file-list>
+        <welcome-file>chat.jsp</welcome-file>
+    </welcome-file-list>
+=======
+>>>>>>> ba4885a62f11ba4c001eb30f1fb0f0430ac2d394
 </web-app>

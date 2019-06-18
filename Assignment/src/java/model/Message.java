@@ -3,13 +3,13 @@ package model;
 import java.util.Date;
 
 public class Message {
-    private int mid, fid, fr, status;
+    private int mid, fid, from, status;
     private String content;
-    private Date time;//
+    private Date time;
 
-    public Message(int fid, int fr, String content) {
+    public Message(int fid, int from, String content) {
         this.fid = fid;
-        this.fr = fr;
+        this.from = from;
         this.content = content;
         this.time = new Date();
         this.status = 0;
@@ -23,8 +23,8 @@ public class Message {
         return fid;
     }
 
-    public int getFr() {
-        return fr;
+    public int getFrom() {
+        return from;
     }
 
     public int getStatus() {

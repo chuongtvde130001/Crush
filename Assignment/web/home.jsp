@@ -20,7 +20,7 @@
         
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <div class="container">
-                <a href="home.html" class="navbar-brand">Crush</a>
+                <a href="home.jsp" class="navbar-brand">Crush</a>
                 <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>

@@ -37,7 +37,11 @@
                                         <h3>Login Your Account</h3>
                                         <form action="ProcessLogin" method="post">
                                             <div class="form-group">
+<<<<<<< HEAD
+                                                <input type="text" class="form-control form-control-lg" placeholder="Username" name="username" value="${cookie['userName'].getValue()}">
+=======
                                                 <input type="text" class="form-control form-control-lg" placeholder="Username" name="username" value=${cookie['username'].value}>
+>>>>>>> ba4885a62f11ba4c001eb30f1fb0f0430ac2d394
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" class="form-control form-control-lg" placeholder="Password" name="password" value=${cookie['password'].value}>
@@ -62,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </header>
         <!---------Footer ----------------->
         <footer id="main-footer" class="bg-dark">
