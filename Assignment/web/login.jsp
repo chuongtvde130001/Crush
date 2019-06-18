@@ -32,7 +32,7 @@
                                         <h3>Login Your Account</h3>
                                         <form action="ProcessLogin" method="post">
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-lg" placeholder="Username" name="username">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Username" name="username" value="${cookie['userName'].getValue()}">
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" class="form-control form-control-lg" placeholder="Password" name="password">
@@ -48,6 +48,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </header>
         <!---------Footer ----------------->
         <footer id="main-footer" class="bg-dark">
