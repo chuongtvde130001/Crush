@@ -5,24 +5,30 @@
  */
 package model;
 
-/**
- *
- * @author Do Duong
- */
+import java.util.Md5Encryptor;
+
 public class User {
-    private String userName,fullName,gender,email;
+    private String password,userName,fullName,gender,email;
     private int uid,age;
 
     public User() {
     }
 
-    public User(String userName, String fullName, String gender, String email, int uID, int age) {
+    public User(String userName, String fullName, String gender, String email, int uid, int age) {
         this.userName = userName;
         this.fullName = fullName;
         this.gender = gender;
         this.email = email;
-        this.uid = uID;
+        this.uid = uid;
         this.age = age;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = Md5Encryptor.getMd5(password);
     }
 
     public String getUserName() {

@@ -1,5 +1,9 @@
 package ws;
 
+import com.google.gson.Gson;
+import jdk.nashorn.internal.parser.JSONParser;
+import model.Message;
+
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -23,11 +27,8 @@ public class WsSend {
     @OnMessage
     public void onMessage(String message, Session session) {
         System.out.println("onMessage::From=" + session.getId() + " Message=" + message);
-        try {
-            session.getBasicRemote().sendText("Hello Client " + session.getId() + "!");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        new Gson().toJson(message);
+//        Message mes = new Message();
     }
 
     @OnError

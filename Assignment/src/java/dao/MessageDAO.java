@@ -1,5 +1,6 @@
 package dao;
 
+import com.google.gson.Gson;
 import dbconfig.DBConfig;
 import model.Message;
 
@@ -26,7 +27,7 @@ public class MessageDAO {
         return false;
     }
     public static void main(String[] args){
-        writeMes(new Message(1,1,"hi"));
+        new Gson().toJson(new Message(1,1,"hi"));
     }
     public void getAllUnreadMes(){
 

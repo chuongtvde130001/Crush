@@ -1,31 +1,31 @@
-package java.dao;
+package dao;
 
-import java.dbconfig.DBConfig;
+import dbconfig.DBConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Md5Encryptor;
+
 import model.User;
-import java.util.MD5;
 
 public class UserDAO {
+    private static final String getUsrSt = "select * from USERS where UserName = ? and PassWord = ?";
+    private static final String insUserSt = "insert into USERS(UserName,PassWord,Email) values(?,?,?)";
+    private static final String getAvtSt = "select * from USERS where UserName = ?";
+
     // Đăng kí User
-    public static boolean register(String username,String email,String password){
-        String sql = "insert into USERS(UserName,PassWord,Email) values(?,?,?)";
-        try (Connection conn =  DBConfig.getConnection()){
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, MD5.getMd5(password));
-            ps.setString(3, email);
-            ps.executeUpdate();
-            ps.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    public static void register(User user) throws Exception {
+        Connection con =  DBConfig.getConnection();
+        PreparedStatement ps = con.prepareStatement(insUserSt);
+        ps.setString(1, user.getUserName());
+        ps.setString(2, user.getPassword());
+        ps.setString(3, user.getEmail());
+        ps.executeUpdate();
+        ps.close();
+        con.close();
     }
 // Kiểm tra thông tin đăng nhập
-    
+
     public static User checkLogin(String username, String password) {
         return getProfile(username, password);
     }
@@ -33,11 +33,10 @@ public class UserDAO {
 
     public static User getProfile(String username, String password) {
         User u = null;
-        String sql = "select * from USERS where UserName = ? and PassWord = ?";
         try (Connection conn = DBConfig.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(getUsrSt);
             ps.setString(1, username);
-            ps.setString(2, MD5.getMd5(password));
+            ps.setString(2, Md5Encryptor.getMd5(password));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 u = new User(rs.getString("UserName"),
@@ -56,9 +55,8 @@ public class UserDAO {
     }
     // Lấy Avatar User
     public static byte[] getUserAvatar(String username){
-        String sql = "select * from USERS where UserName = ?";
         try (Connection conn = DBConfig.getConnection()){
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(getAvtSt);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
