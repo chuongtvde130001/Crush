@@ -11,7 +11,6 @@ public class MessageDAO {
     private static final String writeMesSt = "INSERT INTO MESSAGES (FID,FR,Content,Time,Status) VALUES (?,?,?,getdate(),0)";
 
     public static boolean writeMessage(Message mes){
-        System.out.println(mes.getFid()+"XXX"+mes.getFrom());
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(writeMesSt);
             ps.setInt(1, mes.getFid());

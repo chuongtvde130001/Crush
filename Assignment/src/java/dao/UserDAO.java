@@ -4,7 +4,7 @@ import java.dbconfig.DBConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.MD5;
+import java.utils.MD5;
 
 import java.model.User;
 
