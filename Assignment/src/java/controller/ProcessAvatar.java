@@ -1,17 +1,17 @@
-package controller;
+package java.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.dao.UserDAO;
 
 /**
  *
  * @author Do Duong
  */
-public class ProcessLogout extends HttpServlet {
+public class ProcessAvatar extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -25,12 +25,14 @@ public class ProcessLogout extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null) {
-            session.invalidate();
-            response.sendRedirect("login.jsp");
-        }
-
+        String username = request.getParameter("username");
+        byte[] avatar = UserDAO.getUserAvatar(username);
+        response.setContentType("image/jpeg");
+        response.setContentLength(avatar.length);
+        response.getOutputStream().write(avatar);
+        // Hiển thị hình ảnh trên trang chính của User
+        // gắn link trên vào thẻ <img>
+        //${pageContext.servletContext.contextPath}/ProcessAvatar?usernam=${sessionScope.user.userName}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

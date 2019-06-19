@@ -1,9 +1,4 @@
-package ws;
-
-import com.google.gson.Gson;
-
-import dao.MessageDAO;
-import model.Message;
+package java.ws;
 
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.OnClose;
@@ -12,10 +7,8 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
-@ServerEndpoint("/sendMessage")
-public class WsSend {
-    public static Gson gson = new Gson();
-    public static Message mesObj;
+@ServerEndpoint("/receiveMessage")
+public class WsReceive {
 
     @OnOpen
     public void onOpen(Session session) {
@@ -28,10 +21,13 @@ public class WsSend {
     }
 
     @OnMessage
-    public synchronized void onMessage(String message, Session session) {
-        System.out.println("onMessage::From=" + session.getId() + " Message=" + message);
-        mesObj = gson.fromJson(message,Message.class);
-        MessageDAO.writeMessage(mesObj);
+    public void onMessage(String message, Session session) {
+        System.out.println("onMessage::From=" + session.getId() + " Request receive mes");
+        try {
+            session.getBasicRemote().sendText("Hello Client " + session.getId() + "!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @OnError

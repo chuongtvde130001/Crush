@@ -1,38 +1,22 @@
-package controller;
+package java.controller;
+
+import java.dao.UserDAO;
+import java.model.User;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import dao.UserDAO;
 
 /**
  *
  * @author Do Duong
  */
-public class ProcessAvatar extends HttpServlet {
+public class ProcessRegister extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("username");
-        byte[] avatar = UserDAO.getUserAvatar(username);
-        response.setContentType("image/jpeg");
-        response.setContentLength(avatar.length);
-        response.getOutputStream().write(avatar);
-        // Hiển thị hình ảnh trên trang chính của User
-        // gắn link trên vào thẻ <img>
-        //${pageContext.servletContext.contextPath}/ProcessAvatar?usernam=${sessionScope.user.userName}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,7 +31,15 @@ public class ProcessAvatar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        User usr = (User) request.getSession().getAttribute("user");
+        if(usr!=null) {
+            try {
+                UserDAO.register(usr);
+            }catch (Exception e){
+                throw new ServletException(e.getMessage());
+            }
+        }
+        response.sendRedirect("chat.jsp");
     }
 
     /**

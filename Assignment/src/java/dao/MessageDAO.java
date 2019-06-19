@@ -1,8 +1,8 @@
-package dao;
+package java.dao;
 
 import com.google.gson.Gson;
-import dbconfig.DBConfig;
-import model.Message;
+import java.dbconfig.DBConfig;
+import java.model.Message;
 
 import java.sql.*;
 

@@ -1,13 +1,12 @@
-package controller;
+package java.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import model.User;
-import dao.UserDAO;
-import util.MD5;
+import java.model.User;
+import java.dao.UserDAO;
 
 public class ProcessLogin extends HttpServlet {
 

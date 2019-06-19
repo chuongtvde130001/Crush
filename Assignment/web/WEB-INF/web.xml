@@ -2,27 +2,27 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>ProcessRegister</servlet-name>
-        <servlet-class>controller.ProcessRegister</servlet-class>
+        <servlet-class>java.controller.ProcessRegister</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessLogin</servlet-name>
-        <servlet-class>controller.ProcessLogin</servlet-class>
+        <servlet-class>java.controller.ProcessLogin</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessUserHome</servlet-name>
-        <servlet-class>controller.ProcessUserHome</servlet-class>
+        <servlet-class>java.controller.ProcessUserHome</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessAvatar</servlet-name>
-        <servlet-class>controller.ProcessAvatar</servlet-class>
+        <servlet-class>java.controller.ProcessAvatar</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProcessLogout</servlet-name>
-        <servlet-class>controller.ProcessLogout</servlet-class>
+        <servlet-class>java.controller.ProcessLogout</servlet-class>
     </servlet>
 <!--    <servlet>-->
 <!--        <servlet-name>UploadFileServlet</servlet-name>-->
-<!--        <servlet-class>controller.UploadFileServlet</servlet-class>-->
+<!--        <servlet-class>java.controller.UploadFileServlet</servlet-class>-->
 <!--    </servlet>-->
     <servlet-mapping>
         <servlet-name>ProcessRegister</servlet-name>
