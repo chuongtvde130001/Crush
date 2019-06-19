@@ -42,7 +42,7 @@ function sendMessage(evt) {
             from: uid,
             content: messageInput.value,
         };
-        socket = new WebSocket("java.ws://localhost:8080/Assignment/sendMessage");
+        socket = new WebSocket("ws://localhost:8080/Assignment/sendMessage");
         socket.onopen = function () {
             socket.send(JSON.stringify(message));
             socket.close()

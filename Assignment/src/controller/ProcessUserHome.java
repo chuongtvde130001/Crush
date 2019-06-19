@@ -1,20 +1,27 @@
-package java.controller;
-
-import java.dao.UserDAO;
-import java.model.User;
+package controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Do Duong
  */
-public class ProcessRegister extends HttpServlet {
+public class ProcessUserHome extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
@@ -31,15 +38,15 @@ public class ProcessRegister extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User usr = (User) request.getSession().getAttribute("user");
-        if(usr!=null) {
-            try {
-                UserDAO.register(usr);
-            }catch (Exception e){
-                throw new ServletException(e.getMessage());
-            }
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        // User đã đăng nhập
+        if(session.getAttribute("user")!=null){
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }else{
+            // User chưa đăng nhập chuyển về home.jsp
+            response.sendRedirect("home.jsp");
         }
-        response.sendRedirect("chat.jsp");
     }
 
     /**
@@ -53,7 +60,7 @@ public class ProcessRegister extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**
