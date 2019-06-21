@@ -8,7 +8,7 @@ CREATE TABLE USERS(
 	Age int,
 	Gender char(5), --MALE | FEMALE | LGBT
 	Email varchar(30),
-	Avatar varbinary(MAX),
+	Avatar varchar(MAX),
 	LastLogin DateTime,
 	Status bit, --FALSE IS INACTIVE | TRUE IS ACTIVE
 	UserRight int -- 1,2,3 (3 is user,2 is staff, 1 is admin
@@ -47,7 +47,9 @@ INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight) 
 
 INSERT INTO FRIENDS(UserA,UserB,FR) Values (1,2,getdate())
 
-INSERT INTO MESSAGES (FID,FR,Content,Time,Status) VALUES (1,2,'hello',getdate(),0) 
+INSERT INTO MESSAGES (FID,FR,Content,Time,Status) VALUES (1,1,'hello',getdate(),0) 
+
+DELETE FROM MESSAGES
 
 SELECT * FROM MESSAGES
 
