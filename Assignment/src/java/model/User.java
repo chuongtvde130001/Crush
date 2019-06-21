@@ -1,6 +1,6 @@
-package java.model;
+package model;
 
-import java.utils.MD5;
+import utils.MD5;
 
 public class User {
     private String password,userName,fullName,gender,email;

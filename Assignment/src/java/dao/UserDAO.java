@@ -1,12 +1,12 @@
-package java.dao;
+package dao;
 
-import java.dbconfig.DBConfig;
+import dbconfig.DBConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.utils.MD5;
+import utils.MD5;
 
-import java.model.User;
+import model.User;
 
 public class UserDAO {
     private static final String getUsrSt = "select * from USERS where UserName = ? and PassWord = ?";

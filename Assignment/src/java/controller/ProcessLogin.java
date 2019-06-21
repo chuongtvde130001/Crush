@@ -1,12 +1,12 @@
-package java.controller;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import java.model.User;
-import java.dao.UserDAO;
+import model.User;
+import dao.UserDAO;
 
 public class ProcessLogin extends HttpServlet {
 
@@ -32,6 +32,7 @@ public class ProcessLogin extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
+        System.out.println(username+"XX"+password);
         // Lưu user vào session
         User user = UserDAO.checkLogin(username, password);
         if (user != null) {

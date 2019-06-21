@@ -1,4 +1,4 @@
-package java.utils;
+package utils;
 
 public class Validate {
     //check thông tin người dùng nhập register có thíc hợp với CSDL

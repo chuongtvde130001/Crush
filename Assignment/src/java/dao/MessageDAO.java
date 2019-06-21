@@ -1,10 +1,15 @@
-package java.dao;
+package dao;
 
 import com.google.gson.Gson;
-import java.dbconfig.DBConfig;
-import java.model.Message;
+import dbconfig.DBConfig;
+import model.Friend;
+import model.Message;
+import model.MessageStorage;
+import servlet.ServletListener;
 
+import javax.servlet.ServletContext;
 import java.sql.*;
+import java.util.HashMap;
 
 public class MessageDAO {
 
@@ -27,7 +32,7 @@ public class MessageDAO {
     public static void main(String[] args){
         writeMessage(new Gson().fromJson("{\"fid\":1,\"from\":1,\"content\":\"hi\"}",Message.class));
     }
-    public void getAllUnreadMes(){
-
+    public int getAllUnreadMessage(int index){
+        return 0;
     }
 }

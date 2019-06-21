@@ -1,18 +1,18 @@
-package java.controller;
+package controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.dao.UserDAO;
+import dao.UserDAO;
 
 public class ProcessAvatar extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("username");
+        String username = request.getParameter("userA");
         byte[] avatar = UserDAO.getUserAvatar(username);
         response.setContentType("image/jpeg");
         response.setContentLength(avatar.length);

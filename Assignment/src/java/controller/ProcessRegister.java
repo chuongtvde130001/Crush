@@ -1,7 +1,7 @@
-package java.controller;
+package controller;
 
-import java.dao.UserDAO;
-import java.model.User;
+import dao.UserDAO;
+import model.User;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
