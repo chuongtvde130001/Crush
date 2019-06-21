@@ -10,7 +10,7 @@ CREATE TABLE USERS(
 	Email varchar(30),
 	Avatar varchar(MAX),
 	LastLogin DateTime,
-	Status bit, --FALSE IS INACTIVE | TRUE IS ACTIVE
+	Status int, --1 IS INACTIVE EMAIL | 2 IS INACTIVE USERINFO | 0 IS OK
 	UserRight int -- 1,2,3 (3 is user,2 is staff, 1 is admin
 )
 CREATE TABLE WANT(
@@ -47,7 +47,7 @@ INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight) 
 
 INSERT INTO FRIENDS(UserA,UserB,FR) Values (1,2,getdate())
 
-INSERT INTO MESSAGES (FID,FR,Content,Time,Status) VALUES (1,1,'hello',getdate(),0) 
+INSERT INTO MESSAGES (FID,FR,Content,Time,Status) VALUES (1,1,'hello',getdate(),0)
 
 DELETE FROM MESSAGES
 
@@ -56,7 +56,7 @@ SELECT * FROM MESSAGES
 --SELECT * FROM USERS
 --SELECT USER LOGIN
 --CREATE FUNCTION login (@username nvarchar(20), @pasword char(32))
---RETURNS TABLE 
---AS 	
+--RETURNS TABLE
+--AS
 --	RETURN SELECT * FROM USERS WHERE USERS.UserName = @username
 --select login('a','b') from users
