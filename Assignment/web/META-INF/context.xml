@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/Assignment"/>
+<Context path="/Assignment">
+    <Resources allowLinking="false">
+        <PostResources readOnly="false"
+                       className="org.apache.catalina.webresources.DirResourceSet"
+                       base="uploads"
+                       webAppMount="/images"/>
+    </Resources>
+</Context>

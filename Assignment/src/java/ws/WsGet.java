@@ -25,12 +25,12 @@ public class WsGet {
 
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println("Open GET:" + session.getId());
+//        System.out.println("Open GET:" + session.getId());
     }
 
     @OnClose
     public void onClose(Session session) {
-        System.out.println("Close GET:" +  session.getId());
+//        System.out.println("Close GET:" +  session.getId());
     }
 
     @OnMessage
@@ -43,10 +43,9 @@ public class WsGet {
         int fid = jObj.get("fid").getAsInt();
         int uid = jObj.get("uid").getAsInt();
 
-//        System.out.println(mesStrorage.getMessage(uid,fid)==null);
-        if((list = mesStrorage.getMessage(uid,fid))!=null)
+        if((list=mesStrorage.getMessage(fid,uid))!=null) {
             session.getBasicRemote().sendText(gson.toJson(list));
-        else{
+        }else{
             session.getBasicRemote().sendText("null");
         }
     }

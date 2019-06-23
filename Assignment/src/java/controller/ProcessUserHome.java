@@ -45,8 +45,8 @@ public class ProcessUserHome extends HttpServlet {
         if(session.getAttribute("user")!=null){
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }else{
-            // User chưa đăng nhập chuyển về home.jsp
-            response.sendRedirect("home.jsp");
+            // User chưa đăng nhập chuyển về register.jsp
+            response.sendRedirect("register.jsp");
         }
     }
 

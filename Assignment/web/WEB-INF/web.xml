@@ -13,17 +13,9 @@
         <servlet-class>controller.ProcessUserHome</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProcessAvatar</servlet-name>
-        <servlet-class>controller.ProcessAvatar</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProcessLogout</servlet-name>
         <servlet-class>controller.ProcessLogout</servlet-class>
     </servlet>
-    <!--    <servlet>-->
-    <!--        <servlet-name>UploadFileServlet</servlet-name>-->
-    <!--        <servlet-class>controller.UploadFileServlet</servlet-class>-->
-    <!--    </servlet>-->
     <servlet>
         <servlet-name>ProcessUpdate</servlet-name>
         <servlet-class>controller.ProcessUpdate</servlet-class>
@@ -41,17 +33,9 @@
         <url-pattern>/ProcessUserHome</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProcessAvatar</servlet-name>
-        <url-pattern>/ProcessAvatar</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ProcessLogout</servlet-name>
         <url-pattern>/ProcessLogout</url-pattern>
     </servlet-mapping>
-    <!--    <servlet-mapping>-->
-    <!--        <servlet-name>UploadFileServlet</servlet-name>-->
-    <!--        <url-pattern>/UploadFileServlet</url-pattern>-->
-    <!--    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>ProcessUpdate</servlet-name>
         <url-pattern>/ProcessUpdate</url-pattern>
@@ -70,6 +54,6 @@
         <location>/error.jsp</location>
     </error-page>
     <welcome-file-list>
-        <welcome-file>home.jsp</welcome-file>
+        <welcome-file>register.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

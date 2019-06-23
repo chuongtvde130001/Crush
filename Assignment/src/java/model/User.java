@@ -7,8 +7,7 @@ public class User {
     private String password, userName, fullName, gender, email, avatar;
     private int uid, age, status;
 
-    public User() {
-    }
+    public User() {}
 
     public User(String password, String userName, String fullName, String gender, String email, String avatar, int uid, int age, int status) {
         this.password = password;

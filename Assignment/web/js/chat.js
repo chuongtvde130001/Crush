@@ -27,7 +27,8 @@ function getCookie(name) {
 window.onload = config();
 
 function config() {
-    setTimeout(getMessage,3000);
+    getMessage();
+    messageArea.addEventListener("scroll",sclCheck);
 }
 
 function getMessage(){
@@ -40,11 +41,19 @@ function getMessage(){
     socket.onopen = function () {
         socket.send(JSON.stringify(getRequest));
     }
-    socket.onmessage = function (message) {
-        console.log("RESULT: "+message.data);
-        socket.close()
+    socket.onmessage = function (evt) {
+        console.log("RESULT: "+evt.data);
+        if(evt.data!="null")
+            JSON.parse(evt.data).forEach(function(data){
+                var message = {
+                    sender: userB,
+                    content: data,
+                };
+                addMessage(message);
+            });
+        socket.close();
     }
-    setTimeout(getMessage, 10000);
+    setTimeout(getMessage, 3000);
 }
 
 
@@ -94,16 +103,14 @@ function addMessage(message){
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
-
+function sclCheck() {
+    if(messageArea.scrollTop==0) ;
+}
 function getAvatarColor(messageSender) {
-    var hash = 0;
-    for (var i = 0; i < messageSender.length; i++) {
-        hash = 31 * hash;
-    }
 
-    var index = Math.abs(hash % colors.length);
+    var index = Math.abs(messageSender.length%8);
     return colors[index];
 }
 
 // usernameForm.addEventListener('submit', connect, true)
-messageForm.addEventListener('submit', sendMessage, true)
+messageForm.addEventListener('submit', sendMessage, true);

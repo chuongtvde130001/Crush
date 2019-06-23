@@ -39,13 +39,13 @@ public class ProcessRegister extends HttpServlet {
         String email = request.getParameter("email");
         if ((Validate.checkUserName(username) == true) && (Validate.checkEmail(email) == true)) {
             request.setAttribute("error", "Username and Email is already exist");
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         } else if (Validate.checkUserName(username) == true) {
             request.setAttribute("error", "Username is already exist");
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         } else if (Validate.checkEmail(email) == true) {
             request.setAttribute("error", "Email is already exist");
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
             User usr = UserDAO.register(username, password, email);
             if (usr != null) {
@@ -55,7 +55,7 @@ public class ProcessRegister extends HttpServlet {
                     throw new ServletException(e.getMessage());
                 }
             }
-            response.sendRedirect("updateinfo.jsp");
+            response.sendRedirect("update_info.jsp");
         }
     }
 

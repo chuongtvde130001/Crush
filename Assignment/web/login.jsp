@@ -14,12 +14,12 @@
     <body id="home">
         <%
             if (session.getAttribute("user") != null) {
-                response.sendRedirect("ProcessUserHome");
+                response.sendRedirect("home.jsp");
             }
         %>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <div class="container">
-                <a href="home.jsp" class="navbar-brand">
+                <a href="register.jsp" class="navbar-brand">
                     <button class="btn btn-danger">Back To Home Page</button>
                 </a>
                 </button>
@@ -54,7 +54,7 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                                             <p class="mt-2">Dont have account?</p>
-                                            <button class="btn btn-dark btn-block"><a href="home.html" class="text-white">Register Now</a></button>
+                                            <button class="btn btn-dark btn-block"><a href="register.jsp" class="text-white">Register Now</a></button>
                                         </form>
                                     </div>
                                 </div>

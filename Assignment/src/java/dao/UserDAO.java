@@ -4,33 +4,33 @@ import dbconfig.DBConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import utils.ImageSaver;
 import utils.MD5;
 
 import model.User;
 
 public class UserDAO {
 
+
+
     private static final String getUsrSt = "select * from USERS where UserName = ? and PassWord = ?";
     private static final String insUserSt = "insert into USERS(UserName,PassWord,Email,Status) values(?,?,?,'2')";
-    private static final String getAvtSt = "select Avatar from USERS where UserName = ?";
+    private static final String getAvtSt = "select Avatar from USERS where uid = ?";
     private static final String findUsername = "select UserName from USERS where Username = ?";
     private static final String findEmail = "select Email from USERS where Email=?";
-    private static final String update = "update USERS set FullName = ? ,Age = ? ,"
-            + "Gender = ? ,Avatar =? ,Status = 1 where UserName = ?";
+    private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? ,Status = 1 where uid = ?";
 
     public static boolean updateUserInfo(String fullName,
-            int age, String gender, String username, String avatarPath) {
+            int age, String gender, String avatarPath, int uid) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(update);
             ps.setString(1, fullName);
-            ps.setString(2, Integer.toString(age));
+            ps.setInt(2, age);
             ps.setString(3, gender);
             ps.setString(4, avatarPath);
-            ps.setString(5, username);
-            int result = ps.executeUpdate();
-            if (result > 0) {
-                return true;
-            }
+            ps.setInt(5, uid);
+            ps.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,14 +73,13 @@ public class UserDAO {
         try (Connection con = DBConfig.getConnection()) {
             PreparedStatement ps = con.prepareStatement(insUserSt);
             ps.setString(1, username);
-            ps.setString(2, password);
+            ps.setString(2, MD5.getMd5(password));
             ps.setString(3, email);
             int result = ps.executeUpdate();
             if (result > 0) {
                 u = new User(username, password, email);
             }
             ps.close();
-            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,9 +97,7 @@ public class UserDAO {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getUsrSt);
             ps.setString(1, username);
-            // Xem lại chỗ này nếu thêm getMD5 vào nó ko lấy đc dữ liệu
-            //ps.setString(2, MD5.getMd5(password));
-            ps.setString(2, password);
+            ps.setString(2, MD5.getMd5(password));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 u = new User(rs.getString("Password"),
@@ -122,13 +119,13 @@ public class UserDAO {
     }
 
     // Lấy Avatar User
-    public static String getUserAvatar(String username) {
+    public static String getUserAvatar(int uid) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getAvtSt);
-            ps.setString(1, username);
+            ps.setInt(1, uid);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getString("Avatar");
+                return ImageSaver.imagePath + rs.getString("Avatar");
             }
         } catch (Exception e) {
             e.printStackTrace();

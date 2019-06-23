@@ -23,13 +23,6 @@ public class WsSend {
     private static MessageStorage mesStrorage;
     private static HashMap<Integer,Friend> friends;
 
-    {
-        if(mesStrorage ==null)
-            mesStrorage = (MessageStorage) ServletListener.getCurrentServlet().getAttribute("mesStrorage");
-        if(friends == null)
-            friends = (HashMap<Integer,Friend>) ServletListener.getCurrentServlet().getAttribute("friend");
-    }
-
     @OnOpen
     public void onOpen(Session session) {
         System.out.println("Open SEND:" + session.getId());
@@ -41,12 +34,17 @@ public class WsSend {
     }
 
     @OnMessage
-    public synchronized void onMessage(String message, Session session) {
+    public synchronized void onMessage(String message, Session session) throws Exception{
+        if(mesStrorage == null)
+            mesStrorage = (MessageStorage) ServletListener.getCurrentServlet().getAttribute("mesStorage");
+        if(friends == null)
+            friends = (HashMap<Integer,Friend>) ServletListener.getCurrentServlet().getAttribute("friend");
+
         System.out.println("onMessage::From=" + session.getId() + " SEND " + message);
         mObj = gson.fromJson(message,Message.class);
 
         //Write message to mesStorage
-        mesStrorage.addMessage(friends.get(mObj.getFid()).getFriendOf(mObj.getFrom()),mObj.getFid(),mObj.getContent());
+        mesStrorage.addMessage(mObj.getFid(),friends.get(mObj.getFid()).getFriendOf(mObj.getFrom()),mObj.getContent());
         MessageDAO.writeMessage(mObj);
     }
 

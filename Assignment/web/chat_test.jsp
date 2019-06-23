@@ -30,8 +30,7 @@
         <div class="chat-header">
             <h2></h2>
         </div>
-        <ul id="messageArea">
-
+        <ul id="messageArea" onscroll="scroll()">
         </ul>
         <form id="messageForm" name="messageForm" nameForm="messageForm">
             <div class="form-group">
@@ -43,6 +42,8 @@
         </form>
     </div>
 </div>
-<script src="js/chat.js"></script>
+<script type="text/javascript" src="js/chat.js"></script>
+<script>
+</script>
 </body>
 </html>
