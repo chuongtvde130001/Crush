@@ -12,14 +12,14 @@ public class ProcessAvatar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("userA");
-        byte[] avatar = UserDAO.getUserAvatar(username);
-        response.setContentType("image/jpeg");
-        response.setContentLength(avatar.length);
-        response.getOutputStream().write(avatar);
-        // Hiển thị hình ảnh trên trang chính của User
-        // gắn link trên vào thẻ <img>
-        //${pageContext.servletContext.contextPath}/ProcessAvatar?usernam=${sessionScope.user.userName}
+//        String username = request.getParameter("userA");
+//        byte[] avatar = UserDAO.getUserAvatar(username);
+//        response.setContentType("image/jpeg");
+//        response.setContentLength(avatar.length);
+//        response.getOutputStream().write(avatar);
+//         Hiển thị hình ảnh trên trang chính của User
+//         gắn link trên vào thẻ <img>
+//        ${pageContext.servletContext.contextPath}/ProcessAvatar?usernam=${sessionScope.user.userName}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -20,10 +20,14 @@
         <servlet-name>ProcessLogout</servlet-name>
         <servlet-class>controller.ProcessLogout</servlet-class>
     </servlet>
-<!--    <servlet>-->
-<!--        <servlet-name>UploadFileServlet</servlet-name>-->
-<!--        <servlet-class>controller.UploadFileServlet</servlet-class>-->
-<!--    </servlet>-->
+    <!--    <servlet>-->
+    <!--        <servlet-name>UploadFileServlet</servlet-name>-->
+    <!--        <servlet-class>controller.UploadFileServlet</servlet-class>-->
+    <!--    </servlet>-->
+    <servlet>
+        <servlet-name>ProcessUpdate</servlet-name>
+        <servlet-class>controller.ProcessUpdate</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProcessRegister</servlet-name>
         <url-pattern>/ProcessRegister</url-pattern>
@@ -44,10 +48,14 @@
         <servlet-name>ProcessLogout</servlet-name>
         <url-pattern>/ProcessLogout</url-pattern>
     </servlet-mapping>
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>UploadFileServlet</servlet-name>-->
-<!--        <url-pattern>/UploadFileServlet</url-pattern>-->
-<!--    </servlet-mapping>-->
+    <!--    <servlet-mapping>-->
+    <!--        <servlet-name>UploadFileServlet</servlet-name>-->
+    <!--        <url-pattern>/UploadFileServlet</url-pattern>-->
+    <!--    </servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>ProcessUpdate</servlet-name>
+        <url-pattern>/ProcessUpdate</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

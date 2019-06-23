@@ -83,21 +83,21 @@
                                     <div class="card-body">
                                         <h3>Sign Up Today</h3>
                                         <p>Please fill out this form to register</p>
-                                        <form action="ProcessRegister" method="post">
+                                        <form action="ProcessRegister" method="get">
                                             <div class="alert-danger" role="alert">
                                                 ${requestScope.error}
                                             </div><br>
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-lg" placeholder="Username" name="username">
+                                                <input required type="text" class="form-control form-control-lg" placeholder="Username" name="username">
                                             </div>
                                             <div class="form-group">
-                                                <input type="email" class="form-control form-control-lg" placeholder="Email" name="email">
+                                                <input required type="email" class="form-control form-control-lg" placeholder="Email" name="email">
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" class="form-control form-control-lg" placeholder="Password" name="password">
+                                                <input required type="password" class="form-control form-control-lg" placeholder="Password" name="password">
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" class="form-control form-control-lg" placeholder="Confirm Password" name="confirmPassword">
+                                                <input required type="password" class="form-control form-control-lg" placeholder="Confirm Password" name="confirmPassword">
                                             </div>
                                             <input type="submit" class="btn btn-outline-light btn-block" value="Register">
                                         </form>

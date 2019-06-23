@@ -26,26 +26,31 @@ public class ProcessLogin extends HttpServlet {
             out.println("</html>");
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
-        System.out.println(username+"XX"+password);
         // Lưu user vào session
         User user = UserDAO.checkLogin(username, password);
         if (user != null) {
             session.setAttribute("user", user);
-            Cookie uidCk = new Cookie("uid",String.valueOf(user.getUid()));
-            Cookie usrCk = new Cookie("username",user.getUserName());
+            Cookie uidCk = new Cookie("uid", String.valueOf(user.getUid()));
+            Cookie usrCk = new Cookie("username", user.getUserName());
             uidCk.setMaxAge(-1);
             usrCk.setMaxAge(-1);
             response.addCookie(uidCk);
             response.addCookie(usrCk);
-            response.sendRedirect("home.jsp");
-        }else{
-            response.sendRedirect("home.jsp");
+            if (user.getStatus() == 2) {
+                request.getRequestDispatcher("updateinfo.jsp").forward(request, response);
+            } else if (user.getStatus() == 1) {
+               // Chuyển người dùng tới trang xác nhận email
+            } else {
+                // Xác nhận đầy đủ rồi thì chuyển vào trang chính
+                response.sendRedirect("chat.jsp");
+            }
         }
     }
 }

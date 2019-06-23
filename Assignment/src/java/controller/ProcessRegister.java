@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import utils.Validate;
 
 /**
  *
@@ -31,15 +33,30 @@ public class ProcessRegister extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User usr = (User) request.getSession().getAttribute("user");
-        if(usr!=null) {
-            try {
-                UserDAO.register(usr);
-            }catch (Exception e){
-                throw new ServletException(e.getMessage());
+        HttpSession session = request.getSession();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        if ((Validate.checkUserName(username) == true) && (Validate.checkEmail(email) == true)) {
+            request.setAttribute("error", "Username and Email is already exist");
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+        } else if (Validate.checkUserName(username) == true) {
+            request.setAttribute("error", "Username is already exist");
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+        } else if (Validate.checkEmail(email) == true) {
+            request.setAttribute("error", "Email is already exist");
+            request.getRequestDispatcher("home.jsp").forward(request, response);
+        } else {
+            User usr = UserDAO.register(username, password, email);
+            if (usr != null) {
+                try {
+                    session.setAttribute("user", usr);
+                } catch (Exception e) {
+                    throw new ServletException(e.getMessage());
+                }
             }
+            response.sendRedirect("updateinfo.jsp");
         }
-        response.sendRedirect("chat.jsp");
     }
 
     /**

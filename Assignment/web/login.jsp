@@ -40,7 +40,7 @@
                                                 <input type="text" class="form-control form-control-lg" placeholder="Username" name="username" value=${cookie['username'].value}>
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" class="form-control form-control-lg" placeholder="Password" name="password" value=${cookie['password'].value}>
+                                                <input type="password" class="form-control form-control-lg" placeholder="Password" name="password">
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
@@ -48,7 +48,7 @@
                                                         <input type="checkbox" class="form-check-input" name="remember" checked="checked">
                                                     </div>
                                                     <div class="col-10 text-left p-0">
-                                                       Remember Me
+                                                        Remember Me
                                                     </div>
                                                 </div>
                                             </div>

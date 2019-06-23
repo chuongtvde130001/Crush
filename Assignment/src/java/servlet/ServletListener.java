@@ -23,4 +23,9 @@ public class ServletListener implements ServletContextListener {
     public static ServletContext getCurrentServlet(){
         return svlet;
     }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
