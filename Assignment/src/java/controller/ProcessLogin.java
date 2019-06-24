@@ -26,10 +26,10 @@ public class ProcessLogin extends HttpServlet {
             usrCk.setMaxAge(-1);
             response.addCookie(uidCk);
             response.addCookie(usrCk);
-            System.out.println(user.getStatus());
             if (user.getStatus() == 2) {
                 request.getRequestDispatcher("update_info.jsp").forward(request, response);
             } else if (user.getStatus() == 1) {
+                response.sendRedirect("home.jsp");
                // Chuyển người dùng tới trang xác nhận email
             } else {
                 // Xác nhận đầy đủ rồi thì chuyển vào trang chính

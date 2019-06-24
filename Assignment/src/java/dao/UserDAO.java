@@ -105,7 +105,7 @@ public class UserDAO {
                         rs.getString("FullName"),
                         rs.getString("Gender"),
                         rs.getString("Email"),
-                        rs.getString("Avatar"),
+                        ImageSaver.imagePath + rs.getString("Avatar"),
                         rs.getInt("UID"),
                         rs.getInt("Age"),
                         rs.getInt("Status"));

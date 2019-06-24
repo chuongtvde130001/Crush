@@ -30,20 +30,20 @@
         <div class="chat-header">
             <h2></h2>
         </div>
-        <ul id="messageArea" onscroll="scroll()">
+        <ul id="messageArea">
         </ul>
-        <form id="messageForm" name="messageForm" nameForm="messageForm">
-            <div class="form-group">
-                <div class="input-group clearfix">
+        <div class="form-group">
+            <div class="input-group clearfix">
+                <form id="messageForm" onsubmit="function x(evt) {
+                  evt.preventDefault();
+                }" name="messageForm" nameForm="messageForm">
                     <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
                     <button type="submit" class="primary">Send</button>
-                </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="js/chat.js"></script>
-<script>
-</script>
 </body>
 </html>
