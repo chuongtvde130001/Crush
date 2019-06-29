@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -10,13 +11,13 @@
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
     </head>
     <body id="home">
-        <%
-            if (session.getAttribute("user") != null) {
-                response.sendRedirect("home.jsp");
-            }
-        %>
+        <c:if test="${sessionScope.user!=null}">
+            <c:redirect url="home.jsp"/>
+        </c:if>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script> 
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <div class="container">
                 <a href="register.jsp" class="navbar-brand">
@@ -35,12 +36,12 @@
                                 <div class="card bg-danger text-center card-form">
                                     <div class="card-body">
                                         <h3>Login Your Account</h3>
-                                        <form action="ProcessLogin" method="post">
+                                        <form action="ProcessLogin" method="post" onsubmit="return checkForm(this);">
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-lg" placeholder="Username" name="username" value=${cookie['username'].value}>
+                                                <input id="username" type="text" class="form-control form-control-lg" placeholder="Username" name="username" value=${cookie['username'].value}>
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" class="form-control form-control-lg" placeholder="Password" name="password">
+                                                <input id="password" type="password" class="form-control form-control-lg" placeholder="Password" name="password">
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
@@ -52,6 +53,40 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <script>
+                                                function checkForm(form) {
+                                                    if ((form.username.value == "") && (form.password.value == "")) {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Please fill the box...',
+                                                        });
+                                                        return false;
+                                                    } else if (form.username.value == "") {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Username can not be empty!',
+                                                        });
+                                                        return false;
+                                                    } else if (form.password.value == "") {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Password can not be empty!',
+                                                        });
+                                                        return false;
+                                                    } else {
+                                                        return true;
+                                                    }
+                                                }
+                                            </script>
+                                            <script>
+                                                var x = "${requestScope.error}";
+                                                if (x != "") {
+                                                    Swal.fire({
+                                                        type: 'error',
+                                                        title: x,
+                                                    })
+                                                }
+                                            </script>
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                                             <p class="mt-2">Dont have account?</p>
                                             <button class="btn btn-dark btn-block"><a href="register.jsp" class="text-white">Register Now</a></button>

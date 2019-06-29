@@ -10,14 +10,13 @@
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
     </head>
     <body id="home">
-        <%
-            if (session.getAttribute("user") != null) {
-                response.sendRedirect("home.jsp");
-            }
-        %>
-        
+        <c:if test="${sessionScope.user!=null}">
+            <c:redirect url="home.jsp"/>
+        </c:if>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script>      
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
             <div class="container">
                 <a href="register.jsp" class="navbar-brand">Crush</a>
@@ -83,25 +82,109 @@
                                     <div class="card-body">
                                         <h3>Sign Up Today</h3>
                                         <p>Please fill out this form to register</p>
-                                        <form action="ProcessRegister" method="get">
-                                            <div class="alert-danger" role="alert">
-                                                ${requestScope.error}
-                                            </div><br>
+                                        <form action="ProcessRegister" method="post" onsubmit="return checkForm(this);">
                                             <div class="form-group">
-                                                <input required type="text" class="form-control form-control-lg" placeholder="Username" name="username">
+                                                <input id="username" type="text" class="form-control form-control-lg" placeholder="Username" name="username" value="">
                                             </div>
                                             <div class="form-group">
-                                                <input required type="email" class="form-control form-control-lg" placeholder="Email" name="email">
+                                                <input id="email" type="text" class="form-control form-control-lg" placeholder="Email" name="email">
                                             </div>
                                             <div class="form-group">
-                                                <input required type="password" class="form-control form-control-lg" placeholder="Password" name="password">
+                                                <input id="password1" type="password" class="form-control form-control-lg" placeholder="Password" name="password">
                                             </div>
                                             <div class="form-group">
-                                                <input required type="password" class="form-control form-control-lg" placeholder="Confirm Password" name="confirmPassword">
+                                                <input id="password2" type="password" class="form-control form-control-lg" placeholder="Confirm Password" name="confirmPassword">
                                             </div>
+
                                             <input type="submit" class="btn btn-outline-light btn-block" value="Register">
+                                            <script>
+                                                function checkForm(form) {
+                                                    var email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                                    var usernameRegex = /^[a-zA-Z0-9]+$/;
+                                                    var strongRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+
+                                                    if ((form.username.value == "") && (form.email.value == "")
+                                                            && (form.password1.value == "") && (form.password2.value == "")) {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Please fill the box...',
+                                                        });
+                                                        return false;
+                                                    } else if (form.username.value == "") {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Username can not be empty!',
+                                                        });
+                                                        return false;
+                                                    } else if (form.email.value == "") {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Email can not be empty!',
+                                                        });
+                                                        return false;
+                                                    } else if ((form.password1.value == "") && (form.password2.value == "")) {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Password can not be empty!',
+                                                        });
+                                                        return false;
+                                                    } else if (form.password1.value == "") {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Password can not be empty!',
+                                                        });
+                                                        return false;
+                                                    } else if (form.password2.value == "") {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Confirm Password can not be empty!',
+                                                        });
+                                                        return false;
+                                                    } else if (form.password1.value != form.password2.value) {
+                                                        Swal.fire({
+                                                            type: 'error',
+                                                            title: 'Passwords do not match',
+                                                        });
+                                                        return false;
+                                                    } else {
+                                                        if (!usernameRegex.test(form.username.value)) {
+                                                            Swal.fire({
+                                                                type: 'error',
+                                                                title: 'Please input valid Username',
+                                                            });
+                                                            return false;
+                                                        }
+                                                        if (!email.test(form.email.value)) {
+                                                            Swal.fire({
+                                                                type: 'error',
+                                                                title: 'Please input valid Email',
+                                                            });
+                                                            return false;
+                                                        }
+                                                        if (!strongRegex.test(form.password.value)) {
+                                                            Swal.fire({
+                                                                type: 'error',
+                                                                title: 'Invalid Password',
+                                                                text: 'Password must contains at least 1 number , 1 Upper and 1 Lower',
+                                                            });
+                                                            return false;
+                                                        }
+                                                        return true;
+                                                    }
+                                                }
+                                            </script>
+                                            <script>
+                                                var x = "${requestScope.error}";
+                                                if (x != "") {
+                                                    Swal.fire({
+                                                        type: 'error',
+                                                        title: x,
+                                                    })
+                                                }
+                                            </script>
                                         </form>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

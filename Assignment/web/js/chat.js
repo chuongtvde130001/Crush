@@ -27,7 +27,7 @@ window.onload = config();
 
 function config() {
     // getMessage();
-    messageArea.addEventListener("scroll",sclCheck);
+    messageArea.addEventListener("scroll", sclCheck);
 }
 //
 // function getMessage(){
@@ -104,7 +104,8 @@ function config() {
 //     messageArea.scrollTop = messageArea.scrollHeight;
 // }
 function sclCheck() {
-    if(messageArea.scrollTop==0) ;
+    if (messageArea.scrollTop == 0)
+        ;
 }
 // messageForm.addEventListener('submit',function(event){
 //     event.preventDefault();
