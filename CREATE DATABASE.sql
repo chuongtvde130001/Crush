@@ -44,9 +44,9 @@ CREATE TABLE MESSAGES(
 	Status bit -- false IS UNREADED | true IS READED
 )
 --FAKE INFO PASS 1234
-INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat123','81dc9bdb52d04dc20036dbd8313ed055','Tom Allen',18,'MALE','a&b.c',2,3,'avatars/2.png')
-INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat456','81dc9bdb52d04dc20036dbd8313ed055','Tom Alex',18,'MALE','a&b.c',2,3,'avatars/2.png')
-INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat789','81dc9bdb52d04dc20036dbd8313ed055','Harry',18,'FEMALE','a&b.c',2,3,'avatars/2.png')
+INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat123','81dc9bdb52d04dc20036dbd8313ed055','Tom Allen',18,'MALE','a&b.c',0,3,'avatars/2.png')
+INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat456','81dc9bdb52d04dc20036dbd8313ed055','Tom Alex',18,'MALE','a&b.c',0,3,'avatars/2.png')
+INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat789','81dc9bdb52d04dc20036dbd8313ed055','Harry',18,'FEMALE','a&b.c',0,3,'avatars/2.png')
 
 INSERT INTO FRIENDS(UserA,UserB,FR) Values (1,2,getdate())
 INSERT INTO FRIENDS(UserA,UserB,FR) Values (3,1,getdate())
