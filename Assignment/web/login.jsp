@@ -89,7 +89,7 @@
                                             </script>
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                                             <p class="mt-2">Dont have account?</p>
-                                            <button class="btn btn-dark btn-block"><a href="register.jsp" class="text-white">Register Now</a></button>
+                                            <a href="register.jsp" class="btn btn-dark btn-block">Register Now</a>
                                         </form>
                                     </div>
                                 </div>

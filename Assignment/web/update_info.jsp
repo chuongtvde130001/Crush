@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Courgette|Lobster|Pacifico&display=swap" rel="stylesheet">
     </head>
     <body id="home">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script> 
@@ -23,16 +24,14 @@
             </div>
         </nav>
         <!-------- Login page ------------->
-        <header id="home-section-update">
+        <header id="home-section-update" style="font-family: 'Mali', cursive;">
             <div class="home-inner">
                 <div class="container">
-                    <div class="row-1">
-                        <p class="display-1 text-center">Hello ${sessionScope.user.userName}!</p>
-                        <p class="display-4 text-center">Complete Your Profile</p>
-                    </div>
                     <div class="row-5">
-                        <div class="card bg-dark text-center card-form">
+                        <div class="card bg-light text-center card-form text-dark">
                             <div class="card-body text-left">
+                                <p class="display-1 text-center" style="font-family: 'Lobster', cursive;">Hello ${sessionScope.user.userName}!</p>
+                                <p class="display-4 text-center" style="font-family: 'Pacifico', cursive">Complete Your Profile</p>
                                 <h3>Your Info</h3>
                                 <p>Please fill out this form to update your information</p>
                                 <form method="post" action="ProcessUpdate" enctype="multipart/form-data" onsubmit="return checkForm(this);">
@@ -48,12 +47,19 @@
                                     </div><br>
                                     <div class="form-row">
                                         <div class="col">
-                                            <h4>I want to meet :</h4>
-                                            <select id="genderMeet" class="form-control">
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                                <option>Other</option>
-                                            </select>
+                                            <h4>Age range I want to meet :</h4>
+                                            <div class="input-group">                                           
+                                                <div class="input-group-addon">From</div>
+                                                <input class="form-control col-3" type="number" id="ageFrom">
+                                                <div class="input-group-addon">To</div>
+                                                <input class="form-control col-3" type="number" id="ageTo">
+                                                <div class="input-group-addon">Gender</div>
+                                                <select id="genderMeet" class="form-control" name="gender">
+                                                    <option>Male</option>
+                                                    <option>Female</option>
+                                                    <option>Other</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col">
                                             <h4>Gender :</h4>
@@ -68,18 +74,45 @@
                                         <div class="col">
                                             <h3>Select Your Avatar</h3>
                                             <div class="col"><label for="file">File input</label>
-                                                <input type="file" name="myImage" accept="image/x-png,image/gif,image/jpeg" />
+                                                <input id="imageName" type="file" name="myImage" accept="image/x-png,image/gif,image/jpeg" onchange="readURL(this);"/>
+                                                <div class="col ml-3">
+                                                    <script>
+                                                        function readURL(input) {
+                                                            if (input.files && input.files[0]) {
+                                                                var reader = new FileReader();
+
+                                                                reader.onload = function (e) {
+                                                                    $('#blah')
+                                                                            .attr('src', e.target.result)
+                                                                            .width(150)
+                                                                            .height(200);
+                                                                };
+
+                                                                reader.readAsDataURL(input.files[0]);
+                                                            }
+
+                                                        }
+                                                    </script>
+                                                    <img id="blah" src="#" onerror="this.src='img/avatar.png'" style=" width: 200px; height: 200px;object-fit: cover;object-position: center;" class="mt-2 rounded"/>
+                                                </div>
                                             </div>
                                         </div><br>
                                         <br>
+                                        <div class="col">
+                                            <h3>About me</h3>
+                                            <textarea class="form-control" rows="5" id="comment"></textarea>
+                                        </div><br>
                                     </div><br>
                                     <button type="submit" class="btn btn-primary btn-block">Take me to the home page !</button>
                                     <script>
                                         var personNameRegex = /^([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]*)+[ ]([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]+)+$/;
                                         var fullName = document.getElementById('fullName');
                                         var age = document.getElementById('age');
+                                        var ageFrom = document.getElementById('ageFrom');
+                                        var ageTo = document.getElementById('ageTo');
                                         function checkForm(form) {
-                                            if ((fullName.value == "") && (age.value == "")) {
+                                            if ((fullName.value == "") && (age.value == "") && (ageFrom.value == "")
+                                                    && (ageTo.value == "")) {
                                                 Swal.fire({
                                                     type: 'warning',
                                                     title: 'Please fill the box...',
@@ -97,6 +130,18 @@
                                                     title: 'Age can not be empty!',
                                                 });
                                                 return false;
+                                            } else if (ageFrom.value == "") {
+                                                Swal.fire({
+                                                    type: 'warning',
+                                                    title: 'Age Range can not be empty!',
+                                                });
+                                                return false;
+                                            } else if (ageTo.value == "") {
+                                                Swal.fire({
+                                                    type: 'warning',
+                                                    title: 'Age Range can not be empty!',
+                                                });
+                                                return false;
                                             } else {
                                                 if (!personNameRegex.test(fullName.value)) {
                                                     Swal.fire({
@@ -112,11 +157,10 @@
                                                         title: 'You are too young!',
                                                     });
                                                     return false;
-                                                } 
+                                                }
                                             }
                                             return true;
                                         }
-
                                     </script>
                                 </form>
                             </div>
