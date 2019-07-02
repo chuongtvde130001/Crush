@@ -30,7 +30,6 @@ function config(list) {
     getMessage();
     messageArea.addEventListener("scroll",scrollTop);
 }
-
 //RE_CONFIG CHAT BOX
 function reconfigChat(f) {
     if(initialized_chat[f]==null)
@@ -40,6 +39,22 @@ function reconfigChat(f) {
     userB = fid_usr_list[f][0];
     console.log(userB);
 }
+//INIT NEW CHAT BOX
+// function initChat(f) {
+//     socket = new WebSocket("ws://localhost:8080/Assignment/getConSize");
+//     let getRequest = {
+//         'fid': f,
+//     };
+//     socket.onopen = function () {
+//         socket.send(JSON.stringify(getRequest));
+//     }
+//     socket.onmessage = function (evt) {
+//         console.log("Conversation size: "+evt.data);
+//         initialized_chat[f]=evt.data;
+//         socket.close();
+//         getOldMessage(f,i);
+//     }
+// }
 
 //GET OLD MESSAGE
 function getOldMessage(fid) {
