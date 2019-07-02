@@ -1,6 +1,6 @@
 package servlet;
 
-import model.Friend;
+import model.FriendStorage;
 import model.MessageStorage;
 
 import javax.servlet.ServletContext;
@@ -11,21 +11,33 @@ import java.util.HashMap;
 public class ServletListener implements ServletContextListener {
 
     private static ServletContext svlet;
+    private static MessageStorage mesStorage;
+    private static FriendStorage friStorage;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        mesStorage = new MessageStorage();
+        friStorage = new FriendStorage();
+
         svlet = sce.getServletContext();
-        svlet.setAttribute("mesStorage",new MessageStorage());
-        svlet.setAttribute("friend",new HashMap<Integer,Friend>());
-        ((HashMap)sce.getServletContext().getAttribute("friend")).put(1,new Friend(1,1,2));
+        svlet.setAttribute("mesStorage", mesStorage);
+        svlet.setAttribute("friStorage", friStorage);
     }
 
-    public static ServletContext getCurrentServlet(){
+    public static MessageStorage getMesStorage() {
+        return mesStorage;
+    }
+
+    public static FriendStorage getFriStorage() {
+        return friStorage;
+    }
+
+    public static ServletContext getCurServlet(){
         return svlet;
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

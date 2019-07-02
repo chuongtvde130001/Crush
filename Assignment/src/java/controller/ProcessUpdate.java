@@ -31,6 +31,7 @@ public class ProcessUpdate extends HttpServlet {
         Part photo = request.getPart("myImage");
         String avatarPath = ImageSaver.saveImage(photo, String.valueOf(usr.getUid()));
         // Cập Nhật thông tin User Avatar vv...
+        System.out.println(avatarPath);
         UserDAO.updateUserInfo(fullName, age, gender, avatarPath, usr.getUid());
         getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }

@@ -2,8 +2,10 @@ package ws;
 
 import com.google.gson.Gson;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dao.MessageDAO;
-import model.Friend;
+import model.FriendStorage;
 import model.Message;
 import model.MessageStorage;
 import servlet.ServletListener;
@@ -14,14 +16,13 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import java.util.HashMap;
 
 @ServerEndpoint("/sendMessage")
 public class WsSend {
     private static Gson gson = new Gson();
     private static Message mObj;
-    private static MessageStorage mesStrorage;
-    private static HashMap<Integer,Friend> friends;
+    private static MessageStorage mesStorage;
+    private static FriendStorage friStorage;
 
     @OnOpen
     public void onOpen(Session session) {
@@ -35,16 +36,16 @@ public class WsSend {
 
     @OnMessage
     public synchronized void onMessage(String message, Session session) throws Exception{
-        if(mesStrorage == null)
-            mesStrorage = (MessageStorage) ServletListener.getCurrentServlet().getAttribute("mesStorage");
-        if(friends == null)
-            friends = (HashMap<Integer,Friend>) ServletListener.getCurrentServlet().getAttribute("friend");
+        if(mesStorage == null)
+            mesStorage = ServletListener.getMesStorage();
+        if(friStorage == null)
+            friStorage = ServletListener.getFriStorage();
 
         System.out.println("onMessage::From=" + session.getId() + " SEND " + message);
         mObj = gson.fromJson(message,Message.class);
 
         //Write message to mesStorage
-        mesStrorage.addMessage(mObj.getFid(),friends.get(mObj.getFid()).getFriendOf(mObj.getFrom()),mObj.getContent());
+        mesStorage.addMessage(mObj.getFid(),friStorage.getMyFriend(mObj.getFid(), mObj.getFrom()),mObj.getContent());
         MessageDAO.writeMessage(mObj);
     }
 
