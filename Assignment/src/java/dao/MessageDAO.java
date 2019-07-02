@@ -1,7 +1,6 @@
 package dao;
 
 import com.google.gson.Gson;
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import dbconfig.DBConfig;
 import model.Message;
 
