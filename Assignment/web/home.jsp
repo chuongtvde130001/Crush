@@ -136,14 +136,24 @@
                 </script>
             </div>
             <div class="content" style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
-                <div id="findCrush" class="profile-card">
+                <div id="findCrush" class="profile-card_chat" style="overflow: hidden ">
                     <!-------- Crush ------>
+<<<<<<< HEAD
                     <div class="profile-card__img">
                         <img src="" alt="profile card">
                     </div>
                     <div class="profile-card__cnt js-profile-cnt">
                         <div class="profile-card__name display-2"></div>
                         <div class="profile-card__txt"></div>
+=======
+                    <div class="card" id="coverPhoto" style="background-image: url('img/share-section1.jpg')">
+                        <div class="profile-card__img" style="">
+                            <img src="<%=usr.getAvatar()%>" alt="profile card">
+                        </div>
+                    </div>
+                    <div class="text-center p-4">
+                        <p class="display-3"><%=usr.getFullName()%></p>
+>>>>>>> a4470b324ac458b58d76861b2b49b4dced90c03c
                         <div class="profile-card-inf">
                             <div class="profile-card-inf__item">
                                 <div class="profile-card-inf__title">Age</div>
@@ -163,6 +173,7 @@
                             <input id="crush_button" type="button" value="Crush" class="profile-card__button button--orange"/>
                             <input id="pass_button" type="button" value="Pass" class="profile-card__button button--blue"/>
                         </div>
+<<<<<<< HEAD
                         <script>
                             <c:forEach var="usr" items="${wants}">
                                 want_list.push([${usr.uid},'${usr.fullName}',${usr.age},'${usr.gender}','${usr.email}','${usr.avatar}','${usr.description}']);
@@ -170,7 +181,48 @@
                         </script>
 
                     </div>
+=======
+                    </div>
+
+                    <script>
+                        function change() {
+                            var x = document.getElementById('crush');
+                            if (x.value === 'Crush') {
+                                Swal.fire({
+                                    title: 'You are crushing <%=usr.getFullName()%>',
+                                    width: 600,
+                                    padding: '3em',
+                                    backdrop: `
+                                rgba(0,0,123,0.4)
+                                url("img/heart.gif")
+                                center top
+                                no-repeat
+`
+                                })
+                                x.value = "Uncrush";
+                            } else if (x.value === 'Uncrush') {
+                                Swal.fire({
+                                    title: 'Are you sure to uncrush <%=usr.getFullName()%>?',
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, uncrush!'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        Swal.fire(
+                                                'You and <%=usr.getFullName()%> are no longer friends!',
+                                                'success'
+                                                )
+                                        x.value = "Crush";
+                                    }
+                                })
+                            }
+                        }
+                    </script>
+>>>>>>> a4470b324ac458b58d76861b2b49b4dced90c03c
                 </div>
+
                 <!-------- Chat ------>
                 <div id="chat" class="profile-card_chat" style="display: none;">
                     <div class="messages">
@@ -201,6 +253,7 @@
     </body>
     <script src="js/chat.js"></script>
     <script>
+<<<<<<< HEAD
         //ADD FID & UInfo TO LIST
         let list = {};
         <c:forEach var="fri" items="${friends}">
@@ -222,6 +275,29 @@
         // $('#editor_catch').on('keydown', function(event) {
         //     console.log(event.keyCode);
         // })});
+=======
+            //ADD FID & UInfo TO LIST
+            let list = {};
+        <c:forEach var="fri" items="${friends}">
+            list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
+        </c:forEach>
+            config(list)
+            //Submit On Enter
+            // $('#message').keypress(function(e){
+            //     if(e.which == 13){
+            //         e.preventDefault();
+            //         $(this).closest('form').find('button').click();
+            //     }
+            // });
+            //Ini Emoji
+            // $('#message').emojioneArea({
+            //     pickerPosition:"top"
+            // })
+            // $(document).ready(function(){
+            // $('#editor_catch').on('keydown', function(event) {
+            //     console.log(event.keyCode);
+            // })});
+>>>>>>> a4470b324ac458b58d76861b2b49b4dced90c03c
     </script>
 </div>
 <%--Chat Area--%>
