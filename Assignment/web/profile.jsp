@@ -25,7 +25,10 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/styles-chat.css">
         <link rel="stylesheet" href="css/home-style.css">
+        <link rel="stylesheet" href="css/profile-style.css">
         <link rel="stylesheet" href="css/emojionearea.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/popper.min.js"></script>
@@ -50,10 +53,10 @@
                     <div class="btn-group-vertical btn-block" style="width: 100%;">
                         <a href="ProcessLogout" class="btn btn-danger">Logout</a>
                         <a class="btn btn-secondary">Profile</a>
-                        <a href="find_crush.jsp" class="btn btn-success">Find my Crush</a>
+                        <a href="" onclick="findCrush()" class="btn btn-success">Find my Crush</a>
                         <a href="" class="btn btn-primary">Who Crush Me?</a>
                     </div>
-                </div> <br>
+                </div> <br>           
                 <script>
                     $("#btn-chat").click(function () {
                         $(".find-crush").hide();
@@ -78,7 +81,7 @@
                 <div id="contacts">
                     <ul>
                         <c:forEach var="fri" items="${friends}">
-                            <li class="contact">
+                            <li class="contact" onclick="showCrush()">
                                 <div class="wrap">
                                     <span class="contact-status online"></span>
                                     <img class="avatar" src="${fri.value.avatar}"/>
@@ -112,6 +115,7 @@
                             $(".messages").show();
                             $(".message-input").show();
                             $(".contact-profile").show();
+
                             //Click Contact Process
                             let current = $(header).find(".active");
                             if (current[0] != null)
@@ -132,23 +136,111 @@
                     }
                 </script>
             </div>
-            <div class="content">
-                <div class="card text-center">
-                    <div class="card-header">
-                        <div class="wrap text-left rounded" style="background-color: green">
-                            <img id="profile-img" src="<%=usr.getAvatar()%>" class="online"/>
-                            <p class="profile-card__name display-4"><%=usr.getFullName()%></p>
-                        </div>
+            <div class="content" style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
+                <div class="container emp-profile">
+                    <div id="showInfo">
+                        <form method="post">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="profile-img">
+                                        <img src="<%=usr.getAvatar()%>" alt=""/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="profile-head">
+                                        <h5>
+                                            <%=usr.getFullName()%>
+                                        </h5>
+                                        <h6>
+                                            Gender: Male
+                                        </h6>
+                                        <p class="proile-rating">Date join : <span>8/10/2019</span></p>
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <a class="btn btn-secondary text-white" onclick="switchView()">Edit Profile</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="profile-work">
+                                        <p>Details</p>
+                                        <a href="">Friends</a><br/>
+                                        <p>About</p>
+                                        <a href="">Web Designer</a><br/>
+                                        <a href="">Web Developer</a><br/>
+                                        <a href="">WordPress</a><br/>
+                                        <a href="">WooCommerce</a><br/>
+                                        <a href="">PHP, .Net</a><br/>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="tab-content profile-tab" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>User Id</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><%=usr.getUid()%></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Name</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><%=usr.getFullName()%></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Email</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><%=usr.getEmail()%></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Age</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><%=usr.getAge()%></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Status</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><%=usr.getStatus()%></p>
+                                                </div>
+                                            </div>
+                                        </div>                                
+                                    </div>
+                                </div>
+                        </form>
                     </div>
-                    <div class="card-body">
-                        <h4 class="card-title"><%=usr.getFullName()%> Information</h4>
+                    <div id="updateInfo" style="display: none">
                         <form method="post" action="ProcessUpdate" enctype="multipart/form-data" onsubmit="return checkForm(this);">
                             <div class="form-row">
                                 <div class="col">
                                     <h4>Full Name :</h4>
-                                    <input readonly id="fullName" type="text" class="form-control" value="<%=usr.getFullName()%>" name="fullName">
+                                    <input value="<%=usr.getFullName()%>" id="fullName" type="text" class="form-control" placeholder="Your Full Name" name="fullName">
+                                </div>
+                                <div class="col">
                                     <h4>Age:</h4>
-                                    <input readonly id="age" type="number" class="form-control" value="<%=usr.getAge()%>" name="age">
+                                    <input value="<%=usr.getAge()%>" id="age" type="number" class="form-control" placeholder="How old are you?" name="age">
+                                </div>
+                            </div><br>
+                            <div class="form-row">
+                                <div class="col">
                                     <h4>Age range I want to meet :</h4>
                                     <div class="input-group">                                           
                                         <div class="input-group-addon">From</div>
@@ -161,13 +253,20 @@
                                             <option>Female</option>
                                             <option>Other</option>
                                         </select>
-                                    </div><h4>Gender :</h4>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h4>Gender :</h4>
                                     <select id="gender" class="form-control" name="gender">
                                         <option>Male</option>
                                         <option>Female</option>
                                         <option>Other</option>
                                     </select>
-                                    <h3>Select Your Avatar</h3>
+                                </div>
+                            </div><br>
+                            <div class="form-row"> 
+                                <div class="col">
+                                    <h3>Avatar</h3>
                                     <div class="col"><label for="file">File input</label>
                                         <input id="imageName" type="file" name="myImage" accept="image/x-png,image/gif,image/jpeg" onchange="readURL(this);"/>
                                         <div class="col ml-3">
@@ -188,14 +287,20 @@
 
                                                 }
                                             </script>
-                                            <img id="blah" src="#" onerror="this.src='img/avatar.png'" style=" width: 200px; height: 200px;object-fit: cover;object-position: center;" class="mt-2 rounded"/>
+                                            <img id="blah" src="<%=usr.getAvatar()%>" onerror="this.src='img/avatar.png'" style=" width: 200px; height: 200px;object-fit: cover;object-position: center;" class="mt-2 rounded"/>
                                         </div>
                                     </div>
-
-                                </div>
-
+                                </div><br>
+                                <br>
+                                <div class="col">
+                                    <h3>About me</h3>
+                                    <textarea class="form-control" rows="5" id="comment"></textarea>
+                                </div><br>
                             </div><br>
-                            <button type="submit" class="btn btn-success w-50">Save</button>
+                            <div class="text-center"> 
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="submit" class="btn btn-secondary">Cancel</button>
+                            </div>
                             <script>
                                 var personNameRegex = /^([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]*)+[ ]([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]+)+$/;
                                 var fullName = document.getElementById('fullName');
@@ -255,11 +360,45 @@
                                 }
                             </script>
                         </form>
-                        <a href="#" class="btn btn-success">Save</a>
-                    </div>
-                    <div class="card-footer text-muted">
-                        2 Days Ago
+                        <script>
+                            function switchView() {
+                                var x = document.getElementById('showInfo');
+                                var y = document.getElementById('updateInfo');
+                                if (y.style.display === "none") {
+                                    x.style.display = "none";
+                                    y.style.display = "block";
+                                }
+                            }
+                        </script>
                     </div>
                 </div>
-                <script src="js/home-js.js"></script>               
-                </html>
+            </div>
+    </body>
+    <script type="text/javascript" src="js/chat.js"></script>
+    <script>
+                            //ADD FID & UInfo TO LIST
+                            let list = {};
+        <c:forEach var="fri" items="${friends}">
+                            list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
+        </c:forEach>
+                            config(list)
+                            //Submit On Enter
+                            // $('#message').keypress(function(e){
+                            //     if(e.which == 13){
+                            //         e.preventDefault();
+                            //         $(this).closest('form').find('button').click();
+                            //     }
+                            // });
+                            //Ini Emoji
+                            // $('#message').emojioneArea({
+                            //     pickerPosition:"top"
+                            // })
+                            // $(document).ready(function(){
+                            // $('#editor_catch').on('keydown', function(event) {
+                            //     console.log(event.keyCode);
+                            // })});
+    </script>
+</div>
+<%--Chat Area--%>
+
+</html>

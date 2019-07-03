@@ -137,14 +137,15 @@
                 </script>
             </div>
             <div class="content" style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
-                <div id="findCrush" class="profile-card">
+                <div id="findCrush" class="profile-card_chat" style="overflow: hidden ">
                     <!-------- Crush ------>
-                    <div class="profile-card__img">
-                        <img src="<%=usr.getAvatar()%>" alt="profile card">
+                    <div class="card" id="coverPhoto" style="background-image: url('img/share-section1.jpg')">
+                        <div class="profile-card__img" style="">
+                            <img src="<%=usr.getAvatar()%>" alt="profile card">
+                        </div>
                     </div>
-                    <div class="profile-card__cnt js-profile-cnt">
-                        <div class="profile-card__name display-2"><%=usr.getFullName()%></div>
-                        <div class="profile-card__txt">Looking for <strong>Girlfriends</strong></div>
+                    <div class="text-center p-4">
+                        <p class="display-3"><%=usr.getFullName()%></p>
                         <div class="profile-card-inf">
                             <div class="profile-card-inf__item">
                                 <div class="profile-card-inf__title">Age</div>
@@ -165,45 +166,46 @@
                             <input onclick="change()" type="button" value="Crush" id="crush" class="profile-card__button button--orange"></input>
                             <input onclick="" type="button" value="Pass" id="crush" class="profile-card__button button--blue"></input>
                         </div>
-                        <script>
-                            function change() {
-                                var x = document.getElementById('crush');
-                                if (x.value === 'Crush') {
-                                    Swal.fire({
-                                        title: 'You are crushing <%=usr.getFullName()%>',
-                                        width: 600,
-                                        padding: '3em',
-                                        backdrop: `
-                                            rgba(0,0,123,0.4)
-                                            url("img/heart.gif")
-                                            center top
-                                            no-repeat
-`
-                                    })
-                                    x.value = "Uncrush";
-                                } else if (x.value === 'Uncrush') {
-                                    Swal.fire({
-                                        title: 'Are you sure to uncrush <%=usr.getFullName()%>?',
-                                        type: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#3085d6',
-                                        cancelButtonColor: '#d33',
-                                        confirmButtonText: 'Yes, uncrush!'
-                                    }).then((result) => {
-                                        if (result.value) {
-                                            Swal.fire(
-                                                    'You and <%=usr.getFullName()%> are no longer friends!',
-                                                    'success'
-                                                    )
-                                            x.value = "Crush";
-                                        }
-                                    })
-                                }
-                            }
-                        </script>
-
                     </div>
+
+                    <script>
+                        function change() {
+                            var x = document.getElementById('crush');
+                            if (x.value === 'Crush') {
+                                Swal.fire({
+                                    title: 'You are crushing <%=usr.getFullName()%>',
+                                    width: 600,
+                                    padding: '3em',
+                                    backdrop: `
+                                rgba(0,0,123,0.4)
+                                url("img/heart.gif")
+                                center top
+                                no-repeat
+`
+                                })
+                                x.value = "Uncrush";
+                            } else if (x.value === 'Uncrush') {
+                                Swal.fire({
+                                    title: 'Are you sure to uncrush <%=usr.getFullName()%>?',
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, uncrush!'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        Swal.fire(
+                                                'You and <%=usr.getFullName()%> are no longer friends!',
+                                                'success'
+                                                )
+                                        x.value = "Crush";
+                                    }
+                                })
+                            }
+                        }
+                    </script>
                 </div>
+
                 <!-------- Chat ------>
                 <div id="chat" class="profile-card_chat" style="display: none;">
                     <div class="messages">
@@ -250,27 +252,27 @@
     </body>
     <script type="text/javascript" src="js/chat.js"></script>
     <script>
-                //ADD FID & UInfo TO LIST
-                let list = {};
+            //ADD FID & UInfo TO LIST
+            let list = {};
         <c:forEach var="fri" items="${friends}">
-                list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
+            list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
         </c:forEach>
-                config(list)
-                //Submit On Enter
-                // $('#message').keypress(function(e){
-                //     if(e.which == 13){
-                //         e.preventDefault();
-                //         $(this).closest('form').find('button').click();
-                //     }
-                // });
-                //Ini Emoji
-                // $('#message').emojioneArea({
-                //     pickerPosition:"top"
-                // })
-                // $(document).ready(function(){
-                // $('#editor_catch').on('keydown', function(event) {
-                //     console.log(event.keyCode);
-                // })});
+            config(list)
+            //Submit On Enter
+            // $('#message').keypress(function(e){
+            //     if(e.which == 13){
+            //         e.preventDefault();
+            //         $(this).closest('form').find('button').click();
+            //     }
+            // });
+            //Ini Emoji
+            // $('#message').emojioneArea({
+            //     pickerPosition:"top"
+            // })
+            // $(document).ready(function(){
+            // $('#editor_catch').on('keydown', function(event) {
+            //     console.log(event.keyCode);
+            // })});
     </script>
 </div>
 <%--Chat Area--%>
