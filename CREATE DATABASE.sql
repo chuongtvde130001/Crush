@@ -9,7 +9,6 @@ CREATE TABLE USERS(
 	Gender int, --MALE 2 | FEMALE 3 | LGBT 5
 	Email varchar(30),
 	Avatar varchar(MAX),
-	ProfileImage varchar(MAX),
 	Description nvarchar(300),
 	LastLogin DateTime,
 	Status int, --1 IS INACTIVE EMAIL | 2 IS INACTIVE USERINFO | 0 IS OK
@@ -52,6 +51,7 @@ INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,A
 
 INSERT INTO FRIENDS(UserA,UserB,FR) Values (1,2,getdate())
 INSERT INTO FRIENDS(UserA,UserB,FR) Values (3,1,getdate())
+INSERT INTO FRIENDS(UserA,UserB,FR) Values (1,6,getdate())
 
 INSERT INTO WANT(AgeBegin, AgeEnd, Gender) Values (20,90,6);
 INSERT INTO WANT(AgeBegin, AgeEnd, Gender) Values (18,20,5);
@@ -98,7 +98,14 @@ LEFT JOIN USERS ON (R1.UID = USERS.UID)
 --get user match want
 DECLARE @AB int, @AE int, @GENDER int
 SELECT TOP 1 @AB=AgeBegin, @AE=AgeEnd, @GENDER=Gender FROM WANT WHERE WID = 1
-SELECT UID,FullName,Age,Gender,Avatar FROM USERS WHERE Age >= @AB AND Age <= @AE AND @GENDER%Gender=0
+SELECT UID,FullName,Age,Gender,Email,Avatar,Description FROM USERS WHERE Age >= @AB AND Age <= @AE AND @GENDER%Gender=0 AND 
+USERS.UID NOT IN(SELECT 
+CASE
+    WHEN UserA != 1 THEN UserA
+    ELSE UserB
+END AS UID
+FROM FRIENDS
+WHERE UserA = 1 OR UserB = 1) 
 
 --SELECT * FROM USERS
 --SELECT USER LOGIN
