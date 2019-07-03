@@ -12,14 +12,36 @@ import model.User;
 
 public class UserDAO {
 
-
-
     private static final String getUsrSt = "select * from USERS where UserName = ? and PassWord = ?";
     private static final String insUserSt = "insert into USERS(UserName,PassWord,Email,Status) values(?,?,?,'2')";
     private static final String getAvtSt = "select Avatar from USERS where uid = ?";
     private static final String findUsername = "select UserName from USERS where Username = ?";
     private static final String findEmail = "select Email from USERS where Email=?";
-    private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? ,Status = 1 where uid = ?";
+    private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? ,Status = 0 where uid = ?";
+
+    public static String getStrGender(int i){
+        switch (i){
+            case 2:
+                return "Male";
+            case 3:
+                return "Female";
+            case 5:
+                return "Lgbt";
+        }
+        return "";
+    }
+
+    public static int getIntGender(String s){
+        switch (s){
+            case "Male":
+                return 2;
+            case "Female":
+                return 3;
+            case "Lgbt":
+                return 5;
+        }
+        return -1;
+    }
 
     public static boolean updateUserInfo(String fullName,
             int age, String gender, String avatarPath, int uid) {
@@ -27,7 +49,7 @@ public class UserDAO {
             PreparedStatement ps = conn.prepareStatement(update);
             ps.setString(1, fullName);
             ps.setInt(2, age);
-            ps.setString(3, gender);
+            ps.setInt(3, getIntGender(gender));
             ps.setString(4, avatarPath);
             ps.setInt(5, uid);
             ps.execute();
@@ -103,7 +125,7 @@ public class UserDAO {
                 u = new User(rs.getString("Password"),
                         rs.getString("UserName"),
                         rs.getString("FullName"),
-                        rs.getString("Gender"),
+                        getStrGender(rs.getInt("Gender")),
                         rs.getString("Email"),
                         ImageSaver.imagePath + rs.getString("Avatar"),
                         rs.getInt("UID"),

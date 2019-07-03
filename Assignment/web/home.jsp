@@ -159,6 +159,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </body>
     <script type="text/javascript" src="js/chat.js"></script>
     <script>
