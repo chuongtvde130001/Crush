@@ -29,6 +29,8 @@ public class FriendDAO {
             "WHERE UserA = ? OR UserB = ?\n" +
             ") AS R1\n" +
             "LEFT JOIN USERS ON (R1.UID = USERS.UID)";
+    private static final String checkCrushSt = "";
+    private static final String addFriendSt = "";
 
     public static int getFriUid(int fid,int userA){
         int uid = -1;
@@ -63,6 +65,25 @@ public class FriendDAO {
                 usr.setFullName(rs.getString(3));
                 usr.setAvatar(ImageSaver.imagePath+rs.getString(4));
                 map.put(rs.getInt(1),usr);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    //Action Crush
+    public static boolean actionCrush(int uid, int target){
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(checkCrushSt);
+            ps.setInt(1, uid);
+            ps.setInt(2, uid);
+            ps.setInt(3, uid);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+
             }
             rs.close();
             ps.close();

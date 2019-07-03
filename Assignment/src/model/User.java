@@ -4,7 +4,7 @@ import utils.MD5;
 
 public class User {
 
-    private String password, userName, fullName, gender, email, avatar;
+    private String password, userName, fullName, gender, email, avatar,description;
     private int uid, age, status;
 
     public User() {}
@@ -99,4 +99,11 @@ public class User {
         this.status = status;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

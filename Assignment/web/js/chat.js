@@ -28,33 +28,18 @@ function getCookie(name) {
 function config(list) {
     fid_usr_list= list;
     getMessage();
-    messageArea.addEventListener("scroll",scrollTop);
+    messageArea.addEventListener("scroll",scrollCheck);
 }
 //RE_CONFIG CHAT BOX
 function reconfigChat(f) {
-    if(initialized_chat[f]==null)
-        initialized_chat[f]=0;
+    if(initialized_chat[f]==null) {
+        initialized_chat[f] = 0;
         getOldMessage(f);
+    }
     fid = f;
     userB = fid_usr_list[f][0];
     console.log(userB);
 }
-//INIT NEW CHAT BOX
-// function initChat(f) {
-//     socket = new WebSocket("ws://localhost:8080/Assignment/getConSize");
-//     let getRequest = {
-//         'fid': f,
-//     };
-//     socket.onopen = function () {
-//         socket.send(JSON.stringify(getRequest));
-//     }
-//     socket.onmessage = function (evt) {
-//         console.log("Conversation size: "+evt.data);
-//         initialized_chat[f]=evt.data;
-//         socket.close();
-//         getOldMessage(f,i);
-//     }
-// }
 
 //GET OLD MESSAGE
 function getOldMessage(fid) {
@@ -80,6 +65,7 @@ function getOldMessage(fid) {
         });
         messageArea.scrollTop =  messageArea.scrollHeight - gap2end;
         initialized_chat[fid]++;
+        oSocket.close();
     }
 }
 
@@ -170,7 +156,7 @@ function updateContactMessage(message) {
         $("#ct_last_"+message.fid).addClass('unread').removeClass('read');
     $("#ct_last_"+message.fid).text(((message.type=="sent") ? 'You: ' : '')+message.content);
 }
-function scrollTop() {
+function scrollCheck() {
     if(messageArea.scrollTop==0){
         getOldMessage(curChatActive);
     }

@@ -1,6 +1,7 @@
 <%@ page import="model.User" %>
 <%@ page import="dao.FriendDAO" %>
 <%@ page import="servlet.ServletListener" %>
+<%@ page import="dao.WantDAO" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -11,7 +12,9 @@
     //Clear MessageStorage
     ServletListener.getMesStorage().clearMessage(usr.getUid());
     //Get All Friends
-    request.setAttribute("friends", FriendDAO.getFriends(((User) session.getAttribute("user")).getUid()));
+    request.setAttribute("friends", FriendDAO.getFriends(usr.getUid()));
+    //Get All User meet want
+    request.setAttribute("wants", WantDAO.getUsrsMatchWant(usr.getUid()));
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +36,7 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="js/popper.min.js"></script>
         <script src="js/emojionearea.min.js"></script>
+        <script src="js/want.js"></script>
     </head>
     <body>
         <div id="frame">
@@ -52,36 +56,24 @@
                 <div class="container">
                     <div class="btn-group-vertical btn-block" style="width: 100%;">
                         <a href="ProcessLogout" class="btn btn-danger">Logout</a>
-                        <a class="btn btn-secondary">Profile</a>
-                        <a href="" onclick="findCrush()" class="btn btn-success">Find my Crush</a>
-                        <a href="" class="btn btn-primary">Who Crush Me?</a>
+                        <a href="update_info.jsp" class="btn btn-secondary">Profile</a>
+                        <a id="btn-find-crush" class="btn btn-success">Find my Crush</a>
+                        <a class="btn btn-primary">Who Crush Me?</a>
                     </div>
                 </div> <br>           
                 <script>
-                    $("#btn-chat").click(function () {
-                        $(".find-crush").hide();
-                        $(".messages").show();
-                        $(".message-input").show();
-                        $(".contact-profile").show();
-                    });
-                    $("#btn-logout").click(function () {
-                        window.location.href = 'ProcessLogout';
-                    })
-                    $("#btn-profile").click(function () {
-                        window.location.href = 'update_info.jsp';
-                    })
                     $("#btn-find-crush").click(function () {
-                        $(".find-crush").show();
-                        $(".contact-profile").hide();
-                        $(".messages").hide();
-                        $(".message-input").hide();
-                    });
+                        $("#findCrush").show();
+                        $("#chat").hide();
+                        disableChat();
+                    })
+
                 </script>
                 <!--- Danh sách bạn bè ---->
                 <div id="contacts">
                     <ul>
                         <c:forEach var="fri" items="${friends}">
-                            <li class="contact" onclick="showCrush()">
+                            <li class="contact">
                                 <div class="wrap">
                                     <span class="contact-status online"></span>
                                     <img class="avatar" src="${fri.value.avatar}"/>
@@ -105,16 +97,16 @@
                         btns[i].addEventListener("click", function () {
 
                             let fid = $(this).find(".fid")[0].innerText;
-                            if (curChatActive == fid)
+                            if (curChatActive == fid) {
                                 return;
-
+                            }
                             let name = $(this).find(".name")[0].innerText;
                             let avatar = $(this).find(".avatar")[0].src;
 
-                            $(".find-crush").hide();
+                            $("#findCrush").hide();
+                            $("#chat").show();
                             $(".messages").show();
                             $(".message-input").show();
-                            $(".contact-profile").show();
 
                             //Click Contact Process
                             let current = $(header).find(".active");
@@ -129,10 +121,17 @@
                             $("#chat-box-" + fid).show();
                             $("#chat-box-" + curChatActive).hide();
                             curChatActive = fid;
+
+                            messageArea.scrollTop = messageArea.scrollHeight;
+
                             //Update chat engine
                             reconfigChat(fid);
                             $("#ct_last_" + fid).addClass('read').removeClass('unread')
                         });
+                    }
+                    function disableChat() {
+                        $(header).find(".active")[0].className = "contact";
+                        curChatActive=-1
                     }
                 </script>
             </div>
@@ -140,66 +139,34 @@
                 <div id="findCrush" class="profile-card">
                     <!-------- Crush ------>
                     <div class="profile-card__img">
-                        <img src="<%=usr.getAvatar()%>" alt="profile card">
+                        <img src="" alt="profile card">
                     </div>
                     <div class="profile-card__cnt js-profile-cnt">
-                        <div class="profile-card__name display-2"><%=usr.getFullName()%></div>
-                        <div class="profile-card__txt">Looking for <strong>Girlfriends</strong></div>
+                        <div class="profile-card__name display-2"></div>
+                        <div class="profile-card__txt"></div>
                         <div class="profile-card-inf">
                             <div class="profile-card-inf__item">
                                 <div class="profile-card-inf__title">Age</div>
-                                <div class="profile-card-inf__txt"><%=usr.getAge()%></div>
+                                <div class="profile-card-inf__txt"></div>
                             </div>
-
                             <div class="profile-card-inf__item">
                                 <div class="profile-card-inf__title">Gender</div>
-                                <div class="profile-card-inf__txt"><%=usr.getGender()%></div>
+                                <div class="profile-card-inf__txt"></div>
                             </div>
 
                             <div class="profile-card-inf__item">
                                 <div class="profile-card-inf__title">Email</div>
-                                <div class="profile-card-inf__txt"><%=usr.getEmail()%></div>
+                                <div class="profile-card-inf__txt"></div>
                             </div>
                         </div>
                         <div class="profile-card-ctr">
-                            <input onclick="change()" type="button" value="Crush" id="crush" class="profile-card__button button--orange"></input>
-                            <input onclick="" type="button" value="Pass" id="crush" class="profile-card__button button--blue"></input>
+                            <input id="crush_button" type="button" value="Crush" class="profile-card__button button--orange"/>
+                            <input id="pass_button" type="button" value="Pass" class="profile-card__button button--blue"/>
                         </div>
                         <script>
-                            function change() {
-                                var x = document.getElementById('crush');
-                                if (x.value === 'Crush') {
-                                    Swal.fire({
-                                        title: 'You are crushing <%=usr.getFullName()%>',
-                                        width: 600,
-                                        padding: '3em',
-                                        backdrop: `
-                                            rgba(0,0,123,0.4)
-                                            url("img/heart.gif")
-                                            center top
-                                            no-repeat
-`
-                                    })
-                                    x.value = "Uncrush";
-                                } else if (x.value === 'Uncrush') {
-                                    Swal.fire({
-                                        title: 'Are you sure to uncrush <%=usr.getFullName()%>?',
-                                        type: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#3085d6',
-                                        cancelButtonColor: '#d33',
-                                        confirmButtonText: 'Yes, uncrush!'
-                                    }).then((result) => {
-                                        if (result.value) {
-                                            Swal.fire(
-                                                    'You and <%=usr.getFullName()%> are no longer friends!',
-                                                    'success'
-                                                    )
-                                            x.value = "Crush";
-                                        }
-                                    })
-                                }
-                            }
+                            <c:forEach var="usr" items="${wants}">
+                                want_list.push([${usr.uid},'${usr.fullName}',${usr.age},'${usr.gender}','${usr.email}','${usr.avatar}','${usr.description}']);
+                            </c:forEach>
                         </script>
 
                     </div>
@@ -231,48 +198,31 @@
                 </div>
             </div>
         </div>
-        <script>
-            function showCrush() {
-                var x = document.getElementById("chat");
-                var y = document.getElementById("findCrush");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                    y.style.display = "none";
-                }
-            }
-            function findCrush() {
-                var x = document.getElementById("chat");
-                var y = document.getElementById("findCrush");
-                y.style.display = "block";
-                x.style.display = "none";
-            }
-        </script>
     </body>
-    <script type="text/javascript" src="js/chat.js"></script>
+    <script src="js/chat.js"></script>
     <script>
-                //ADD FID & UInfo TO LIST
-                let list = {};
+        //ADD FID & UInfo TO LIST
+        let list = {};
         <c:forEach var="fri" items="${friends}">
-                list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
+            list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
         </c:forEach>
-                config(list)
-                //Submit On Enter
-                // $('#message').keypress(function(e){
-                //     if(e.which == 13){
-                //         e.preventDefault();
-                //         $(this).closest('form').find('button').click();
-                //     }
-                // });
-                //Ini Emoji
-                // $('#message').emojioneArea({
-                //     pickerPosition:"top"
-                // })
-                // $(document).ready(function(){
-                // $('#editor_catch').on('keydown', function(event) {
-                //     console.log(event.keyCode);
-                // })});
+        config(list)
+        //Submit On Enter
+        // $('#message').keypress(function(e){
+        //     if(e.which == 13){
+        //         e.preventDefault();
+        //         $(this).closest('form').find('button').click();
+        //     }
+        // });
+        //Ini Emoji
+        // $('#message').emojioneArea({
+        //     pickerPosition:"top"
+        // })
+        // $(document).ready(function(){
+        // $('#editor_catch').on('keydown', function(event) {
+        //     console.log(event.keyCode);
+        // })});
     </script>
 </div>
 <%--Chat Area--%>
-
 </html>
