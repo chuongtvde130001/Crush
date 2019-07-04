@@ -1,5 +1,5 @@
 let want_list = [];
-let cw;
+let cw,cSocket;
 
 function pass(){
     cw = want_list.shift();
@@ -24,6 +24,19 @@ function crush() {
                 center top
                 no-repeat`
         })
+        cSocket = new WebSocket("ws://localhost:8080/Assignment/crush");
+        let getRequest = {
+            'crush':true,
+            'uid': uid,
+            'target': cw[0]
+        };
+        cSocket.onopen = function () {
+            cSocket.send(JSON.stringify(getRequest));
+        }
+        cSocket.onmessage = function (evt) {
+            console.log("RESULT: "+evt.data);
+            cSocket.close();
+        }
         x.value = "Uncrush";
     } else if (x.value === 'Uncrush') {
         Swal.fire({
@@ -35,6 +48,19 @@ function crush() {
             confirmButtonText: 'Yes, uncrush!'
         }).then((result) => {
             if (result.value) {
+                cSocket = new WebSocket("ws://localhost:8080/Assignment/crush");
+                let getRequest = {
+                    'crush':false,
+                    'uid': uid,
+                    'target': cw[0]
+                };
+                cSocket.onopen = function () {
+                    cSocket.send(JSON.stringify(getRequest));
+                }
+                cSocket.onmessage = function (evt) {
+                    console.log("RESULT: "+evt.data);
+                    cSocket.close();
+                }
                 Swal.fire(
                     'You uncrushed!'+cw[1]
                 )
@@ -47,5 +73,5 @@ function crush() {
 $( document ).ready(function() {
     $('#pass_button').click(pass);
     $('#crush_button').click(crush);
-    pass();
+    if(want_list.length>0) pass();
 });

@@ -3,6 +3,7 @@ package ws;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dao.FriendDAO;
 
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -18,9 +19,10 @@ public class WsCrush {
     @OnMessage
     public synchronized void onMessage(String message, Session session) throws Exception {
         JsonObject jObj = parser.parse(message).getAsJsonObject();
+        boolean actionCrush = jObj.get("crush").getAsBoolean();
         int uid = jObj.get("uid").getAsInt();
-        int target = jObj.get("crushWho").getAsInt();
-//        session.getBasicRemote().sendText(gson.toJson(MessageDAO.getConLength(fid)));
+        int target = jObj.get("target").getAsInt();
+        session.getBasicRemote().sendText(gson.toJson((actionCrush==true) ? FriendDAO.actionCrush(uid, target):FriendDAO.actionUnCrush(uid, target)));
     }
 
     @OnError

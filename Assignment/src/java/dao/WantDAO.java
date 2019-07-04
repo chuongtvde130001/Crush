@@ -13,7 +13,7 @@ public class WantDAO {
 
     private static final String getUsr =
             "DECLARE @AB int, @AE int, @GENDER int\n" +
-            "SELECT TOP 1 @AB=AgeBegin, @AE=AgeEnd, @GENDER=Gender FROM WANT WHERE WID = ?" +
+            "SELECT TOP 1 @AB=AgeBegin, @AE=AgeEnd, @GENDER=Gender FROM WANT WHERE WID = ?\n" +
             "SELECT UID,FullName,Age,Gender,Email,Avatar,Description FROM USERS WHERE Age >= @AB AND Age <= @AE AND @GENDER%Gender=0 AND \n" +
             "USERS.UID NOT IN(SELECT \n" +
             "CASE\n" +
@@ -21,6 +21,14 @@ public class WantDAO {
             "    ELSE UserB\n" +
             "END AS UID\n" +
             "FROM FRIENDS\n" +
+            "WHERE UserA = ? OR UserB = ?\n" +
+            "UNION\n" +
+            "SELECT \n" +
+            "CASE\n" +
+            "    WHEN UserA != ? THEN UserA\n" +
+            "    ELSE UserB\n" +
+            "END AS UID\n" +
+            "FROM CRUSH\n" +
             "WHERE UserA = ? OR UserB = ?) ";
 
     public static ArrayList<User> getUsrsMatchWant(int uid) {
@@ -31,6 +39,9 @@ public class WantDAO {
             ps.setInt(2, uid);
             ps.setInt(3, uid);
             ps.setInt(4, uid);
+            ps.setInt(5, uid);
+            ps.setInt(6, uid);
+            ps.setInt(7, uid);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 User usr = new User();

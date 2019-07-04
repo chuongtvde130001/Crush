@@ -29,8 +29,15 @@ public class FriendDAO {
             "WHERE UserA = ? OR UserB = ?\n" +
             ") AS R1\n" +
             "LEFT JOIN USERS ON (R1.UID = USERS.UID)";
-    private static final String checkCrushSt = "";
-    private static final String addFriendSt = "";
+    private static final String checkCrushSt = "SELECT * FROM CRUSH WHERE UserA = ? AND UserB= ?";
+    private static final String addCrushSt = "INSERT INTO CRUSH(UserA, UserB) VALUES(?,?)";
+    private static final String addFriendSt = "INSERT INTO FRIENDS(UserA, UserB, FR) VALUES(?,?,getdate())";
+    private static final String deleteCrushSt = "DELETE FROM CRUSH WHERE CID=?";
+    private static final String unCrushSt = "DELETE FROM CRUSH WHERE UserA=? AND UserB=?";
+    private static final String tarCrushUsr =
+            "SELECT UID,FullName,Age,Gender,Avatar FROM CRUSH \n" +
+            "LEFT JOIN USERS ON(CRUSH.UserA = USERS.UID)\n" +
+            "WHERE UserB = ?";
 
     public static int getFriUid(int fid,int userA){
         int uid = -1;
@@ -76,20 +83,70 @@ public class FriendDAO {
 
     //Action Crush
     public static boolean actionCrush(int uid, int target){
+        boolean isFriend=false;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(checkCrushSt);
-            ps.setInt(1, uid);
+            ps.setInt(1, target);
             ps.setInt(2, uid);
-            ps.setInt(3, uid);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                ps = conn.prepareStatement(deleteCrushSt);
+                ps.setInt(1, rs.getInt(1));
+                ps.execute();
+                ps = conn.prepareStatement(addFriendSt);
+                isFriend=true;
+            }else {
+                ps = conn.prepareStatement(addCrushSt);
+            }
+            ps.setInt(1, uid);
+            ps.setInt(2, target);
+            ps.execute();
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isFriend;
+    }
+
+    public static boolean actionUnCrush(int uid, int target){
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(unCrushSt);
+            ps.setInt(1, uid);
+            ps.setInt(2, target);
+            ps.execute();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static ArrayList<User> getTarsCrushUser(int uid) {
+        ArrayList<User> list = new ArrayList<>();
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(tarCrushUsr);
+            ps.setInt(1, uid);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-
+                User usr = new User();
+                usr.setUid(rs.getInt(1));
+                usr.setFullName(rs.getString(2));
+                usr.setAge(rs.getInt(3));
+                usr.setGender(UserDAO.getStrGender(rs.getInt(4)));
+                usr.setAvatar(ImageSaver.imagePath+rs.getString(5));
+                list.add(usr);
             }
             rs.close();
             ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return map;
+        return list;
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(getTarsCrushUser(1).get(0).getAvatar());
     }
 }
