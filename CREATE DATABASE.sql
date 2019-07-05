@@ -15,7 +15,7 @@ CREATE TABLE USERS(
 	UserRight int -- 1,2,3 (3 is user,2 is staff, 1 is admin
 )
 CREATE TABLE WANT(
-	WID int IDENTITY(1,1) Primary Key,
+	WID int Primary Key,
 	AgeBegin int,
 	AgeEnd int,
 	Gender int,
@@ -57,16 +57,6 @@ INSERT INTO WANT(AgeBegin, AgeEnd, Gender) Values (20,90,6);
 INSERT INTO WANT(AgeBegin, AgeEnd, Gender) Values (18,20,5);
 --FAKE INFO
 
-DELETE FROM MESSAGES
-
-SELECT * FROM MESSAGES
-
-SELECT * FROM USERS
-
-SELECT * FROM FRIENDS
-
-SELECT * FROM WANT
-
 --Friend
 SELECT * FROM USERS WHERE UID != 1 and UID in (
 (
@@ -105,7 +95,47 @@ CASE
     ELSE UserB
 END AS UID
 FROM FRIENDS
+WHERE UserA = 1 OR UserB = 1
+UNION
+SELECT 
+CASE
+    WHEN UserA != 1 THEN UserA
+    ELSE UserB
+END AS UID
+FROM CRUSH
 WHERE UserA = 1 OR UserB = 1) 
+
+
+
+
+--add friend
+INSERT INTO FRIENDS(UserA, UserB, FR) VALUES(2,5,getdate())
+
+--check crush
+SELECT * FROM CRUSH WHERE UserA = 1 AND UserB= 2 
+
+--add crush
+INSERT INTO CRUSH(UserA, UserB) VALUES(4,1)
+INSERT INTO CRUSH(UserA, UserB) VALUES(5,1)
+
+SELECT * FROM CRUSH
+
+SELECT * FROM USERS
+
+SELECT * FROM WANT
+
+SELECT * FROM FRIENDS
+
+DELETE FROM CRUSH
+
+DELETE FROM MESSAGES
+
+
+INSERT INTO CRUSH(UserA, UserB) VALUES(5,1)
+
+SELECT UID,FullName,Age,Gender,Avatar FROM CRUSH 
+LEFT JOIN USERS ON(CRUSH.UserA = USERS.UID)
+WHERE UserB = 1
 
 --SELECT * FROM USERS
 --SELECT USER LOGIN
