@@ -20,7 +20,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Find my Crush</title>
-        <link rel="shortcut icon" type="image/x-icon" href="img/tinder.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png" />
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/styles-chat.css">
@@ -59,7 +59,7 @@
                 </div> <br>           
                 <script>
                     $("#btn-chat").click(function () {
-                        $(".find-crush").hide();
+                        $(".find-crushBut").hide();
                         $(".messages").show();
                         $(".message-input").show();
                         $(".contact-profile").show();
@@ -70,8 +70,8 @@
                     $("#btn-profile").click(function () {
                         window.location.href = 'update_info.jsp';
                     })
-                    $("#btn-find-crush").click(function () {
-                        $(".find-crush").show();
+                    $("#btn-find-crushBut").click(function () {
+                        $(".find-crushBut").show();
                         $(".contact-profile").hide();
                         $(".messages").hide();
                         $(".message-input").hide();
@@ -111,7 +111,7 @@
                             let name = $(this).find(".name")[0].innerText;
                             let avatar = $(this).find(".avatar")[0].src;
 
-                            $(".find-crush").hide();
+                            $(".find-crushBut").hide();
                             $(".messages").show();
                             $(".message-input").show();
                             $(".contact-profile").show();

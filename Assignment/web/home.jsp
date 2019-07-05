@@ -8,6 +8,7 @@
     User usr = (User) session.getAttribute("user");
     if (usr == null) {
         response.sendRedirect("register.jsp");
+        return;
     }
     //Clear MessageStorage
     ServletListener.getMesStorage().clearMessage(usr.getUid());
@@ -15,6 +16,8 @@
     request.setAttribute("friends", FriendDAO.getFriends(usr.getUid()));
     //Get All User meet want
     request.setAttribute("wants", WantDAO.getUsrsMatchWant(usr.getUid()));
+    //Get All Target crush User
+    request.setAttribute("targets", FriendDAO.getTarsCrushUser(usr.getUid()));
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,14 +26,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Find my Crush</title>
-        <link rel="shortcut icon" type="image/x-icon" href="img/tinder.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
+
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/styles-chat.css">
-        <!--        <link rel="stylesheet" href="css/chat-box-style.css">-->
+        <link href="https://fonts.googleapis.com/css?family=Courgette|Lobster|Pacifico&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/home-style.css">
         <link rel="stylesheet" href="css/emojionearea.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
@@ -49,25 +54,32 @@
                     </div>
                 </div>
                 <!--- Khung tìm Kiếm ---->
+                <div class="container">
+                    <div class="btn-group-vertical btn-block" style="width: 100%;">
+                        <a id="btn-find-crush" class="btn btn-success">Find my Crush</a>
+                        <a id="btn-who-crush" class="btn btn-primary">Who Crush Me?</a>
+                        <a href="update_info.jsp" class="btn btn-secondary">Profile</a>
+                        <a href="ProcessLogout" class="btn btn-danger">Logout</a>
+                    </div>
+                </div><br>
                 <div id="search">
                     <label><i class="fa fa-search" aria-hidden="true"></i></label>
                     <input id="search_input" type="text" placeholder="Search..." />
                 </div><br>
-                <div class="container">
-                    <div class="btn-group-vertical btn-block" style="width: 100%;">
-                        <a href="ProcessLogout" class="btn btn-danger">Logout</a>
-                        <a href="update_info.jsp" class="btn btn-secondary">Profile</a>
-                        <a id="btn-find-crush" class="btn btn-success">Find my Crush</a>
-                        <a class="btn btn-primary">Who Crush Me?</a>
-                    </div>
-                </div> <br>           
                 <script>
                     $("#btn-find-crush").click(function () {
-                        $("#findCrush").show();
+                        if(!isWListEmpty())
+                            $("#findCrush").show();
+                        $("#chat").hide();
+                        $("#crushOnMe").hide();
+                        disableChat();
+                    })
+                    $("#btn-who-crush").click(function () {
+                        $("#crushOnMe").show();
+                        $("#findCrush").hide();
                         $("#chat").hide();
                         disableChat();
                     })
-
                 </script>
                 <!--- Danh sách bạn bè ---->
                 <div id="contacts">
@@ -95,7 +107,6 @@
                     let btns = $(header).find(".contact");
                     for (let i = 0; i < btns.length; i++) {
                         btns[i].addEventListener("click", function () {
-
                             let fid = $(this).find(".fid")[0].innerText;
                             if (curChatActive == fid) {
                                 return;
@@ -104,6 +115,7 @@
                             let avatar = $(this).find(".avatar")[0].src;
 
                             $("#findCrush").hide();
+                            $("#crushOnMe").hide();
                             $("#chat").show();
                             $(".messages").show();
                             $(".message-input").show();
@@ -164,23 +176,70 @@
                             <input id="pass_button" type="button" value="Pass" class="profile-card__button button--blue"/>
                         </div>
                         <script>
-                            <c:forEach var="usr" items="${wants}">
-                                want_list.push([${usr.uid},'${usr.fullName}',${usr.age},'${usr.gender}','${usr.email}','${usr.avatar}','${usr.description}']);
+                            <c:forEach var="t" items="${wants}">
+                                want_list.push([${t.uid},'${t.fullName}',${t.age},'${t.gender}','${t.email}','${t.avatar}','${t.description}']);
                             </c:forEach>
                         </script>
 
+                    </div>
+                </div>
+                <div id="crushOnMe" class="profile-card_chat" style="overflow: scroll; display: none;">
+                    <p class="display-1 text-center" style="font-family: 'Lobster', cursive;">People crushing you</p>
+                    <div class="py-5">
+                        <div class="container">
+                            <ul class="list-group font-weight-bold">
+                                <li class="list-group-item">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-2">
+                                                Avatar
+                                            </div>
+                                            <div class="col-3">
+                                                Name
+                                            </div>
+                                            <div class="col-2">
+                                                Gender
+                                            </div>
+                                            <div class="col-1">
+                                                Age
+                                            </div>
+                                            <div class="col-2">
+                                                Action
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <c:forEach var="t" items="${targets}">
+                                    <li id="list-group-item-${t.uid}" class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <img src="<%=usr.getAvatar()%>" style="width: 50px; height: 50px;">
+                                            </div>
+                                            <div class="col-3">
+                                                 ${t.fullName}
+                                            </div>
+                                            <div class="col-2">
+                                                    ${t.gender}
+                                            </div>
+                                            <div class="col-1">
+                                                    ${t.age}
+                                            </div>
+                                            <div class="col-4 text-right text-light">
+                                                <a onclick="crush(${cookie.uid.value},${t.uid});remove(${t.uid})" class="btn profile-card__buttonMenu button--orange">Crush</a>
+                                                <a onclick="uncrush(${t.uid},${cookie.uid.value});remove(${t.uid})" class="btn profile-card__buttonMenu button--gray text-dark">Remove</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <!-------- Chat ------>
                 <div id="chat" class="profile-card_chat" style="display: none;">
                     <div class="messages">
                         <c:forEach var="fri" items="${friends}">
-                            <ul id="chat-box-${fri.key}" style="display: none">
-                                <li class="replies">
-                                    <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                                    <p>${fri.value.uid}</p>
-                                </li>
-                            </ul>
+                            <ul id="chat-box-${fri.key}" style="display: none"></ul>
                         </c:forEach>
                     </div>
                     <div class="message-input">

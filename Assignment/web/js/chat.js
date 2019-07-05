@@ -1,6 +1,7 @@
 'use strict';
 const RELOAD_TIME = 2000;
 const NUM_OLD_MES_ET = 10;
+const WS_URL = "ws://crushme.tk:80";
 
 let messageForm = document.querySelector('#messageForm');
 let messageInput = document.querySelector('#message');
@@ -43,7 +44,7 @@ function reconfigChat(f) {
 
 //GET OLD MESSAGE
 function getOldMessage(fid) {
-    oSocket = new WebSocket("ws://localhost:8080/Assignment/getOldMessage");
+    oSocket = new WebSocket(WS_URL+"/getOldMessage");
     let getRequest = {
         'fid': fid,
         'i': initialized_chat[fid],
@@ -53,17 +54,17 @@ function getOldMessage(fid) {
         oSocket.send(JSON.stringify(getRequest));
     }
     oSocket.onmessage = function (evt) {
-        console.log("Conversation size: "+evt.data);
+        console.log("Conversation size: " + evt.data);
         let list = JSON.parse(evt.data);
         let gap2end = messageArea.scrollHeight - messageArea.scrollTop;
-        list.forEach(function(i){
+        list.forEach(function (i) {
             console.log(i);
             i['isOld'] = true;
-            i['avatar'] = (i.from==uid) ? avatar:fid_usr_list[i.fid][1];
-            i['type'] = (i.from==uid) ? 'sent':'replies';
+            i['avatar'] = (i.from == uid) ? avatar : fid_usr_list[i.fid][1];
+            i['type'] = (i.from == uid) ? 'sent' : 'replies';
             updateMessage(i);
         });
-        messageArea.scrollTop =  messageArea.scrollHeight - gap2end;
+        messageArea.scrollTop = messageArea.scrollHeight - gap2end;
         initialized_chat[fid]++;
         oSocket.close();
     }
@@ -72,7 +73,7 @@ function getOldMessage(fid) {
 //GET NEW MESSAGE FOR ALL
 function getMessage(){
     console.log("Getting:::");
-    nSocket = new WebSocket("ws://localhost:8080/Assignment/getNewMessage");
+    nSocket = new WebSocket(WS_URL+"/getNewMessage");
     let getRequest = {
         'uid': uid,
     };
@@ -102,17 +103,18 @@ function getMessage(){
 }
 
 function sendMessage(evt) {
-    console.log("INFO: "+fid+"XX");
+    console.log("INFO: "+fid);
     evt.preventDefault();
+    // if(sSocket.readyState === WebSocket.OPEN) return;
     let messageContent = messageInput.value.trim();
-
+    if(sSocket!=null) console.log("STATE "+ sSocket.readyState);
     if(messageContent) {
         let message = {
             fid: fid,
             from: uid,
             content: messageInput.value,
         };
-        sSocket = new WebSocket("ws://localhost:8080/Assignment/sendMessage");
+        sSocket = new WebSocket(WS_URL+"/sendMessage");
         sSocket.onopen = function () {
             sSocket.send(JSON.stringify(message));
             sSocket.close()
