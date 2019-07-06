@@ -68,7 +68,7 @@
                 </div><br>
                 <script>
                     $("#btn-find-crush").click(function () {
-                        if(!isWListEmpty())
+                        if (!isWListEmpty())
                             $("#findCrush").show();
                         $("#chat").hide();
                         $("#crushOnMe").hide();
@@ -143,15 +143,16 @@
                     }
                     function disableChat() {
                         $(header).find(".active")[0].className = "contact";
-                        curChatActive=-1
+                        curChatActive = -1
                     }
                 </script>
             </div>
             <div class="content" style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
-                <div id="findCrush" class="profile-card">
-                    <!-------- Crush ------>
-                    <div class="profile-card__img">
-                        <img src="" alt="profile card">
+                <div id="findCrush" class="profile-card_chat">
+                    <div class="card" id="coverPhoto" style="background-image: url('img/share-section1.jpg')">
+                        <div class="profile-card__img">
+                            <img src="" alt="profile card">
+                        </div>
                     </div>
                     <div class="profile-card__cnt js-profile-cnt">
                         <div class="profile-card__name display-2"></div>
@@ -172,15 +173,19 @@
                             </div>
                         </div>
                         <div class="profile-card-ctr">
-                            <input id="crush_button" type="button" value="Crush" class="profile-card__button button--orange"/>
-                            <input id="pass_button" type="button" value="Pass" class="profile-card__button button--blue"/>
+                            <form action="ProcessCrush" method="post">
+
+                                <input id="crush_button" type="submit" value="Crush" class="profile-card__button button--orange"/>
+
+                                <input id="pass_button" type="submit" value="Pass" class="profile-card__button button--blue"/>
                         </div>
                         <script>
-                            <c:forEach var="t" items="${wants}">
-                                want_list.push([${t.uid},'${t.fullName}',${t.age},'${t.gender}','${t.email}','${t.avatar}','${t.description}']);
+                            <c:forEach var="usr" items="${wants}">
+                            want_list.push([${usr.uid}, '${usr.fullName}',${usr.age}, '${usr.gender}', '${usr.email}', '${usr.avatar}', '${usr.description}']);
                             </c:forEach>
                         </script>
-
+                        <input type="text" value="${usr.uid}" name ="value" hidden>
+                        </form>
                     </div>
                 </div>
                 <div id="crushOnMe" class="profile-card_chat" style="overflow: scroll; display: none;">
@@ -216,17 +221,19 @@
                                                 <img src="<%=usr.getAvatar()%>" style="width: 50px; height: 50px;">
                                             </div>
                                             <div class="col-3">
-                                                 ${t.fullName}
+                                                ${t.fullName}
                                             </div>
                                             <div class="col-2">
-                                                    ${t.gender}
+                                                ${t.gender}
                                             </div>
                                             <div class="col-1">
-                                                    ${t.age}
+                                                ${t.age}
                                             </div>
                                             <div class="col-4 text-right text-light">
-                                                <a onclick="crush(${cookie.uid.value},${t.uid});remove(${t.uid})" class="btn profile-card__buttonMenu button--orange">Crush</a>
-                                                <a onclick="uncrush(${t.uid},${cookie.uid.value});remove(${t.uid})" class="btn profile-card__buttonMenu button--gray text-dark">Remove</a>
+                                                <a onclick="crush(${cookie.uid.value},${t.uid});
+                                                        remove(${t.uid})" class="btn profile-card__buttonMenu button--orange">Crush</a>
+                                                <a onclick="uncrush(${t.uid},${cookie.uid.value});
+                                                        remove(${t.uid})" class="btn profile-card__buttonMenu button--gray text-dark">Remove</a>
                                             </div>
                                         </div>
                                     </li>
@@ -260,27 +267,27 @@
     </body>
     <script src="js/chat.js"></script>
     <script>
-        //ADD FID & UInfo TO LIST
-        let list = {};
+                                                    //ADD FID & UInfo TO LIST
+                                                    let list = {};
         <c:forEach var="fri" items="${friends}">
-            list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
+                                                    list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
         </c:forEach>
-        config(list)
-        //Submit On Enter
-        // $('#message').keypress(function(e){
-        //     if(e.which == 13){
-        //         e.preventDefault();
-        //         $(this).closest('form').find('button').click();
-        //     }
-        // });
-        //Ini Emoji
-        // $('#message').emojioneArea({
-        //     pickerPosition:"top"
-        // })
-        // $(document).ready(function(){
-        // $('#editor_catch').on('keydown', function(event) {
-        //     console.log(event.keyCode);
-        // })});
+                                                    config(list)
+                                                    //Submit On Enter
+                                                    // $('#message').keypress(function(e){
+                                                    //     if(e.which == 13){
+                                                    //         e.preventDefault();
+                                                    //         $(this).closest('form').find('button').click();
+                                                    //     }
+                                                    // });
+                                                    //Ini Emoji
+                                                    // $('#message').emojioneArea({
+                                                    //     pickerPosition:"top"
+                                                    // })
+                                                    // $(document).ready(function(){
+                                                    // $('#editor_catch').on('keydown', function(event) {
+                                                    //     console.log(event.keyCode);
+                                                    // })});
     </script>
 </div>
 <%--Chat Area--%>

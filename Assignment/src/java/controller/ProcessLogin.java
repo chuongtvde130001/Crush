@@ -29,11 +29,12 @@ public class ProcessLogin extends HttpServlet {
                 request.getRequestDispatcher("update_info.jsp").forward(request, response);
             } else if (user.getStatus() == 1) {
                 response.sendRedirect("home.jsp");
-               // Chuyển người dùng tới trang xác nhận email
             } else {
-                // Xác nhận đầy đủ rồi thì chuyển vào trang chính
                 response.sendRedirect("home.jsp");
             }
+        }else {
+            request.setAttribute("error", "Username or Password is incorrect!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 }

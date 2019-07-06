@@ -19,8 +19,8 @@ public class UserDAO {
     private static final String findEmail = "select Email from USERS where Email=?";
     private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? ,Status = 0 where uid = ?";
 
-    public static String getStrGender(int i){
-        switch (i){
+    public static String getStrGender(int i) {
+        switch (i) {
             case 2:
                 return "Male";
             case 3:
@@ -31,8 +31,8 @@ public class UserDAO {
         return "";
     }
 
-    public static int getIntGender(String s){
-        switch (s){
+    public static int getIntGender(String s) {
+        switch (s) {
             case "Male":
                 return 2;
             case "Female":
@@ -73,7 +73,6 @@ public class UserDAO {
         }
         return false;
     }
-
     public static boolean checkEmail(String Email) {
 
         try (Connection conn = DBConfig.getConnection()) {
@@ -154,4 +153,39 @@ public class UserDAO {
         }
         return null;
     }
+
+    public static String crushPeople(String oldDes, String des, int crushId) {
+        String sql = "update USERS set Description = ? where UID = ?";
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, oldDes + des + ",");
+            ps.setInt(2, crushId);
+            int result = ps.executeUpdate();
+            if (result > 0) {
+                return oldDes + des;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String getDes(int crushId) {
+        String sql = "select Description from USERS where UID = ?";
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, crushId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Description");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    public static void main(String[] args) {
+        System.out.println(checkEmail("duongdo99@gmail.com"));
+    }
+    
 }

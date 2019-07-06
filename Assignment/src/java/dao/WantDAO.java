@@ -29,9 +29,7 @@ public class WantDAO {
             "    ELSE UserB\n" +
             "END AS UID\n" +
             "FROM CRUSH\n" +
-            "WHERE UserA = ? OR UserB = ?" +
-            "UNION \n" +
-            "SELECT ? AS UID)";
+            "WHERE UserA = ? OR UserB = ?) ";
 
     public static ArrayList<User> getUsrsMatchWant(int uid) {
         ArrayList<User> list = new ArrayList<>();
@@ -44,7 +42,6 @@ public class WantDAO {
             ps.setInt(5, uid);
             ps.setInt(6, uid);
             ps.setInt(7, uid);
-            ps.setInt(8, uid);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 User usr = new User();
@@ -66,6 +63,9 @@ public class WantDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(WantDAO.getUsrsMatchWant(1).get(0).getFullName());
+        for (User i:getUsrsMatchWant(1)){
+            System.out.println(i.getUid()+" "+i.getFullName()+" "+i.getAge()+" "+i.getEmail()+" "+i.getDescription());
+        }
     }
+    
 }

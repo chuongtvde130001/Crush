@@ -18,15 +18,11 @@ public class WsCrush {
 
     @OnMessage
     public synchronized void onMessage(String message, Session session) throws Exception {
-        try {
-            JsonObject jObj = parser.parse(message).getAsJsonObject();
-            boolean actionCrush = jObj.get("crush").getAsBoolean();
-            int uid = jObj.get("uid").getAsInt();
-            int target = jObj.get("target").getAsInt();
-            session.getBasicRemote().sendText(gson.toJson((actionCrush == true) ? FriendDAO.actionCrush(uid, target) : FriendDAO.actionUnCrush(uid, target)));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        JsonObject jObj = parser.parse(message).getAsJsonObject();
+        boolean actionCrush = jObj.get("crush").getAsBoolean();
+        int uid = jObj.get("uid").getAsInt();
+        int target = jObj.get("target").getAsInt();
+        session.getBasicRemote().sendText(gson.toJson((actionCrush==true) ? FriendDAO.actionCrush(uid, target):FriendDAO.actionUnCrush(uid, target)));
     }
 
     @OnError
