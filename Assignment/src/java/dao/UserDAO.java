@@ -17,7 +17,7 @@ public class UserDAO {
     private static final String getAvtSt = "select Avatar from USERS where uid = ?";
     private static final String findUsername = "select UserName from USERS where Username = ?";
     private static final String findEmail = "select Email from USERS where Email=?";
-    private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? ,Status = 0 where uid = ?";
+    private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? , Description = ? ,Status = 0 where uid = ?";
 
     public static String getStrGender(int i) {
         switch (i) {
@@ -44,19 +44,26 @@ public class UserDAO {
     }
 
     public static boolean updateUserInfo(String fullName,
-            int age, String gender, String avatarPath, int uid) {
+            int age, String gender, String avatarPath, String about, int uid, int ageBegin, int ageEnd, int wantGender) {
+        boolean want = false;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(update);
             ps.setString(1, fullName);
             ps.setInt(2, age);
             ps.setInt(3, getIntGender(gender));
             ps.setString(4, avatarPath);
-            ps.setInt(5, uid);
+            ps.setString(5, about);
+            ps.setInt(6, uid);
             ps.execute();
+            want = WantDAO.updateWant(ageBegin, ageEnd, wantGender, uid);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return want;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(updateUserInfo("xyz", 30, "Male", "a", "this is test", 1, 18, 30, 5));
     }
 
     public static boolean checkUsersName(String UserName) {
@@ -73,6 +80,7 @@ public class UserDAO {
         }
         return false;
     }
+
     public static boolean checkEmail(String Email) {
 
         try (Connection conn = DBConfig.getConnection()) {
@@ -92,12 +100,13 @@ public class UserDAO {
     public static User register(String username, String password, String email) {
         User u = null;
         try (Connection con = DBConfig.getConnection()) {
+            boolean kq = WantDAO.wantPeople(u.getUid());
             PreparedStatement ps = con.prepareStatement(insUserSt);
             ps.setString(1, username);
             ps.setString(2, MD5.getMd5(password));
             ps.setString(3, email);
             int result = ps.executeUpdate();
-            if (result > 0) {
+            if (result > 0 && kq == true) {
                 u = new User(username, password, email);
             }
             ps.close();
@@ -184,8 +193,4 @@ public class UserDAO {
         }
         return "";
     }
-    public static void main(String[] args) {
-        System.out.println(checkEmail("duongdo99@gmail.com"));
-    }
-    
 }

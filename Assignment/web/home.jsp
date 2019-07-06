@@ -69,15 +69,15 @@
                 <script>
                     $("#btn-find-crush").click(function () {
                         if (!isWListEmpty())
-                            $("#findCrush").show();
-                        $("#chat").hide();
-                        $("#crushOnMe").hide();
+                            $("#findCrush").show(200);
+                        $("#chat").hide(400);
+                        $("#crushOnMe").hide(400);
                         disableChat();
                     })
                     $("#btn-who-crush").click(function () {
-                        $("#crushOnMe").show();
-                        $("#findCrush").hide();
-                        $("#chat").hide();
+                        $("#crushOnMe").show(200);
+                        $("#findCrush").hide(400);
+                        $("#chat").hide(400);
                         disableChat();
                     })
                 </script>
@@ -114,11 +114,11 @@
                             let name = $(this).find(".name")[0].innerText;
                             let avatar = $(this).find(".avatar")[0].src;
 
-                            $("#findCrush").hide();
-                            $("#crushOnMe").hide();
-                            $("#chat").show();
-                            $(".messages").show();
-                            $(".message-input").show();
+                            $("#findCrush").hide(400);
+                            $("#crushOnMe").hide(400);
+                            $("#chat").show(200);
+                            $(".messages").show(200);
+                            $(".message-input").show(200);
 
                             //Click Contact Process
                             let current = $(header).find(".active");

@@ -9,6 +9,7 @@
         <title>Welcome ${sessionScope.user.userName}</title>
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
         <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style-checkbox.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
@@ -51,15 +52,24 @@
                                             <h4>Age range I want to meet :</h4>
                                             <div class="input-group">                                           
                                                 <div class="input-group-addon">From</div>
-                                                <input class="form-control col-3" type="number" id="ageFrom">
+                                                <input class="form-control col-6" type="number" id="ageFrom" name="ageBegin">
                                                 <div class="input-group-addon">To</div>
-                                                <input class="form-control col-3" type="number" id="ageTo">
-                                                <div class="input-group-addon">Gender</div>
-                                                <select id="genderMeet" class="form-control" name="gender">
-                                                    <option>Male</option>
-                                                    <option>Female</option>
-                                                    <option>Other</option>
-                                                </select>
+                                                <input class="form-control col-6" type="number" id="ageTo" name="ageEnd">                                              
+                                            </div>
+                                            <div class="input-group mt-4">
+                                                <label class="containerCheckbox pr-5">Gender :</label>
+                                                <label class="containerCheckbox pr-3">Male
+                                                    <input type="checkbox" value="male" name="wantGender">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="containerCheckbox pr-3" >Female
+                                                    <input type="checkbox" value="female" name="wantGender">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="containerCheckbox pr-3">Other
+                                                    <input type="checkbox" value="other" name="wantGender">
+                                                    <span class="checkmark"></span>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -101,7 +111,7 @@
                                         <br>
                                         <div class="col">
                                             <h3>About me</h3>
-                                            <textarea class="form-control" rows="5" id="comment"></textarea>
+                                            <textarea class="form-control" rows="5" id="comment" name="about"></textarea>
                                         </div><br>
                                     </div><br>
                                     <button type="submit" class="btn btn-primary btn-block">Take me to the home page !</button>
