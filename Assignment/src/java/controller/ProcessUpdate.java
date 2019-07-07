@@ -1,6 +1,7 @@
 package controller;
 
 import dao.UserDAO;
+import dao.WantDAO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
