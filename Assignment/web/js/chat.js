@@ -1,7 +1,7 @@
 'use strict';
 const RELOAD_TIME = 2000;
 const NUM_OLD_MES_ET = 10;
-const WS_URL = "ws://crushme.tk:80";
+const WS_URL = "ws://localhost:80";
 
 let messageForm = document.querySelector('#messageForm');
 let messageInput = document.querySelector('#message');
@@ -105,9 +105,9 @@ function getMessage(){
 function sendMessage(evt) {
     console.log("INFO: "+fid);
     evt.preventDefault();
-    // if(sSocket.readyState === WebSocket.OPEN) return;
     let messageContent = messageInput.value.trim();
     if(sSocket!=null) console.log("STATE "+ sSocket.readyState);
+
     if(messageContent) {
         let message = {
             fid: fid,
