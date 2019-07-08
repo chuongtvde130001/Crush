@@ -1,5 +1,11 @@
+<%@page import="model.Want"%>
+<%@page import="dao.WantDAO"%>
+<%@page import="dao.FriendDAO"%>
+<%@page import="servlet.ServletListener"%>
+<%@page import="model.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,6 +20,11 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
         <link href="https://fonts.googleapis.com/css?family=Courgette|Lobster|Pacifico&display=swap" rel="stylesheet">
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+
     </head>
     <body id="home">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script> 
@@ -25,6 +36,65 @@
                 </form>
             </div>
         </nav>
+        <%
+            User usr = (User) session.getAttribute("user");
+            if (usr == null) {
+                response.sendRedirect("register.jsp");
+                return;
+            }
+            //Clear MessageStorage
+            ServletListener.getMesStorage().clearMessage(usr.getUid());
+            //Get All Friends
+            request.setAttribute("friends", FriendDAO.getFriends(usr.getUid()));
+            //Get All User meet want
+            request.setAttribute("wants", WantDAO.getUsrsMatchWant(usr.getUid()));
+            //Get All Target crush User
+            request.setAttribute("targets", FriendDAO.getTarsCrushUser(usr.getUid()));
+            Want w = WantDAO.getWant(usr.getUid());
+            session.setAttribute("userWant", w);
+        %>
+        <c:if test="${sessionScope.user.status==0}">
+            <script>
+                $(document).ready(function () {
+                    $('#greetings').html("${sessionScope.user.fullName}'s Profile");
+                    $('#fullName').val("${sessionScope.user.fullName}");
+                    $('#age').val("${sessionScope.user.age}");
+                    $('#ageFrom').val("${sessionScope.userWant.ageBegin}");
+                    $('#ageTo').val("${sessionScope.userWant.ageEnd}");
+                    var gender = '${sessionScope.user.gender}';
+                    if (gender === "Male") {
+                        $('#selectGender select').val('male');
+                    } else if (gender === "Female") {
+                        $('#selectGender select').val('female');
+                    } else if (gender === "Lgbt") {
+                        $('#selectGender select').val('Lgbt');
+                    }
+                    var wantGender = '${sessionScope.userWant.gender}';
+
+                    if (wantGender === '2') {
+                        $('#wantMale').prop("checked", true);
+                    } else if (wantGender === '3') {
+                        $('#wantFemale').prop("checked", true);
+                    } else if (wantGender === '5') {
+                        $('#wantOther').prop("checked", true);
+                    } else if (wantGender === '6') {
+                        $('#wantMale').prop("checked", true);
+                        $('#wantFemale').prop("checked", true);
+                    } else if (wantGender === '10') {
+                        $('#wantMale').prop("checked", true);
+                        $('#wantOther').prop("checked", true);
+                    } else if (wantGender === '15') {
+                        $('#wantFemale').prop("checked", true);
+                        $('#wantOther').prop("checked", true);
+                    } else if (wantGender === '30') {
+                        $('#wantMale').prop("checked", true);
+                        $('#wantFemale').prop("checked", true);
+                        $('#wantOther').prop("checked", true);
+                    }
+                });
+            </script>
+        </c:if>
+
         <!-------- Login page ------------->
         <header id="home-section-update" style="font-family: 'Mali', cursive;">
             <div class="home-inner">
@@ -32,10 +102,7 @@
                     <div class="row-5">
                         <div class="card bg-light text-center card-form text-dark">
                             <div class="card-body text-left">
-                                <p class="display-1 text-center" style="font-family: 'Lobster', cursive;">Hello ${sessionScope.user.userName}!</p>
-                                <p class="display-4 text-center" style="font-family: 'Pacifico', cursive">Complete Your Profile</p>
-                                <h3>Your Info</h3>
-                                <p>Please fill out this form to update your information</p>
+                                <p id="greetings" class="display-1 text-center" style="font-family: 'Lobster', cursive;">Hello ${sessionScope.user.userName}!</p>
                                 <form method="post" action="ProcessUpdate" enctype="multipart/form-data" onsubmit="return checkForm(this);">
                                     <div class="form-row">
                                         <div class="col">
@@ -48,7 +115,7 @@
                                         </div>
                                     </div><br>
                                     <div class="form-row">
-                                        <div class="col">
+                                        <div class="col">                                            
                                             <h4>Age range I want to meet :</h4>
                                             <div class="input-group">                                           
                                                 <div class="input-group-addon">From</div>
@@ -59,26 +126,28 @@
                                             <div class="input-group mt-4">
                                                 <label class="containerCheckbox pr-5">Gender :</label>
                                                 <label class="containerCheckbox pr-3">Male
-                                                    <input type="checkbox" value="male" name="wantGender">
+                                                    <input id="wantMale" type="checkbox" value="wantMale" name="wantGender">
                                                     <span class="checkmark"></span>
                                                 </label>
                                                 <label class="containerCheckbox pr-3" >Female
-                                                    <input type="checkbox" value="female" name="wantGender">
+                                                    <input  id="wantFemale" type="checkbox" value="wantFemale" name="wantGender">
                                                     <span class="checkmark"></span>
                                                 </label>
                                                 <label class="containerCheckbox pr-3">Other
-                                                    <input type="checkbox" value="other" name="wantGender">
+                                                    <input id="wantOther" type="checkbox" value="wantOther" name="wantGender">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <h4>Gender :</h4>
-                                            <select id="gender" class="form-control" name="gender">
-                                                <option>Male</option>
-                                                <option>Female</option>
-                                                <option>Other</option>
-                                            </select>
+                                            <div id="selectGender">
+                                                <select id="gender" class="form-control" name="gender">
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                    <option value="Lgbt">Other</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div><br>
                                     <div class="form-row"> 
@@ -91,27 +160,24 @@
                                                         function readURL(input) {
                                                             if (input.files && input.files[0]) {
                                                                 var reader = new FileReader();
-
                                                                 reader.onload = function (e) {
                                                                     $('#blah')
                                                                             .attr('src', e.target.result)
                                                                             .width(150)
                                                                             .height(200);
                                                                 };
-
                                                                 reader.readAsDataURL(input.files[0]);
                                                             }
-
                                                         }
                                                     </script>
-                                                    <img id="blah" src="#" onerror="this.src='img/avatar.png'" style=" width: 200px; height: 200px;object-fit: cover;object-position: center;" class="mt-2 rounded"/>
+                                                    <img id="blah" src="#" onerror="this.src='<%=usr.getAvatar()%>'" style=" width: 200px; height: 200px;object-fit: cover;object-position: center;" class="mt-2 rounded"/>
                                                 </div>
                                             </div>
                                         </div><br>
                                         <br>
                                         <div class="col">
                                             <h3>About me</h3>
-                                            <textarea class="form-control" rows="5" id="comment" name="about"></textarea>
+                                            <textarea class="form-control" rows="5" id="comment" name="about" id="about"></textarea>
                                         </div><br>
                                     </div><br>
                                     <button type="submit" class="btn btn-primary btn-block">Take me to the home page !</button>

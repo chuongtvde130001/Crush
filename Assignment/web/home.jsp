@@ -27,7 +27,6 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Find my Crush</title>
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
-
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/styles-chat.css">

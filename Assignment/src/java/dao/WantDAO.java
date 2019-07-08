@@ -8,9 +8,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import model.Want;
 
 public class WantDAO {
 
+    private static final String getWant = "select * from WANT where WID =?";
     private static final String want = "insert into WANT values(?,null,null,1)";
     private static final String updateWant = "update WANT set AgeBegin = ? , AgeEnd = ? ,Gender = ? where WID = ?";
     private static final String getUsr
@@ -94,7 +96,19 @@ public class WantDAO {
         }
         return false;
     }
-    public static void main(String[] args) {
-        wantPeople(1);
+
+    public static Want getWant(int uid) {
+        Want w = null;
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(getWant);
+            ps.setInt(1, uid);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+              w = new Want(uid, rs.getInt("AgeBegin"), rs.getInt("AgeEnd"), rs.getInt("Gender"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return w;
     }
 }
