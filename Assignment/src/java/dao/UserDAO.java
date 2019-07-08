@@ -13,8 +13,8 @@ import model.User;
 public class UserDAO {
 
     private static final String getUsrSt = "select * from USERS where UserName = ? and PassWord = ?";
+    private static final String getUsrSt1 = "select * from USERS where uid = ?";
     private static final String insUserSt = "insert into USERS(UserName,PassWord,Email,Status) values(?,?,?,'2')";
-    private static final String getAvtSt = "select Avatar from USERS where uid = ?";
     private static final String findUsername = "select UserName from USERS where Username = ?";
     private static final String findEmail = "select Email from USERS where Email=?";
     private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? , Description = ? ,Status = 0 where uid = ?";
@@ -107,7 +107,7 @@ public class UserDAO {
             ps.setString(3, email);
             int result = ps.executeUpdate();
             if (result > 0 && kq == true) {
-                u = new User(username, password, email);
+                u = new User(username, email);
             }
             ps.close();
         } catch (Exception e) {
@@ -130,7 +130,7 @@ public class UserDAO {
             ps.setString(2, MD5.getMd5(password));
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                u = new User(rs.getString("Password"),
+                u = new User(
                         rs.getString("UserName"),
                         rs.getString("FullName"),
                         getStrGender(rs.getInt("Gender")),
@@ -148,19 +148,26 @@ public class UserDAO {
         return u;
     }
 
-    // Lấy Avatar User
-    public static String getUserAvatar(int uid) {
+    public static User getUser(int uid){
+        User u = null;
         try (Connection conn = DBConfig.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(getAvtSt);
+            PreparedStatement ps = conn.prepareStatement(getUsrSt1);
             ps.setInt(1, uid);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return ImageSaver.imagePath + rs.getString("Avatar");
+                u = new User();
+                u.setUid(uid);
+                u.setFullName(rs.getString(4));
+                u.setAge(rs.getInt(5));
+                u.setGender(getStrGender(rs.getInt(6)));
+                u.setAvatar(ImageSaver.imagePath + rs.getString(8));
             }
+            rs.close();
+            ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return u;
     }
 
     public static String crushPeople(String oldDes, String des, int crushId) {

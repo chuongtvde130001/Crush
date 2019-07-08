@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class ImageSaver {
 
-    public static final String imagePath = "http://localhost:8080/Assignment/images/";
+    public static final String imagePath = "http://localhost/images/";
 
     public static String saveImage(Part photo, String uid) throws IOException {
         String fileName = uid + extractFileFormat(photo);

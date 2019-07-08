@@ -35,13 +35,15 @@
         <link rel="stylesheet" href="css/home-style.css">
         <link rel="stylesheet" href="css/emojionearea.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.min.css">
+        <link rel="stylesheet" href="css/noti.css">
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.13.0/dist/sweetalert2.all.min.js"></script>
         <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
         <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <script src="js/emojionearea.min.js"></script>
         <script src="js/want.js"></script>
+        <script src="js/noti.js"></script>
     </head>
     <body>
         <div id="frame">
@@ -51,7 +53,42 @@
                     <div class="wrap">
                         <img id="profile-img" src="<%=usr.getAvatar()%>" class="online"/>
                         <p><%=usr.getFullName()%></p>
+                        <div class="noti-dot">
+                            <ul>
+                                <li>
+                                    <div class="dropdowns-wrapper">
+                                        <div class="dropdown-container">
+                                            <div class="notifications dropdown dd-trigger">
+                                                <span class="count animated" id="notifications-count" style="display: none"></span>
+                                                <span class="fa fa-bell-o"></span>
+                                            </div>
+                                            <div class="dropdown-menu animated" id="notification-dropdown">
+                                                <div class="dropdown-header">
+                                                    <span class="triangle"></span>
+                                                    <span class="heading">Notifications</span>
+                                                    <span class="count" id="dd-notifications-count"></span>
+                                                </div>
+                                                <div class="dropdown-body">
+                                                    <div class="notification new">
+                                                        <div class="notification-image-wrapper">
+                                                            <div class="notification-image">
+                                                                <img src="">
+                                                            </div>
+                                                        </div>
+                                                        <div class="notification-text">
+                                                            <span class="highlight">Alex</span> and you become friend!
+                                                        </div>
+                                                    </div>
+                                                    <%--                                                <div class="notification">--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                 </div>
                 <!--- Khung tìm Kiếm ---->
                 <div class="container">
@@ -156,7 +193,7 @@
                     </div>
                     <div class="profile-card__cnt js-profile-cnt">
                         <div class="profile-card__name display-2"></div>
-                        <div class="profile-card__txt"></div>
+                        <div class="profile-card__txt">⠀</div>
                         <div class="profile-card-inf">
                             <div class="profile-card-inf__item">
                                 <div class="profile-card-inf__title">Age</div>
@@ -173,15 +210,12 @@
                             </div>
                         </div>
                         <div class="profile-card-ctr">
-                            <form action="ProcessCrush" method="post">
-
-                                <input id="crush_button" type="submit" value="Crush" class="profile-card__button button--orange"/>
-
-                                <input id="pass_button" type="submit" value="Pass" class="profile-card__button button--blue"/>
+                            <input id="crush_button" type="button" value="Crush" class="profile-card__button button--orange"/>
+                            <input id="pass_button" type="button" value="Pass" class="profile-card__button button--blue"/>
                         </div>
                         <script>
-                            <c:forEach var="usr" items="${wants}">
-                            want_list.push([${usr.uid}, '${usr.fullName}',${usr.age}, '${usr.gender}', '${usr.email}', '${usr.avatar}', '${usr.description}']);
+                            <c:forEach var="t" items="${wants}">
+                                want_list.push([${t.uid},'${t.fullName}',${t.age},'${t.gender}','${t.email}','${t.avatar}','${t.description}']);
                             </c:forEach>
                         </script>
                         <input type="text" value="${usr.uid}" name ="value" hidden>
@@ -267,27 +301,27 @@
     </body>
     <script src="js/chat.js"></script>
     <script>
-                                                    //ADD FID & UInfo TO LIST
-                                                    let list = {};
+        //ADD FID & UInfo TO LIST
+        let list = {};
         <c:forEach var="fri" items="${friends}">
-                                                    list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
+            list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
         </c:forEach>
-                                                    config(list)
-                                                    //Submit On Enter
-                                                    // $('#message').keypress(function(e){
-                                                    //     if(e.which == 13){
-                                                    //         e.preventDefault();
-                                                    //         $(this).closest('form').find('button').click();
-                                                    //     }
-                                                    // });
-                                                    //Ini Emoji
-                                                    // $('#message').emojioneArea({
-                                                    //     pickerPosition:"top"
-                                                    // })
-                                                    // $(document).ready(function(){
-                                                    // $('#editor_catch').on('keydown', function(event) {
-                                                    //     console.log(event.keyCode);
-                                                    // })});
+        config(list)
+        //Submit On Enter
+        // $('#message').keypress(function(e){
+        //     if(e.which == 13){
+        //         e.preventDefault();
+        //         $(this).closest('form').find('button').click();
+        //     }
+        // });
+        //Ini Emoji
+        // $('#message').emojioneArea({
+        //     pickerPosition:"top"
+        // })
+        // $(document).ready(function(){
+        // $('#editor_catch').on('keydown', function(event) {
+        //     console.log(event.keyCode);
+        // })});
     </script>
 </div>
 <%--Chat Area--%>

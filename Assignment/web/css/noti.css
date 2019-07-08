@@ -1,0 +1,150 @@
+.noti-dot{
+  width: 37px;
+  height: 37px;
+  position: absolute;
+  border-radius: 30px;
+  margin-left: 230px;
+  margin-top: -11px;
+}
+.noti-dot ul {
+  list-style: none;
+  position: relative;
+  padding: 0px;
+}
+.noti-dot ul li {
+  vertical-align: middle;
+  display: inline-block;
+  padding: 13px 7px;
+  border: 0px;
+}
+.noti-dot .dropdowns{
+  padding: 4px 0px;
+}
+.noti-dot .dropdown-container {
+  display: inline-block;
+  position: relative;
+}
+.noti-dot .dropdown-container .dropdown {
+  position: relative;
+  cursor: pointer;
+  z-index: 2;
+}
+.noti-dot .dropdown-container .dropdown-menu {
+  position: absolute;
+  display: none;
+  z-index: 1;
+  left: -130px;
+  top: 60px;
+  min-height: 10px;
+  min-width: 10px;
+  width: 280px;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-header {
+  background: #FFF;
+  padding: 15px;
+  position: relative;
+  text-align: center;
+  color: #747F8B;
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+  border: 0px;
+  border-style: solid;
+  border-bottom-width: 1px;
+  -moz-border-image: -moz-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
+  -o-border-image: -o-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
+  border-image: linear-gradient(to right, white 0%, #cedae0 40%, #cedae0 60%, white 100%) 1 20%;
+  box-shadow: 0px 2px 10px -2px #cedae0;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-header .triangle {
+  position: absolute;
+  top: -8px;
+  left: 134px;
+  height: 15px;
+  width: 15px;
+  border-radius: 6px 0px 0px 0px;
+  transform: rotate(45deg);
+  background: #FFF;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-header .count {
+  position: static;
+  height: 25px;
+  width: 25px;
+  display: inline-block;
+  line-height: 24px;
+  margin-left: 8px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body {
+  max-height: 292px;
+  background: #e9f0f3;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification {
+  background: #FFF;
+  padding: 15px;
+  border: 0px;
+  border-style: solid;
+  border-bottom-width: 1px;
+  -moz-border-image: -moz-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
+  -o-border-image: -o-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
+  border-image: linear-gradient(to right, white 0%, #cedae0 40%, #cedae0 60%, white 100%) 1 20%;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification.new {
+  -webkit-transition: all 500ms ease;
+  -moz-transition: all 500ms ease;
+  -ms-transition: all 500ms ease;
+  -o-transition: all 500ms ease;
+  transition: all 500ms ease;
+  background: #e9f0f3;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image-wrapper{
+  display: table-cell;
+  vertical-align: middle;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image {
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+  overflow: hidden;
+  border-radius: 100%;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image img{
+  width:32px;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-text {
+  display: table-cell;
+  padding-left: 15px;
+  vertical-align: middle;
+  color: #747F8B;
+  cursor: pointer;
+  font-size: 14px;
+  word-spacing: 2px;
+  line-height: 21px;
+}
+.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-text .highlight {
+  font-weight: bold;
+}
+.noti-dot .dropdown-container .fa {
+  color: #9FB6C3;
+  font-size: 22px;
+}
+.noti-dot .dropdown-container .count {
+  position: absolute;
+  top: -6px;
+  right: -1px;
+  height: 15px;
+  width: 15px;
+  overflow: hidden;
+  background: #21B7B7;
+  color: #FFF;
+  text-align: center;
+  border-radius: 100%;
+  font-size: 9px;
+  font-weight: bold;
+  line-height: 15px;
+}
+.noti-dot .notifications {
+  /*margin-right: 10px;*/
+}

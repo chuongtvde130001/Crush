@@ -2,6 +2,7 @@ package dao;
 
 import dbconfig.DBConfig;
 import model.User;
+import servlet.ServletListener;
 import utils.ImageSaver;
 
 import java.sql.Connection;
@@ -94,9 +95,12 @@ public class FriendDAO {
                 ps.setInt(1, rs.getInt(1));
                 ps.execute();
                 ps = conn.prepareStatement(addFriendSt);
+                //Send notification to target
+                ServletListener.getNotiStorage().addNoti(uid,target,1);
                 isFriend=true;
             }else {
                 ps = conn.prepareStatement(addCrushSt);
+                ServletListener.getNotiStorage().addNoti(uid,target,2);
             }
             ps.setInt(1, uid);
             ps.setInt(2, target);

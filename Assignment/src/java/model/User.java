@@ -4,13 +4,12 @@ import utils.MD5;
 
 public class User {
 
-    private String password, userName, fullName, gender, email, avatar,description;
+    private String userName, fullName, gender, email, avatar,description;
     private int uid, age, status;
 
     public User() {}
 
-    public User(String password, String userName, String fullName, String gender, String email, String avatar, int uid, int age, int status) {
-        this.password = password;
+    public User(String userName, String fullName, String gender, String email, String avatar, int uid, int age, int status) {
         this.userName = userName;
         this.fullName = fullName;
         this.gender = gender;
@@ -21,18 +20,9 @@ public class User {
         this.status = status;
     }
 
-    public User(String userName, String password, String email) {
-        this.password = password;
+    public User(String userName, String email) {
         this.userName = userName;
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = MD5.getMd5(password);
     }
 
     public String getUserName() {

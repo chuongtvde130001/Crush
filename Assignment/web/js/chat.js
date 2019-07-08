@@ -1,7 +1,7 @@
 'use strict';
 const RELOAD_TIME = 2000;
 const NUM_OLD_MES_ET = 10;
-const WS_URL = "ws://localhost:80";
+const WS_URL = "ws://localhost";
 
 let messageForm = document.querySelector('#messageForm');
 let messageInput = document.querySelector('#message');
@@ -10,7 +10,7 @@ let messageArea = $(".messages")[0];
 
 let sSocket = null;
 let oSocket = null;
-let nSocket = null;
+let gSocket = null;
 
 let uid = getCookie("uid");
 let userB = -1;
@@ -34,16 +34,19 @@ function config(list) {
 //RE_CONFIG CHAT BOX
 function reconfigChat(f) {
     if(initialized_chat[f]==null) {
-        initialized_chat[f] = 0;
-        getOldMessage(f);
+        let ulLen = $("#chat-box-"+f+" li").length;
+        //Get old except new messages
+        initialized_chat[f] = Math.floor(ulLen/NUM_OLD_MES_ET);
+        getOldMessage(f,ulLen%NUM_OLD_MES_ET);
+        messageArea.scrollTop = messageArea.scrollHeight;
     }
     fid = f;
     userB = fid_usr_list[f][0];
     console.log(userB);
 }
 
-//GET OLD MESSAGE
-function getOldMessage(fid) {
+//GET OLD MESSAGE (except for new message if dont have new -> except=-1)
+function getOldMessage(fid,except) {
     oSocket = new WebSocket(WS_URL+"/getOldMessage");
     let getRequest = {
         'fid': fid,
@@ -57,6 +60,7 @@ function getOldMessage(fid) {
         console.log("Conversation size: " + evt.data);
         let list = JSON.parse(evt.data);
         let gap2end = messageArea.scrollHeight - messageArea.scrollTop;
+        list = (except!=-1) ? list.splice(except) : list;
         list.forEach(function (i) {
             console.log(i);
             i['isOld'] = true;
@@ -73,14 +77,14 @@ function getOldMessage(fid) {
 //GET NEW MESSAGE FOR ALL
 function getMessage(){
     console.log("Getting:::");
-    nSocket = new WebSocket(WS_URL+"/getNewMessage");
+    gSocket = new WebSocket(WS_URL+"/getNewMessage");
     let getRequest = {
         'uid': uid,
     };
-    nSocket.onopen = function () {
-        nSocket.send(JSON.stringify(getRequest));
+    gSocket.onopen = function () {
+        gSocket.send(JSON.stringify(getRequest));
     }
-    nSocket.onmessage = function (evt) {
+    gSocket.onmessage = function (evt) {
         console.log("RESULT: "+evt.data);
         let hash = JSON.parse(evt.data)
         if(hash!=null) {
@@ -97,7 +101,7 @@ function getMessage(){
                 })
             });
         }
-        nSocket.close();
+        gSocket.close();
     }
     setTimeout(getMessage, RELOAD_TIME);
 }

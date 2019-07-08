@@ -24,7 +24,7 @@ function passBut(){
     $(".profile-card-inf__txt").eq(1).text(cw[3]);
     $(".profile-card-inf__txt").eq(2).text(cw[4]);
     $(".profile-card__img").find("img").attr("src",cw[5]);
-    $(".profile-card__txt").eq(0).text(cw[6]);
+    $(".profile-card__txt").eq(0).text((cw[6]=="") ? "⠀":cw[6]);
 }
 function crushBut() {
     let x = document.getElementById('crush_button');

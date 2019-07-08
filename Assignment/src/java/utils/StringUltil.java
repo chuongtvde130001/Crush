@@ -8,10 +8,6 @@ package utils;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- * @author meo
- */
 public class StringUltil {
 
     public static List<String> getCrushList(String str) {
