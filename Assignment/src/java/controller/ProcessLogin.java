@@ -28,9 +28,9 @@ public class ProcessLogin extends HttpServlet {
             if (user.getStatus() == 2) {
                 request.getRequestDispatcher("update_info.jsp").forward(request, response);
             } else if (user.getStatus() == 1) {
-                response.sendRedirect("home.jsp");
+                response.sendRedirect("/");
             } else {
-                response.sendRedirect("home.jsp");
+                response.sendRedirect("/");
             }
         }else {
             request.setAttribute("error", "Username or Password is incorrect!");

@@ -3,8 +3,10 @@ package ws;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dao.FriendDAO;
 import dao.MessageDAO;
 import dao.UserDAO;
+import model.FriendStorage;
 import model.Message;
 import model.NotiStorage;
 import model.User;
@@ -30,17 +32,27 @@ public class WsGetNoti {
             int uid = jObj.get("uid").getAsInt();
 
             HashMap<String, ArrayList<Integer>> raw = ServletListener.getNotiStorage().getNotis(uid);
-            HashMap<String, ArrayList<User>> out = new HashMap<>();
-            System.out.println("HAVE NOTI"+raw);
+
             if (raw != null && raw.size() != 0) {
+                HashMap<String, ArrayList<Object>> out = new HashMap<>();
+                ArrayList<Object> fris = null;
+                System.out.println("HAVE NOTI"+raw);
                 for (String i : raw.keySet()) {
                     out.put(i, new ArrayList<>());
                     for (Integer j : raw.get(i)) {
                         out.get(i).add(UserDAO.getUser(j));
                     }
                 }
+                if(out.get("friend")!=null){
+                    // <uid,fid>
+                    fris = new ArrayList<>();
+                    for(Integer j : raw.get("friend")){
+                        fris.add(FriendDAO.getFid(j,uid));
+                    }
+                    out.put("fid",fris);
+                }
+                session.getBasicRemote().sendText(gson.toJson(out));
             }
-            session.getBasicRemote().sendText(gson.toJson(out));
         }catch (Exception e){
             e.printStackTrace();
         }

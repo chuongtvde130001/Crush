@@ -62,14 +62,7 @@ public class ProcessRegister extends HttpServlet {
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
             User usr = UserDAO.register(username, password, email);
-            if (usr != null) {
-                try {
-                    session.setAttribute("user", usr);
-                } catch (Exception e) {
-                    throw new ServletException(e.getMessage());
-                }
-            }
-            response.sendRedirect("update_info.jsp");
+            response.sendRedirect("login.jsp");
         }
     }
 

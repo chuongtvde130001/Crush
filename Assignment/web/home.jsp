@@ -41,6 +41,7 @@
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/emojionearea.min.js"></script>
+        <script src="js/contact.js"></script>
         <script src="js/want.js"></script>
         <script src="js/noti.js"></script>
     </head>
@@ -52,40 +53,6 @@
                     <div class="wrap">
                         <img id="profile-img" src="<%=usr.getAvatar()%>" class="online"/>
                         <p><%=usr.getFullName()%></p>
-                        <div class="noti-dot">
-                            <ul>
-                                <li>
-                                    <div class="dropdowns-wrapper">
-                                        <div class="dropdown-container">
-                                            <div class="notifications dropdown dd-trigger">
-                                                <span class="count animated" id="notifications-count" style="display: none"></span>
-                                                <span class="fa fa-bell-o"></span>
-                                            </div>
-                                            <div class="dropdown-menu animated" id="notification-dropdown">
-                                                <div class="dropdown-header">
-                                                    <span class="triangle"></span>
-                                                    <span class="heading">Notifications</span>
-                                                    <span class="count" id="dd-notifications-count"></span>
-                                                </div>
-                                                <div class="dropdown-body">
-                                                    <div class="notification new">
-                                                        <div class="notification-image-wrapper">
-                                                            <div class="notification-image">
-                                                                <img src="">
-                                                            </div>
-                                                        </div>
-                                                        <div class="notification-text">
-                                                            <span class="highlight">Alex</span> and you become friend!
-                                                        </div>
-                                                    </div>
-                                                    <%--                                                <div class="notification">--%>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
 
                 </div>
@@ -142,46 +109,41 @@
                     let header = $("#contacts");
                     let btns = $(header).find(".contact");
                     for (let i = 0; i < btns.length; i++) {
-                        btns[i].addEventListener("click", function () {
-                            let fid = $(this).find(".fid")[0].innerText;
-                            if (curChatActive == fid) {
-                                return;
-                            }
-                            let name = $(this).find(".name")[0].innerText;
-                            let avatar = $(this).find(".avatar")[0].src;
-
-                            $("#findCrush").hide(400);
-                            $("#crushOnMe").hide(400);
-                            $("#chat").show(200);
-                            $(".messages").show(200);
-                            $(".message-input").show(200);
-
-                            //Click Contact Process
-                            let current = $(header).find(".active");
-                            if (current[0] != null)
-                                current[0].className = current[0].className.replace(" active", "");
-                            this.className += " active";
-
-                            //Update Chat Info Header
-                            $("#chat-info-img").attr("src", avatar);
-                            $("#chat-info-usr-name").text(name);
-                            //Show Corresponding Chat Content
-                            $("#chat-box-" + fid).show();
-                            $("#chat-box-" + curChatActive).hide();
-                            curChatActive = fid;
-
-                            messageArea.scrollTop = messageArea.scrollHeight;
-
-                            //Update chat engine
-                            reconfigChat(fid);
-                            $("#ct_last_" + fid).addClass('read').removeClass('unread')
+                        btns[i].addEventListener("click",function(){
+                            contactClick(this);
                         });
                     }
                     function disableChat() {
-                        $(header).find(".active")[0].className = "contact";
+                        let active = $(header).find(".active")[0];
+                        if(active!=null) active.className = "contact";
                         curChatActive = -1
                     }
                 </script>
+            </div>
+            <div class="noti-dot">
+                <ul>
+                    <li>
+                        <div class="dropdowns-wrapper">
+                            <div class="dropdown-container">
+                                <div class="notifications dropdown dd-trigger">
+                                    <span class="count animated" id="notifications-count" style="display: none"></span>
+                                    <span class="fa fa-bell-o"></span>
+                                </div>
+                                <div class="dropdown-menu animated" id="notification-dropdown">
+                                    <div class="dropdown-header">
+                                        <span class="triangle"></span>
+                                        <span class="heading">Notifications</span>
+                                        <span class="count" id="dd-notifications-count"></span>
+                                    </div>
+                                    <div class="dropdown-body">
+<%--                                        <div class="notification new">--%>
+<%--                                        <div class="notification">--%>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="content" style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
                 <div id="findCrush" class="profile-card_chat">

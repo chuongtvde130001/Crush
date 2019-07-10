@@ -1,10 +1,11 @@
 .noti-dot{
   width: 37px;
   height: 37px;
-  position: absolute;
   border-radius: 30px;
-  margin-left: 230px;
-  margin-top: -11px;
+  z-index: 1;
+  position: absolute;
+  margin-top: 30px;
+  margin-left: 270px;
 }
 .noti-dot ul {
   list-style: none;
@@ -20,16 +21,16 @@
 .noti-dot .dropdowns{
   padding: 4px 0px;
 }
-.noti-dot .dropdown-container {
+.noti-dot .dropdowns-wrapper .dropdown-container {
   display: inline-block;
   position: relative;
 }
-.noti-dot .dropdown-container .dropdown {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown {
   position: relative;
   cursor: pointer;
   z-index: 2;
 }
-.noti-dot .dropdown-container .dropdown-menu {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu {
   position: absolute;
   display: none;
   z-index: 1;
@@ -39,11 +40,11 @@
   min-width: 10px;
   width: 280px;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-header {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-header {
   background: #FFF;
   padding: 15px;
   position: relative;
-  text-align: center;
+  /*text-align: center;*/
   color: #747F8B;
   font-weight: bold;
   border-radius: 10px 10px 0 0;
@@ -55,7 +56,7 @@
   border-image: linear-gradient(to right, white 0%, #cedae0 40%, #cedae0 60%, white 100%) 1 20%;
   box-shadow: 0px 2px 10px -2px #cedae0;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-header .triangle {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-header .triangle {
   position: absolute;
   top: -8px;
   left: 134px;
@@ -65,7 +66,7 @@
   transform: rotate(45deg);
   background: #FFF;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-header .count {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-header .count {
   position: static;
   height: 25px;
   width: 25px;
@@ -75,13 +76,13 @@
   font-size: 12px;
   vertical-align: middle;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-body {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-body {
   max-height: 292px;
   background: #e9f0f3;
   overflow-y: auto;
   overflow-x: hidden;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-body .notification {
   background: #FFF;
   padding: 15px;
   border: 0px;
@@ -91,7 +92,7 @@
   -o-border-image: -o-linear-gradient(right, white, #cedae0, #cedae0, white) 1 20%;
   border-image: linear-gradient(to right, white 0%, #cedae0 40%, #cedae0 60%, white 100%) 1 20%;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification.new {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-body .notification.new {
   -webkit-transition: all 500ms ease;
   -moz-transition: all 500ms ease;
   -ms-transition: all 500ms ease;
@@ -99,21 +100,21 @@
   transition: all 500ms ease;
   background: #e9f0f3;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image-wrapper{
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image-wrapper{
   display: table-cell;
   vertical-align: middle;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image {
   display: inline-block;
   height: 32px;
   width: 32px;
   overflow: hidden;
   border-radius: 100%;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image img{
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-body .notification .notification-image img{
   width:32px;
 }
-.noti-dot .dropdown-container .dropdown-menu .dropdown-body .notification .notification-text {
+.noti-dot .dropdowns-wrapper .dropdown-container .dropdown-menu .dropdown-body .notification .notification-text {
   display: table-cell;
   padding-left: 15px;
   vertical-align: middle;

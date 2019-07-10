@@ -1,7 +1,7 @@
 'use strict';
 const RELOAD_TIME = 2000;
 const NUM_OLD_MES_ET = 10;
-const WS_URL = "ws://localhost";
+const WS_URL = "ws://crushme.tk";
 
 let messageForm = document.querySelector('#messageForm');
 let messageInput = document.querySelector('#message');
@@ -120,17 +120,21 @@ function sendMessage(evt) {
         };
         sSocket = new WebSocket(WS_URL+"/sendMessage");
         sSocket.onopen = function () {
+            addMessageFromSend(message);
             sSocket.send(JSON.stringify(message));
-            sSocket.close()
-            message['on']=userB
-            message['type']='sent';
-            message['avatar']=avatar;
-            updateMessage(message);
-            updateContactMessage(message);
-            messageInput.value = '';
             sSocket.close();
+
         }
     }
+}
+
+function addMessageFromSend(message) {
+    message['on']=userB;
+    message['type']='sent';
+    message['avatar']=avatar;
+    updateMessage(message);
+    updateContactMessage(message);
+    messageInput.value = '';
 }
 
 function updateMessage(message){

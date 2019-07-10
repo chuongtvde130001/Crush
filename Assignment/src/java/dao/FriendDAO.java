@@ -13,13 +13,14 @@ import java.util.HashMap;
 
 public class FriendDAO {
 
-    private static final String getFidSt = "SELECT\n" +
+    private static final String getFriSt = "SELECT\n" +
             "CASE\n" +
             "    WHEN UserA != ? THEN UserA\n" +
             "    ELSE UserB\n" +
             "END\n" +
             "FROM FRIENDS\n" +
             "WHERE FID = ?";
+    private static final String getFidSt = "SELECT TOP 1 FID FROM FRIENDS WHERE UserA=? AND UserB=? OR UserA=? AND UserB=?";
     private static final String getFriendSt = "SELECT FID, USERS.UID, USERS.FullName, USERS.Avatar FROM\n" +
             "(SELECT FID,\n" +
             "CASE\n" +
@@ -43,7 +44,7 @@ public class FriendDAO {
     public static int getFriUid(int fid,int userA){
         int uid = -1;
         try (Connection conn = DBConfig.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(getFidSt);
+            PreparedStatement ps = conn.prepareStatement(getFriSt);
             ps.setInt(1, userA);
             ps.setInt(2, fid);
             ResultSet rs = ps.executeQuery();
@@ -56,6 +57,26 @@ public class FriendDAO {
             e.printStackTrace();
         }
         return uid;
+    }
+    //Temporary
+    public static int getFid(int userA, int userB) {
+        int fid = -1;
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(getFidSt);
+            ps.setInt(1, userA);
+            ps.setInt(2, userB);
+            ps.setInt(3, userB);
+            ps.setInt(4, userA);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                fid = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fid;
     }
 
     // Get friend's info to user object
@@ -95,8 +116,9 @@ public class FriendDAO {
                 ps.setInt(1, rs.getInt(1));
                 ps.execute();
                 ps = conn.prepareStatement(addFriendSt);
-                //Send notification to target
+                //Send notification to target and you
                 ServletListener.getNotiStorage().addNoti(uid,target,1);
+                ServletListener.getNotiStorage().addNoti(target,uid,1);
                 isFriend=true;
             }else {
                 ps = conn.prepareStatement(addCrushSt);
@@ -147,10 +169,5 @@ public class FriendDAO {
             e.printStackTrace();
         }
         return list;
-    }
-
-    public static void main(String[] args) {
-
-        System.out.println(getTarsCrushUser(1).get(0).getAvatar());
     }
 }

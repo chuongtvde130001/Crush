@@ -34,30 +34,27 @@ public class ProcessUpdate extends HttpServlet {
         int ageBegin = Integer.parseInt(request.getParameter("ageBegin"));
         int ageEnd = Integer.parseInt(request.getParameter("ageEnd"));
         String wantList[] = request.getParameterValues("wantGender");
-        int male = 2, female = 3, other = 5;
         int wantAge=1;
-        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(wantList));
-        if (arrayList.contains("male") && arrayList.contains("female") && arrayList.contains("other")) {
-            wantAge = male * female * other;
-        } else if (arrayList.contains("male") && arrayList.contains("female")) {
-            wantAge = male * female;
-        } else if (arrayList.contains("male") && arrayList.contains("other")) {
-            wantAge = male * other;
-        } else if (arrayList.contains("female") && arrayList.contains("other")) {
-            wantAge = female * other;
-        } else if (arrayList.contains("male")) {
-            wantAge = male;
-        } else if (arrayList.contains("female")) {
-            wantAge = female;
-        } else if (arrayList.contains("other")) {
-            wantAge = other;
+        ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(wantList));
+        System.out.println("ARRAY" + arrayList);
+        for(String i:arrayList){
+            if(i.equals("wantMale")) wantAge*=2;
+            else if(i.equals("wantFemale")) wantAge*=3;
+            else wantAge*=5;
         }
         // Xử lí upload file  
         Part photo = request.getPart("myImage");
-        String avatarPath = ImageSaver.saveImage(photo, String.valueOf(usr.getUid()));
+
+        String avatarPath;
+        try {
+            avatarPath = ImageSaver.saveImage(photo, String.valueOf(usr.getUid()));
+        }catch (Exception e){
+            avatarPath = usr.getAvatar().substring(usr.getAvatar().indexOf("ava"));
+        }
         // Cập Nhật thông tin User Avatar vv...
-        System.out.println(avatarPath);
         UserDAO.updateUserInfo(fullName, age, gender, avatarPath, about, usr.getUid(), ageBegin, ageEnd, wantAge);
-        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+        User user = UserDAO.getUser(usr.getUid());
+        session.setAttribute("user", user);
+        response.sendRedirect("/");
     }
 }

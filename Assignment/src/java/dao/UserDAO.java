@@ -4,6 +4,7 @@ import dbconfig.DBConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import utils.ImageSaver;
 import utils.MD5;
@@ -43,8 +44,7 @@ public class UserDAO {
         return -1;
     }
 
-    public static boolean updateUserInfo(String fullName,
-            int age, String gender, String avatarPath, String about, int uid, int ageBegin, int ageEnd, int wantGender) {
+    public static boolean updateUserInfo(String fullName, int age, String gender, String avatarPath, String about, int uid, int ageBegin, int ageEnd, int wantGender) {
         boolean want = false;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(update);
@@ -62,12 +62,7 @@ public class UserDAO {
         return want;
     }
 
-    public static void main(String[] args) {
-        System.out.println(updateUserInfo("xyz", 30, "Male", "a", "this is test", 1, 18, 30, 5));
-    }
-
     public static boolean checkUsersName(String UserName) {
-
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(findUsername);
             ps.setString(1, UserName);
@@ -82,7 +77,6 @@ public class UserDAO {
     }
 
     public static boolean checkEmail(String Email) {
-
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(findEmail);
             ps.setString(1, Email);
@@ -98,14 +92,19 @@ public class UserDAO {
     // Đăng kí User
 
     public static User register(String username, String password, String email) {
-        User u = null;
+        User u=null;
         try (Connection con = DBConfig.getConnection()) {
-            boolean kq = WantDAO.wantPeople(u.getUid());
-            PreparedStatement ps = con.prepareStatement(insUserSt);
+            PreparedStatement ps = con.prepareStatement(insUserSt, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, username);
             ps.setString(2, MD5.getMd5(password));
             ps.setString(3, email);
+
             int result = ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            boolean kq = WantDAO.wantPeople(rs.getInt(1));
+            rs.close();
+
             if (result > 0 && kq == true) {
                 u = new User(username, email);
             }
@@ -115,13 +114,18 @@ public class UserDAO {
         }
         return u;
     }
-    // Kiểm tra thông tin đăng nhập
 
+    public static void main(String[] args) {
+        register("CVVVSDW", "1234", "adsa");
+//        WantDAO.wantPeople(9);
+    }
+
+    // Kiểm tra thông tin đăng nhập
     public static User checkLogin(String username, String password) {
         return getProfile(username, password);
     }
-    // Lấy toàn bộ thông tin User sau khi đã đăng nhập
 
+    // Lấy toàn bộ thông tin User sau khi đã đăng nhập
     public static User getProfile(String username, String password) {
         User u = null;
         try (Connection conn = DBConfig.getConnection()) {
@@ -131,14 +135,14 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 u = new User(
-                        rs.getString("UserName"),
-                        rs.getString("FullName"),
-                        getStrGender(rs.getInt("Gender")),
-                        rs.getString("Email"),
-                        ImageSaver.imagePath + rs.getString("Avatar"),
-                        rs.getInt("UID"),
-                        rs.getInt("Age"),
-                        rs.getInt("Status"));
+                    rs.getString("UserName"),
+                    rs.getString("FullName"),
+                    getStrGender(rs.getInt("Gender")),
+                    rs.getString("Email"),
+                    ImageSaver.imagePath + rs.getString("Avatar"),
+                    rs.getInt("UID"),
+                    rs.getInt("Age"),
+                    rs.getInt("Status"));
             }
             rs.close();
             ps.close();
