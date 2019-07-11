@@ -34,4 +34,10 @@ public class NotiStorage {
             notiStorage.get(uid).clear();
         return out;
     }
+
+    public synchronized void clearNoti(int uid){
+        try {
+            notiStorage.get(uid).clear();
+        }catch(Exception e){}
+    }
 }

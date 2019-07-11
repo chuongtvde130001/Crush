@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class ImageSaver {
 
-    public static final String imagePath = "http://crushme.tk/images/";
+    public static final String imagePath = "http:/crushme.tk/images/";//crushme.tk
 
     public static String saveImage(Part photo, String uid) throws IOException {
         String fileName = uid + extractFileFormat(photo);
@@ -14,6 +14,7 @@ public class ImageSaver {
         fileName = new File(fileName).getName();
         String path = getFolderUpload().getAbsolutePath() + File.separator + fileName;
         photo.write(getFolderUpload().getAbsolutePath() + File.separator + fileName);
+        photo.delete();
         return "avatars/" + fileName;
     }
 

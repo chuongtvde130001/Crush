@@ -1,7 +1,7 @@
 'use strict';
 const RELOAD_TIME = 2000;
 const NUM_OLD_MES_ET = 10;
-const WS_URL = "ws://crushme.tk";
+const WS_URL = "ws:crushme.tk";
 
 let messageForm = document.querySelector('#messageForm');
 let messageInput = document.querySelector('#message');

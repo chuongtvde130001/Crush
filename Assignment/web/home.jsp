@@ -10,8 +10,9 @@
         response.sendRedirect("register.jsp");
         return;
     }
-    //Clear MessageStorage
+    //Clear MessageStorage and NotiStorage
     ServletListener.getMesStorage().clearMessage(usr.getUid());
+    ServletListener.getNotiStorage().clearNoti(usr.getUid());
     //Get All Friends
     request.setAttribute("friends", FriendDAO.getFriends(usr.getUid()));
     //Get All User meet want

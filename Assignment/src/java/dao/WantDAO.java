@@ -35,7 +35,7 @@ public class WantDAO {
             + "FROM CRUSH\n"
             + "WHERE UserA = ? OR UserB = ?) ";
 
-    public static ArrayList<User> getUsrsMatchWant(int uid) {
+    public synchronized static ArrayList<User> getUsrsMatchWant(int uid) {
         ArrayList<User> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getUsr);
@@ -66,7 +66,7 @@ public class WantDAO {
         return list;
     }
 
-    public static boolean wantPeople(int uid) {
+    public synchronized static boolean wantPeople(int uid) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(want);
             ps.setInt(1, uid);
@@ -74,13 +74,14 @@ public class WantDAO {
             if (result > 0) {
                 return true;
             }
+            ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static boolean updateWant(int ageBegin, int ageEnd, int wanGender, int uid) {
+    public synchronized static boolean updateWant(int ageBegin, int ageEnd, int wanGender, int uid) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(updateWant);
             ps.setInt(1, ageBegin);
@@ -91,13 +92,14 @@ public class WantDAO {
             if (result > 0) {
                 return true;
             }
+            ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static Want getWant(int uid) {
+    public synchronized static Want getWant(int uid) {
         Want w = null;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getWant);
@@ -106,6 +108,8 @@ public class WantDAO {
             while(rs.next()){
               w = new Want(uid, rs.getInt("AgeBegin"), rs.getInt("AgeEnd"), rs.getInt("Gender"));
             }
+            rs.close();
+            ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

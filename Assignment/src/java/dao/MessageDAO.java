@@ -1,12 +1,9 @@
 package dao;
 
-import com.google.gson.Gson;
 import dbconfig.DBConfig;
 import model.Message;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MessageDAO {
 
@@ -17,7 +14,7 @@ public class MessageDAO {
             "FETCH NEXT ? ROWS ONLY\n";
     private static final String getConLength = "SELECT COUNT(MID) FROM MESSAGES WHERE FID=?";
 
-    public static boolean writeMessage(Message mes){
+    public synchronized static boolean writeMessage(Message mes){
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(writeMesSt);
             ps.setInt(1, mes.getFid());
@@ -32,7 +29,7 @@ public class MessageDAO {
         return false;
     }
     //i is n*i row skipped, n is number of row to read
-    public static ArrayList<Message> getNLstMessage(int fid, int i, int n){
+    public synchronized static ArrayList<Message> getNLstMessage(int fid, int i, int n){
         ArrayList<Message> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getMes);
@@ -52,7 +49,7 @@ public class MessageDAO {
         return list;
     }
 
-    public static int getConLength(int fid){
+    public synchronized static int getConLength(int fid){
         int length = -1;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getConLength);
@@ -67,12 +64,5 @@ public class MessageDAO {
             e.printStackTrace();
         }
         return length;
-    }
-
-    public static void main(String[] args){
-        for(Message i:getNLstMessage(1,5,10)){
-            System.out.println(i.getContent());
-        }
-//        System.out.println(getConLength(22));
     }
 }

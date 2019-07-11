@@ -41,7 +41,7 @@ public class FriendDAO {
             "LEFT JOIN USERS ON(CRUSH.UserA = USERS.UID)\n" +
             "WHERE UserB = ?";
 
-    public static int getFriUid(int fid,int userA){
+    public synchronized static int getFriUid(int fid,int userA){
         int uid = -1;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getFriSt);
@@ -59,7 +59,7 @@ public class FriendDAO {
         return uid;
     }
     //Temporary
-    public static int getFid(int userA, int userB) {
+    public synchronized static int getFid(int userA, int userB) {
         int fid = -1;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getFidSt);
@@ -80,7 +80,7 @@ public class FriendDAO {
     }
 
     // Get friend's info to user object
-    public static HashMap<Integer, User> getFriends(int uid) {
+    public synchronized static HashMap<Integer, User> getFriends(int uid) {
         HashMap<Integer, User> map = new HashMap<>();
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getFriendSt);
@@ -104,7 +104,7 @@ public class FriendDAO {
     }
 
     //Action Crush
-    public static boolean actionCrush(int uid, int target){
+    public synchronized static boolean actionCrush(int uid, int target){
         boolean isFriend=false;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(checkCrushSt);
@@ -135,7 +135,7 @@ public class FriendDAO {
         return isFriend;
     }
 
-    public static boolean actionUnCrush(int uid, int target){
+    public synchronized static boolean actionUnCrush(int uid, int target){
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(unCrushSt);
             ps.setInt(1, uid);
@@ -148,7 +148,7 @@ public class FriendDAO {
         return false;
     }
 
-    public static ArrayList<User> getTarsCrushUser(int uid) {
+    public synchronized static ArrayList<User> getTarsCrushUser(int uid) {
         ArrayList<User> list = new ArrayList<>();
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(tarCrushUsr);

@@ -5,10 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import utils.ImageSaver;
 import utils.MD5;
-
 import model.User;
 
 public class UserDAO {
@@ -20,7 +18,7 @@ public class UserDAO {
     private static final String findEmail = "select Email from USERS where Email=?";
     private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? , Description = ? ,Status = 0 where uid = ?";
 
-    public static String getStrGender(int i) {
+    public synchronized static String getStrGender(int i) {
         switch (i) {
             case 2:
                 return "Male";
@@ -32,7 +30,7 @@ public class UserDAO {
         return "";
     }
 
-    public static int getIntGender(String s) {
+    public synchronized static int getIntGender(String s) {
         switch (s) {
             case "Male":
                 return 2;
@@ -44,7 +42,7 @@ public class UserDAO {
         return -1;
     }
 
-    public static boolean updateUserInfo(String fullName, int age, String gender, String avatarPath, String about, int uid, int ageBegin, int ageEnd, int wantGender) {
+    public synchronized static boolean updateUserInfo(String fullName, int age, String gender, String avatarPath, String about, int uid, int ageBegin, int ageEnd, int wantGender) {
         boolean want = false;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(update);
@@ -55,6 +53,7 @@ public class UserDAO {
             ps.setString(5, about);
             ps.setInt(6, uid);
             ps.execute();
+            ps.close();
             want = WantDAO.updateWant(ageBegin, ageEnd, wantGender, uid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,7 +61,7 @@ public class UserDAO {
         return want;
     }
 
-    public static boolean checkUsersName(String UserName) {
+    public synchronized static boolean checkUsersName(String UserName) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(findUsername);
             ps.setString(1, UserName);
@@ -70,13 +69,15 @@ public class UserDAO {
             if (rs.next()) {
                 return true;
             }
+            rs.close();
+            ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static boolean checkEmail(String Email) {
+    public synchronized static boolean checkEmail(String Email) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(findEmail);
             ps.setString(1, Email);
@@ -84,6 +85,8 @@ public class UserDAO {
             if (rs.next()) {
                 return true;
             }
+            rs.close();
+            ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +94,7 @@ public class UserDAO {
     }
     // Đăng kí User
 
-    public static User register(String username, String password, String email) {
+    public synchronized static User register(String username, String password, String email) {
         User u=null;
         try (Connection con = DBConfig.getConnection()) {
             PreparedStatement ps = con.prepareStatement(insUserSt, Statement.RETURN_GENERATED_KEYS);
@@ -115,18 +118,13 @@ public class UserDAO {
         return u;
     }
 
-    public static void main(String[] args) {
-        register("CVVVSDW", "1234", "adsa");
-//        WantDAO.wantPeople(9);
-    }
-
     // Kiểm tra thông tin đăng nhập
-    public static User checkLogin(String username, String password) {
+    public synchronized static User checkLogin(String username, String password) {
         return getProfile(username, password);
     }
 
     // Lấy toàn bộ thông tin User sau khi đã đăng nhập
-    public static User getProfile(String username, String password) {
+    public synchronized static User getProfile(String username, String password) {
         User u = null;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getUsrSt);
@@ -152,7 +150,7 @@ public class UserDAO {
         return u;
     }
 
-    public static User getUser(int uid){
+    public synchronized static User getUser(int uid){
         User u = null;
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getUsrSt1);
@@ -172,36 +170,5 @@ public class UserDAO {
             e.printStackTrace();
         }
         return u;
-    }
-
-    public static String crushPeople(String oldDes, String des, int crushId) {
-        String sql = "update USERS set Description = ? where UID = ?";
-        try (Connection conn = DBConfig.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, oldDes + des + ",");
-            ps.setInt(2, crushId);
-            int result = ps.executeUpdate();
-            if (result > 0) {
-                return oldDes + des;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    public static String getDes(int crushId) {
-        String sql = "select Description from USERS where UID = ?";
-        try (Connection conn = DBConfig.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, crushId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getString("Description");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 }
