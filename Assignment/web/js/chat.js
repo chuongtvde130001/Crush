@@ -1,16 +1,12 @@
 'use strict';
-const RELOAD_TIME = 2000;
+const RELOAD_TIME = 650;
 const NUM_OLD_MES_ET = 10;
-const WS_URL = "ws:crushme.tk";
+const API_URL = "http://www.crushme.tk/api"; //www.crushme.tk/api";
 
 let messageForm = document.querySelector('#messageForm');
 let messageInput = document.querySelector('#message');
 let searchInput = document.querySelector('#search_input');
 let messageArea = $(".messages")[0];
-
-let sSocket = null;
-let oSocket = null;
-let gSocket = null;
 
 let uid = getCookie("uid");
 let userB = -1;
@@ -42,75 +38,60 @@ function reconfigChat(f) {
     }
     fid = f;
     userB = fid_usr_list[f][0];
-    console.log(userB);
 }
 
 //GET OLD MESSAGE (except for new message if dont have new -> except=-1)
 function getOldMessage(fid,except) {
-    oSocket = new WebSocket(WS_URL+"/getOldMessage");
-    let getRequest = {
-        'fid': fid,
-        'i': initialized_chat[fid],
-        'n' : NUM_OLD_MES_ET,
-    };
-    oSocket.onopen = function () {
-        oSocket.send(JSON.stringify(getRequest));
+    var gOldApi = new XMLHttpRequest();
+    gOldApi.open("GET", API_URL+"/getOldMessage?fid="+fid+"&i="+initialized_chat[fid]+"&n="+NUM_OLD_MES_ET,true);
+    gOldApi.onreadystatechange = function() {
+        if (gOldApi.readyState == XMLHttpRequest.DONE) {
+            let list = JSON.parse(gOldApi.responseText);
+            let gap2end = messageArea.scrollHeight - messageArea.scrollTop;
+            list = (except!=-1) ? list.splice(except) : list;
+            list.forEach(function (i) {
+                i['isOld'] = true;
+                i['avatar'] = (i.from == uid) ? avatar : fid_usr_list[i.fid][1];
+                i['type'] = (i.from == uid) ? 'sent' : 'replies';
+                updateMessage(i);
+            });
+            messageArea.scrollTop = messageArea.scrollHeight - gap2end;
+            initialized_chat[fid]++;
+        }
     }
-    oSocket.onmessage = function (evt) {
-        console.log("Conversation size: " + evt.data);
-        let list = JSON.parse(evt.data);
-        let gap2end = messageArea.scrollHeight - messageArea.scrollTop;
-        list = (except!=-1) ? list.splice(except) : list;
-        list.forEach(function (i) {
-            console.log(i);
-            i['isOld'] = true;
-            i['avatar'] = (i.from == uid) ? avatar : fid_usr_list[i.fid][1];
-            i['type'] = (i.from == uid) ? 'sent' : 'replies';
-            updateMessage(i);
-        });
-        messageArea.scrollTop = messageArea.scrollHeight - gap2end;
-        initialized_chat[fid]++;
-        oSocket.close();
-    }
+    gOldApi.send();
 }
 
 //GET NEW MESSAGE FOR ALL
 function getMessage(){
-    console.log("Getting:::");
-    gSocket = new WebSocket(WS_URL+"/getNewMessage");
-    let getRequest = {
-        'uid': uid,
-    };
-    gSocket.onopen = function () {
-        gSocket.send(JSON.stringify(getRequest));
-    }
-    gSocket.onmessage = function (evt) {
-        console.log("RESULT: "+evt.data);
-        let hash = JSON.parse(evt.data)
-        if(hash!=null) {
-            Object.keys(hash).forEach(function (key) {
-                hash[key].forEach(function(data) {
-                    let message = {
-                        fid: key,
-                        type: 'replies',
-                        avatar: fid_usr_list[key][1],
-                        content: data,
-                    };
-                    updateMessage(message);
-                    updateContactMessage(message);
-                })
-            });
+    var gNewApi = new XMLHttpRequest();
+    gNewApi.open("GET", API_URL+"/getNewMessage?uid="+uid, true);
+    gNewApi.onreadystatechange = function() {
+        if (gNewApi.readyState == XMLHttpRequest.DONE) {
+            let hash = JSON.parse(gNewApi.responseText)
+            if(hash!=null) {
+                Object.keys(hash).forEach(function (key) {
+                    hash[key].forEach(function(data) {
+                        let message = {
+                            fid: key,
+                            type: 'replies',
+                            avatar: fid_usr_list[key][1],
+                            content: data,
+                        };
+                        updateMessage(message);
+                        updateContactMessage(message);
+                    })
+                });
+            }
         }
-        gSocket.close();
     }
+    gNewApi.send();
     setTimeout(getMessage, RELOAD_TIME);
 }
 
 function sendMessage(evt) {
-    console.log("INFO: "+fid);
     evt.preventDefault();
     let messageContent = messageInput.value.trim();
-    if(sSocket!=null) console.log("STATE "+ sSocket.readyState);
 
     if(messageContent) {
         let message = {
@@ -118,13 +99,10 @@ function sendMessage(evt) {
             from: uid,
             content: messageInput.value,
         };
-        sSocket = new WebSocket(WS_URL+"/sendMessage");
-        sSocket.onopen = function () {
-            addMessageFromSend(message);
-            sSocket.send(JSON.stringify(message));
-            sSocket.close();
-
-        }
+        var sendApi = new XMLHttpRequest();
+        sendApi.open("POST", API_URL+"/sendMessage", true);
+        addMessageFromSend(message);
+        sendApi.send(JSON.stringify(message));
     }
 }
 

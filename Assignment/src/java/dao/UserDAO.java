@@ -138,6 +138,7 @@ public class UserDAO {
                     getStrGender(rs.getInt("Gender")),
                     rs.getString("Email"),
                     ImageSaver.imagePath + rs.getString("Avatar"),
+                        rs.getString("Description"),
                     rs.getInt("UID"),
                     rs.getInt("Age"),
                     rs.getInt("Status"));
@@ -163,6 +164,7 @@ public class UserDAO {
                 u.setAge(rs.getInt(5));
                 u.setGender(getStrGender(rs.getInt(6)));
                 u.setAvatar(ImageSaver.imagePath + rs.getString(8));
+                u.setDescription(rs.getString(9));
             }
             rs.close();
             ps.close();

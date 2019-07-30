@@ -3,8 +3,7 @@
 <%@page import="dao.FriendDAO"%>
 <%@page import="servlet.ServletListener"%>
 <%@page import="model.User"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +11,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Welcome ${sessionScope.user.userName}</title>
+        <title>Welcome ${sessionScope.user.fullName}</title>
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style-checkbox.css">
@@ -63,9 +62,9 @@
                     $('#ageTo').val("${sessionScope.userWant.ageEnd}");
                     var gender = '${sessionScope.user.gender}';
                     if (gender === "Male") {
-                        $('#selectGender select').val('male');
+                        $('#selectGender select').val('Male');
                     } else if (gender === "Female") {
-                        $('#selectGender select').val('female');
+                        $('#selectGender select').val('Female');
                     } else if (gender === "Lgbt") {
                         $('#selectGender select').val('Lgbt');
                     }
@@ -143,8 +142,8 @@
                                             <h4>Gender :</h4>
                                             <div id="selectGender">
                                                 <select id="gender" class="form-control" name="gender">
-                                                    <option value="male">Male</option>
-                                                    <option value="female">Female</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
                                                     <option value="Lgbt">Other</option>
                                                 </select>
                                             </div>
@@ -177,12 +176,12 @@
                                         <br>
                                         <div class="col">
                                             <h3>About me</h3>
-                                            <textarea class="form-control" rows="5" id="comment" name="about" id="about"></textarea>
+                                            <textarea class="form-control" rows="5" id="comment" name="about" id="about">${sessionScope.user.description}</textarea>
                                         </div><br>
                                     </div><br>
                                     <button type="submit" class="btn btn-primary btn-block">Take me to the home page !</button>
                                     <script>
-                                        var personNameRegex = /^([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]*)+[ ]([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]+)+$/;
+                                        var personNameRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+)\s\1$/g;
                                         var fullName = document.getElementById('fullName');
                                         var age = document.getElementById('age');
                                         var ageFrom = document.getElementById('ageFrom');
@@ -220,7 +219,7 @@
                                                 });
                                                 return false;
                                             } else {
-                                                if (!personNameRegex.test(fullName.value)) {
+                                                if (personNameRegex.test(fullName.value)) {
                                                     Swal.fire({
                                                         type: 'warning',
                                                         title: 'Please type a valid Name...',

@@ -14,6 +14,7 @@
     ServletListener.getMesStorage().clearMessage(usr.getUid());
     ServletListener.getNotiStorage().clearNoti(usr.getUid());
     //Get All Friends
+    System.out.println("FFFFF"+FriendDAO.getFriends(usr.getUid()).size());
     request.setAttribute("friends", FriendDAO.getFriends(usr.getUid()));
     //Get All User meet want
     request.setAttribute("wants", WantDAO.getUsrsMatchWant(usr.getUid()));
@@ -95,9 +96,9 @@
                                     <img class="avatar" src="${fri.value.avatar}"/>
                                     <div class="meta">
                                         <p class="name">${fri.value.fullName}</p>
-                                        <p class="read" id="ct_last_${fri.key}">⠀</p>
+                                        <p class="read" id="ct_last_${fri.key.fid}">‏</p>
                                     </div>
-                                    <p class="fid" hidden>${fri.key}</p>
+                                    <p class="fid" hidden>${fri.key.fid}</p>
                                 </div>
                             </li>
                         </c:forEach>
@@ -242,7 +243,7 @@
                 <div id="chat" class="profile-card_chat" style="display: none;">
                     <div class="messages">
                         <c:forEach var="fri" items="${friends}">
-                            <ul id="chat-box-${fri.key}" style="display: none"></ul>
+                            <ul id="chat-box-${fri.key.fid}" style="display: none"></ul>
                         </c:forEach>
                     </div>
                     <div class="message-input">
@@ -263,27 +264,17 @@
     </body>
     <script src="js/chat.js"></script>
     <script>
-        //ADD FID & UInfo TO LIST
+        //ADD FID & UInfo TO LIST AND ADD LAST MESSAGE TO EACH CONTACTS
         let list = {};
         <c:forEach var="fri" items="${friends}">
-            list[${fri.key}] = [${fri.value.uid}, "${fri.value.avatar}"];
+            list[${fri.key.fid}] = [${fri.value.uid}, "${fri.value.avatar}"];
+            updateContactMessage({
+                fid: ${fri.key.fid},
+                type: ('${fri.key.from}'==uid.toString()) ? 'sent':'',
+                content: '${fri.key.content}⠀'
+            });
         </c:forEach>
         config(list)
-        //Submit On Enter
-        // $('#message').keypress(function(e){
-        //     if(e.which == 13){
-        //         e.preventDefault();
-        //         $(this).closest('form').find('button').click();
-        //     }
-        // });
-        //Ini Emoji
-        // $('#message').emojioneArea({
-        //     pickerPosition:"top"
-        // })
-        // $(document).ready(function(){
-        // $('#editor_catch').on('keydown', function(event) {
-        //     console.log(event.keyCode);
-        // })});
     </script>
 </div>
 <%--Chat Area--%>

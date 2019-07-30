@@ -16,7 +16,7 @@ function contactClick(con) {
     let current = $(header).find(".active");
     if (current[0] != null)
         current[0].className = current[0].className.replace(" active", "");
-    this.className += " active";
+    con.className += " active";
 
     //Update Chat Info Header
     $("#chat-info-img").attr("src", avatar);

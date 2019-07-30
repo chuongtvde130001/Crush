@@ -1,91 +1,92 @@
+const TITLE = document.title;
+
 let notiOpen = false;
 let notiCount = 0;
 
 let notiDot = $('.noti-dot');
 
-let nSocket;
 $(document).ready(function() {
     $('.dd-trigger').click(openNoti);
     getNoti();
 });
-// $(window).click(function(event) {
-//    if(notiDot.has(event.target).length==0){
-//    	$('#notification-dropdown').hide();
-//    	notiOpen=false;
-//    }
-// });
+$(window).click(function(event) {
+   if($(event.target).parents("div.noti-dot").length==0 && notiOpen){
+   	$('#notification-dropdown').hide();
+   	notiOpen=false;
+   }
+});
 
 function openNoti(){
 	if(notiOpen){
+        notiOpen = false;
 		$('#notification-dropdown').hide();
 		$('#dd-notifications-count').text('');
-		notiOpen = false;
-	}else{
-		$('#notification-dropdown').show();
-		$('#dd-notifications-count').text(notiCount);
-		$('#notifications-count').text('');
-		$('#notifications-count').hide();
-		notiOpen = true;
-		notiCount = 0;
-	}
+    }else{
+        notiOpen = true;
+        notiCount = 0;
+        document.title = TITLE;
+        $('#notification-dropdown').show();
+        $('#dd-notifications-count').text(notiCount);
+        $('#notifications-count').text('');
+        $('#notifications-count').hide();
+    }
 }
 
 function getNoti() {
-    // if (nSocket!=null && nSocket.readyState === WebSocket.OPEN)
-    //     nSocket.close();
-    console.log(":::GET NOTIFICATION");
-    nSocket = new WebSocket(WS_URL+"/getNoti");
-    let getRequest = {
-        'uid': uid,
-    };
-    nSocket.onopen = function () {
-        nSocket.send(JSON.stringify(getRequest));
-    }
-    nSocket.onmessage = function (evt) {
-        console.log(evt.data);
-        let re = JSON.parse(evt.data);
-        if(re.friend!=null){
-            let friend = re.friend;
-            for(let i=0;i<friend.length;i++){
-                //add friend to chat engine
-                friend[i]['fid']=re.fid[i];
-                fid_usr_list[re.fid[i]] = [friend[i].uid, friend[i].avatar];
-                addFriendToSide(friend[i]);
-                obj={'avatar':friend[i].avatar,'head':friend[i].fullName,'content':' and you have becomed friend.'}
-                addNoti(obj,1)
-
+    var notiApi = new XMLHttpRequest();
+    notiApi.open("GET", API_URL+"/getNoti?uid="+uid, true);
+    notiApi.onreadystatechange = function() {
+        if (notiApi.readyState == XMLHttpRequest.DONE && notiApi.responseText!="") {
+            let re = JSON.parse(notiApi.responseText);
+            if(re.friend!=null){
+                let friend = re.friend;
+                for(let i=0;i<friend.length;i++){
+                    //add friend to chat engine
+                    friend[i]['fid']=re.fid[i];
+                    fid_usr_list[re.fid[i]] = [friend[i].uid, friend[i].avatar];
+                    addFriendToSide(friend[i]);
+                    obj={'avatar':friend[i].avatar,'head':friend[i].fullName,'content':' and you have becomed friend.'}
+                    addNoti(obj,1)
+                }
+            }
+            if(re.crush!=null){
+                re.crush.forEach(function (item) {
+                    addCrushOnMe(item);
+                    obj={'avatar':item.avatar,'head':item.fullName,'content':' has crushed you.'}
+                    addNoti(obj,2);
+                })
             }
         }
-        if(re.crush!=null){
-            re.crush.forEach(function (item) {
-                addCrushOnMe(item);
-                obj={'avatar':item.avatar,'head':item.fullName,'content':' has crushed you.'}
-                addNoti(obj,2);
-            })
-        }
-        nSocket.close();
     }
+    notiApi.send();
     setTimeout(getNoti, RELOAD_TIME);
 }
 
+function showWhoCrush() {
+    $("#crushOnMe").show(200);
+    $("#findCrush").hide(400);
+    $("#chat").hide(400);
+    $('#notification-dropdown').hide(200);
+    disableChat();
+}
 
 // 1 is friend, 2 is crush
 function addNoti(obj,type) {
-	$('#notifications-count').show();
-	$('#notifications-count').text(++notiCount);
+    $('#notifications-count').show();
+    $('#notifications-count').text(++notiCount);
 
-	let noti = document.createElement('div');
+    let noti = document.createElement('div');
     noti.classList.add('notification');
-    noti.setAttribute('onclick',(type==2)?'showWhoCrush()':"$('#notification-dropdown').hide(200);");
+    noti.setAttribute('onclick', (type == 2) ? 'showWhoCrush()' : "$('#notification-dropdown').hide(200);");
 
-	let imageWrap = document.createElement('div');
+    let imageWrap = document.createElement('div');
     imageWrap.classList.add('notification-image-wrapper');
 
     let notiImage = document.createElement('div');
     notiImage.classList.add('notification-image');
 
     let img = document.createElement('img');
-    img.setAttribute('src',obj.avatar);
+    img.setAttribute('src', obj.avatar);
 
     notiImage.appendChild(img);
     imageWrap.appendChild(notiImage);
@@ -96,21 +97,15 @@ function addNoti(obj,type) {
 
     let text = document.createElement('span');
     text.classList.add('highlight');
-    text.innerHTML = obj.head+" ";
+    text.innerHTML = obj.head + " ";
 
     notiText.appendChild(text);
     notiText.innerHTML += obj.content;
     noti.appendChild(notiText);
 
     document.getElementsByClassName('dropdown-body')[0].prepend(noti);
-}
-
-function showWhoCrush() {
-    $("#crushOnMe").show(200);
-    $("#findCrush").hide(400);
-    $("#chat").hide(400);
-    $('#notification-dropdown').hide(200);
-    disableChat();
+    //Add noti to title
+    document.title = ((notiCount != 0) ? "(" + notiCount + ") " : "") + TITLE;
 }
 
 function addCrushOnMe(obj) {

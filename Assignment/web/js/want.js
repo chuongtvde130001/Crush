@@ -1,7 +1,18 @@
 'use strict'
-
+//REST API
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", API_URL+"/crush", true);
+//     // xhr.setRequestHeader("Content-Type", "text/plain");
+//     var data = JSON.stringify({"crush":true,"uid":1,"target":2});
+//     xhr.onreadystatechange = function() {
+//         if (xhr.readyState == XMLHttpRequest.DONE) {
+//             alert(xhr.responseText);
+//         }
+//     }
+//     xhr.send(data);
+//
 let want_list = [];
-let cw,cSocket;
+let cw;
 
 $(document).ready(function() {
     $('#pass_button').click(passBut);
@@ -62,35 +73,32 @@ function crushBut() {
 }
 
 function crush(id, target) {
-    cSocket = new WebSocket(WS_URL+"/crush");
     let getRequest = {
         'crush':true,
         'uid': id,
         'target': target
     };
-    cSocket.onopen = function () {
-        cSocket.send(JSON.stringify(getRequest));
+    var cApi = new XMLHttpRequest();
+    cApi.open("POST", API_URL+"/crush", true);
+    cApi.onreadystatechange = function() {
+        if (cApi.readyState == XMLHttpRequest.DONE) {
+        }
     }
-    cSocket.onmessage = function (evt) {
-        console.log("RESULT: "+evt.data);
-        cSocket.close();
-    }
+    cApi.send(JSON.stringify(getRequest));
 }
 
 function uncrush(id, target){
-    cSocket = new WebSocket(WS_URL+"/crush");
     let getRequest = {
         'crush':false,
         'uid': id,
         'target': target
     };
-    cSocket.onopen = function () {
-        cSocket.send(JSON.stringify(getRequest));
+    var ucApi = new XMLHttpRequest();
+    ucApi.open("POST", API_URL+"/crush", true);
+    ucApi.onreadystatechange = function() {
+        if (ucApi.readyState == XMLHttpRequest.DONE) {}
     }
-    cSocket.onmessage = function (evt) {
-        console.log("RESULT: "+evt.data);
-        cSocket.close();
-    }
+    ucApi.send(JSON.stringify(getRequest));
 }
 
 function remove(id) {

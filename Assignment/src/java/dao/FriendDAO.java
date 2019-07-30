@@ -1,6 +1,7 @@
 package dao;
 
 import dbconfig.DBConfig;
+import model.Message;
 import model.User;
 import servlet.ServletListener;
 import utils.ImageSaver;
@@ -21,7 +22,7 @@ public class FriendDAO {
             "FROM FRIENDS\n" +
             "WHERE FID = ?";
     private static final String getFidSt = "SELECT TOP 1 FID FROM FRIENDS WHERE UserA=? AND UserB=? OR UserA=? AND UserB=?";
-    private static final String getFriendSt = "SELECT FID, USERS.UID, USERS.FullName, USERS.Avatar FROM\n" +
+    private static final String getFriendSt = "SELECT R1.FID, USERS.UID, USERS.FullName, USERS.Avatar, SUB.FR, SUB.Content FROM\n" +
             "(SELECT FID,\n" +
             "CASE\n" +
             "    WHEN UserA != ? THEN UserA\n" +
@@ -30,7 +31,11 @@ public class FriendDAO {
             "FROM FRIENDS\n" +
             "WHERE UserA = ? OR UserB = ?\n" +
             ") AS R1\n" +
-            "LEFT JOIN USERS ON (R1.UID = USERS.UID)";
+            "LEFT JOIN USERS ON (R1.UID = USERS.UID)\n" +
+            "LEFT JOIN (\n" +
+            "SELECT LAS.FID,FR, Content FROM\n" +
+            "(SELECT FID, MAX(MID) as MID FROM MESSAGES GROUP BY FID) AS LAS\n" +
+            "LEFT JOIN MESSAGES ON (LAS.MID=MESSAGES.MID)) AS SUB ON (R1.FID=SUB.FID)";
     private static final String checkCrushSt = "SELECT * FROM CRUSH WHERE UserA = ? AND UserB= ?";
     private static final String addCrushSt = "INSERT INTO CRUSH(UserA, UserB) VALUES(?,?)";
     private static final String addFriendSt = "INSERT INTO FRIENDS(UserA, UserB, FR) VALUES(?,?,getdate())";
@@ -80,8 +85,8 @@ public class FriendDAO {
     }
 
     // Get friend's info to user object
-    public synchronized static HashMap<Integer, User> getFriends(int uid) {
-        HashMap<Integer, User> map = new HashMap<>();
+    public synchronized static HashMap<Message, User> getFriends(int uid) {
+        HashMap<Message, User> map = new HashMap<>();
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(getFriendSt);
             ps.setInt(1, uid);
@@ -93,7 +98,7 @@ public class FriendDAO {
                 usr.setUid(rs.getInt(2));
                 usr.setFullName(rs.getString(3));
                 usr.setAvatar(ImageSaver.imagePath+rs.getString(4));
-                map.put(rs.getInt(1),usr);
+                map.put(new Message(rs.getInt(1),rs.getInt(5),rs.getString(6)),usr);
             }
             rs.close();
             ps.close();

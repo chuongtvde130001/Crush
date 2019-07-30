@@ -2,19 +2,23 @@ package model;
 
 import utils.MD5;
 
+import java.util.regex.Pattern;
+
 public class User {
 
-    private String userName, fullName, gender, email, avatar,description;
+    private String userName, fullName, gender, email, avatar, description;
     private int uid, age, status;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String userName, String fullName, String gender, String email, String avatar, int uid, int age, int status) {
+    public User(String userName, String fullName, String gender, String email, String avatar, String description, int uid, int age, int status) {
         this.userName = userName;
         this.fullName = fullName;
         this.gender = gender;
         this.email = email;
         this.avatar = avatar;
+        this.description = description;
         this.uid = uid;
         this.age = age;
         this.status = status;
@@ -96,4 +100,5 @@ public class User {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

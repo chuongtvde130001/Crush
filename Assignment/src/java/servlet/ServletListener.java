@@ -45,7 +45,5 @@ public class ServletListener implements ServletContextListener {
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public void contextDestroyed(ServletContextEvent sce) {}
 }

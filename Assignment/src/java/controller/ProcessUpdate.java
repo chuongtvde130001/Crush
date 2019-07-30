@@ -25,9 +25,11 @@ public class ProcessUpdate extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         User usr = (User) session.getAttribute("user");
         String fullName = request.getParameter("fullName");
+        System.out.println("XXXX"+fullName);
         int age = Integer.parseInt(request.getParameter("age"));
         String gender = request.getParameter("gender");
         String about = request.getParameter("about");
