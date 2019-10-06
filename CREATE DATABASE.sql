@@ -1,4 +1,4 @@
-﻿CREATE DATABASE CRUSH
+CREATE DATABASE CRUSH
 USE CRUSH
 CREATE TABLE USERS(
 	UID int IDENTITY(1,1) PRIMARY KEY,
@@ -11,7 +11,7 @@ CREATE TABLE USERS(
 	Avatar varchar(MAX),
 	Description nvarchar(300),
 	LastLogin DateTime,
-	Status int, --1 IS INACTIVE EMAIL | 2 IS INACTIVE USERINFO | 0 IS OK
+	Status int, --1 IS INACTIVE EMAIL | 2 IS INACTIVE USERINFO | 3 is BANNED | 0 IS OK 
 	UserRight int -- 1,2,3 (3 is user,2 is staff, 1 is admin
 )
 CREATE TABLE WANT(
@@ -40,6 +40,12 @@ CREATE TABLE MESSAGES(
 	Content nvarchar(MAX),
 	Time DateTime,
 	Status bit -- false IS UNREADED | true IS READED
+)
+CREATE TABLE BAN(	
+	BID int IDENTITY(1,1) PRIMARY KEY,
+	ID int FOREIGN KEY REFERENCES USERS(UID),
+	START_TIME datetime,
+	DURATION int, --DURATION is in milisecond
 )
 --FAKE INFO PASS 1234
 INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat123','81dc9bdb52d04dc20036dbd8313ed055','Tom Allen',18,2,'a&b.c',0,3,'avatars/2.png')
