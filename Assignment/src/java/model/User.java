@@ -7,12 +7,13 @@ import java.util.regex.Pattern;
 public class User {
 
     private String userName, fullName, gender, email, avatar, description;
-    private int uid, age, status;
+    private int uid, age, status,userRight;
 
     public User() {
     }
 
-    public User(String userName, String fullName, String gender, String email, String avatar, String description, int uid, int age, int status) {
+    public User(String userName, String fullName, String gender, 
+            String email, String avatar, String description, int uid, int age, int status,int userRight) {
         this.userName = userName;
         this.fullName = fullName;
         this.gender = gender;
@@ -22,6 +23,7 @@ public class User {
         this.uid = uid;
         this.age = age;
         this.status = status;
+        this.userRight = userRight;
     }
 
     public User(String userName, String email) {
@@ -101,4 +103,13 @@ public class User {
         this.description = description;
     }
 
+    public int getUserRight() {
+        return userRight;
+    }
+
+    public void setUserRight(int userRight) {
+        this.userRight = userRight;
+    }
+    
+    
 }
