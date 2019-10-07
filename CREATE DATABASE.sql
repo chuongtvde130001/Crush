@@ -44,14 +44,14 @@ CREATE TABLE MESSAGES(
 CREATE TABLE ADMIN_BAN(	
 	BID int IDENTITY(1,1) PRIMARY KEY,
 	ID int FOREIGN KEY REFERENCES USERS(UID),
-	Content nvarchar(MAX),
-	FR DateTime
+        START_TIME datetime,
+	DURATION int, --DURATION is in milisecond
 )
 CREATE TABLE ADMIN_REPORT(	
 	ARID int IDENTITY(1,1) PRIMARY KEY,
 	ID int FOREIGN KEY REFERENCES USERS(UID),
-	START_TIME datetime,
-	DURATION int, --DURATION is in milisecond
+	Content nvarchar(MAX),
+        FR DateTime
 )
 --FAKE INFO PASS 1234
 INSERT INTO Users(UserName,Password,FullName,Age,Gender,Email,Status,UserRight,Avatar) VALUES ('tomcat123','81dc9bdb52d04dc20036dbd8313ed055','Tom Allen',18,2,'a&b.c',0,3,'avatars/2.png')
