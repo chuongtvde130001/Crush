@@ -12,14 +12,16 @@ import utils.MD5;
 import model.User;
 
 public class UserDAO {
-    
+
     private static final String getUsrSt = "select * from USERS where UserName = ? and PassWord = ?";
     private static final String getUsrSt1 = "select * from USERS where uid = ?";
     private static final String insUserSt = "insert into USERS(UserName,PassWord,Email,Status,UserRight) values(?,?,?,'2',0)";
     private static final String findUsername = "select UserName from USERS where Username = ?";
     private static final String findEmail = "select Email from USERS where Email=?";
     private static final String update = "update USERS set FullName = ? ,Age = ? , Gender = ? ,Avatar =? , Description = ? ,Status = 0 where uid = ?";
-    
+    private static final String getUserCount = "select count(*) AS Count from USERS where UserRight = 3";
+    private static final String getAllUsers = "select * from USERS where UserRight = 3 Order by UID offset ? rows fetch next ? rows only";
+
     public synchronized static String getStrGender(int i) {
         switch (i) {
             case 2:
@@ -31,7 +33,7 @@ public class UserDAO {
         }
         return "";
     }
-    
+
     public synchronized static int getIntGender(String s) {
         switch (s) {
             case "Male":
@@ -43,7 +45,7 @@ public class UserDAO {
         }
         return -1;
     }
-    
+
     public synchronized static boolean updateUserInfo(String fullName, int age, String gender, String avatarPath, String about, int uid, int ageBegin, int ageEnd, int wantGender) {
         boolean want = false;
         try (Connection conn = DBConfig.getConnection()) {
@@ -62,7 +64,7 @@ public class UserDAO {
         }
         return want;
     }
-    
+
     public synchronized static boolean checkUsersName(String UserName) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(findUsername);
@@ -78,7 +80,7 @@ public class UserDAO {
         }
         return false;
     }
-    
+
     public synchronized static boolean checkEmail(String Email) {
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(findEmail);
@@ -103,13 +105,13 @@ public class UserDAO {
             ps.setString(1, username);
             ps.setString(2, MD5.getMd5(password));
             ps.setString(3, email);
-            
+
             int result = ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
             boolean kq = WantDAO.wantPeople(rs.getInt(1));
             rs.close();
-            
+
             if (result > 0 && kq == true) {
                 u = new User(username, email);
             }
@@ -153,7 +155,7 @@ public class UserDAO {
         }
         return u;
     }
-    
+
     public synchronized static User getUser(int uid) {
         User u = null;
         try (Connection conn = DBConfig.getConnection()) {
@@ -176,13 +178,27 @@ public class UserDAO {
         }
         return u;
     }
-    
+
+    public static int getUsersCount() {
+        int count = 0;
+        try (Connection conn = DBConfig.getConnection()) {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(getUserCount);
+            while (rs.next()) {
+                count = rs.getInt("Count");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     public static HashMap<Integer, User> getUsersByFullName(String fullName) {
         HashMap<Integer, User> ds = new HashMap<Integer, User>();
         User u = null;
         try (Connection conn = DBConfig.getConnection()) {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from USERS where FullName like N'%" + fullName + "%'");
+            ResultSet rs = st.executeQuery("select * from USERS where FullName like N'%" + fullName + "%' and UserRight = 3");
             while (rs.next()) {
                 u = new User(
                         rs.getString("UserName"),
@@ -202,12 +218,13 @@ public class UserDAO {
         }
         return ds;
     }
+
     public static HashMap<Integer, User> getUsersByUserName(String username) {
         HashMap<Integer, User> ds = new HashMap<Integer, User>();
         User u = null;
         try (Connection conn = DBConfig.getConnection()) {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from USERS where UserName like N'%" + username + "%'");
+            ResultSet rs = st.executeQuery("select * from USERS where UserName like N'%" + username + "%' and UserRight = 3");
             while (rs.next()) {
                 u = new User(
                         rs.getString("UserName"),
@@ -227,12 +244,13 @@ public class UserDAO {
         }
         return ds;
     }
+
     public static HashMap<Integer, User> getUsersByEmail(String email) {
         HashMap<Integer, User> ds = new HashMap<Integer, User>();
         User u = null;
         try (Connection conn = DBConfig.getConnection()) {
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from USERS where Email like N'%" + email + "%'");
+            ResultSet rs = st.executeQuery("select * from USERS where Email like N'%" + email + "%' and UserRight = 3");
             while (rs.next()) {
                 u = new User(
                         rs.getString("UserName"),
@@ -251,5 +269,36 @@ public class UserDAO {
             e.printStackTrace();
         }
         return ds;
+    }
+
+    public static HashMap<Integer, User> getAllUsers(int offset, int total) {
+        HashMap<Integer, User> ds = new HashMap<Integer, User>();
+        User u = null;
+        try (Connection conn = DBConfig.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(getAllUsers);
+            ps.setInt(1, offset-1);
+            ps.setInt(2, total);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                u = new User(
+                        rs.getString("UserName"),
+                        rs.getString("FullName"),
+                        getStrGender(rs.getInt("Gender")),
+                        rs.getString("Email"),
+                        ImageSaver.imagePath + rs.getString("Avatar"),
+                        rs.getString("Description"),
+                        rs.getInt("UID"),
+                        rs.getInt("Age"),
+                        rs.getInt("Status"),
+                        rs.getInt("UserRight"));
+                ds.put(rs.getInt("UID"), u);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ds;
+    }
+    public static void main(String[] args) {
+        System.out.println(getAllUsers(0, 10).size());
     }
 }

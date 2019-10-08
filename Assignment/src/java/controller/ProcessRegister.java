@@ -4,6 +4,7 @@ import dao.UserDAO;
 import model.User;
 
 import java.io.IOException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,6 +48,7 @@ public class ProcessRegister extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ServletContext ctx = request.getServletContext();
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -62,6 +64,8 @@ public class ProcessRegister extends HttpServlet {
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
             User usr = UserDAO.register(username, password, email);
+            int count = (int) ctx.getAttribute("totalUsers");
+            ctx.setAttribute("totalUsers", count++);
             response.sendRedirect("login.jsp");
         }
     }

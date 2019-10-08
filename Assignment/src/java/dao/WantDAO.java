@@ -16,25 +16,25 @@ public class WantDAO {
     private static final String want = "insert into WANT values(?,null,null,1)";
     private static final String updateWant = "update WANT set AgeBegin = ? , AgeEnd = ? ,Gender = ? where WID = ?";
     private static final String getUsr =
-            "DECLARE @AB int, @AE int, @GENDER int\n"
-            + "SELECT TOP 1 @AB=AgeBegin, @AE=AgeEnd, @GENDER=Gender FROM WANT WHERE WID = ?\n"
-            + "SELECT UID,FullName,Age,Gender,Email,Avatar,Description FROM USERS WHERE Age >= @AB AND Age <= @AE AND @GENDER%Gender=0 AND \n"
-            + "USERS.UID NOT IN(SELECT \n"
-            + "CASE\n"
-            + "    WHEN UserA != ? THEN UserA\n"
-            + "    ELSE UserB\n"
-            + "END AS UID\n"
-            + "FROM FRIENDS\n"
-            + "WHERE UserA = ? OR UserB = ?\n"
-            + "UNION\n"
-            + "SELECT \n"
-            + "CASE\n"
-            + "    WHEN UserA != ? THEN UserA\n"
-            + "    ELSE UserB\n"
-            + "END AS UID\n"
-            + "FROM CRUSH\n"
-            + "WHERE UserA = ? OR UserB = ?"
-                    + "UNION SELECT ?) ";
+            "DECLARE @AB int, @AE int, @GENDER int\n" +
+            "SELECT TOP 1 @AB=AgeBegin, @AE=AgeEnd, @GENDER=Gender FROM WANT WHERE WID = ?\n" +
+            "SELECT UID,FullName,Age,Gender,Email,Avatar,Description FROM USERS WHERE Age >= @AB AND Age <= @AE AND @GENDER%Gender=0 AND \n" +
+            "USERS.UID NOT IN(SELECT \n" +
+            "CASE\n" +
+            "    WHEN UserA != ? THEN UserA\n" +
+            "    ELSE UserB\n" +
+            "END AS UID\n" +
+            "FROM FRIENDS\n" +
+            "WHERE UserA = ? OR UserB = ?\n" +
+            "UNION\n" +
+            "SELECT \n" +
+            "CASE\n" +
+            "    WHEN UserA != ? THEN UserA\n" +
+            "    ELSE UserB\n" +
+            "END AS UID\n" +
+            "FROM CRUSH\n" +
+            "WHERE UserA = ? OR UserB = ?\n" +
+            "        UNION SELECT ?) ";
 
     public synchronized static ArrayList<User> getUsrsMatchWant(int uid) {
         ArrayList<User> list = new ArrayList<>();

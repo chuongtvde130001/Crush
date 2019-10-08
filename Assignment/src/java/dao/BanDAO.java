@@ -19,13 +19,13 @@ import java.sql.ResultSet;
 public class BanDAO {
 
     private static final String updateUserStatus = "update USERS set Status = ? where UID = ?";
-    private static final String banUser = "insert into BAN values(?,?,?)";
-    private static final String unbanUser = "delete from BAN where ID = ?";
-    private static final String getBanInfo = "select DURATION from BAN where ID = ?";
+    private static final String banUser = "insert into ADMIN_BAN values(?,?,?)";
+    private static final String unbanUser = "delete from ADMIN_BAN where ID = ?";
+    private static final String getBanInfo = "select DURATION from ADMIN_BAN where ID = ?";
     
 
     public static boolean searchUserBan(int UID) {
-        String query = "select * from BAN where ID = ?";
+        String query = "select * from ADMIN_BAN where ID = ?";
         try (Connection conn = DBConfig.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, UID);

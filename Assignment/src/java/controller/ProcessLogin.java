@@ -30,7 +30,7 @@ public class ProcessLogin extends HttpServlet {
                 response.sendRedirect("update_info.jsp");
             } else if (user.getStatus() == 0) {
                 if (user.getUserRight() == 1) {
-                    response.sendRedirect("admin_home.jsp");
+                    response.sendRedirect("ProcessView?pageid=1");
                 } else {
                     response.sendRedirect("/");
                 }

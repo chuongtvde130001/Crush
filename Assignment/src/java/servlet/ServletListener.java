@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.UserDAO;
 import model.FriendStorage;
 import model.MessageStorage;
 import model.NotiStorage;
@@ -15,15 +16,19 @@ public class ServletListener implements ServletContextListener {
     private static MessageStorage mesStorage;
     private static FriendStorage friStorage;
     private static NotiStorage notiStorage;
+    private static int totalUsers; 
+    
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         mesStorage = new MessageStorage();
         friStorage = new FriendStorage();
         notiStorage = new NotiStorage();
-
+        totalUsers = UserDAO.getUsersCount();
+        
         svlet = sce.getServletContext();
         svlet.setAttribute("mesStorage", mesStorage);
+        svlet.setAttribute("totalUsers", totalUsers);
         svlet.setAttribute("friStorage", friStorage);
         svlet.setAttribute("notiStorage", notiStorage);
     }

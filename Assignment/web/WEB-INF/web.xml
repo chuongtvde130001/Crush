@@ -20,6 +20,26 @@
         <servlet-name>ProcessUpdate</servlet-name>
         <servlet-class>controller.ProcessUpdate</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProcessSearchUsers</servlet-name>
+        <servlet-class>controller.ProcessSearchUsers</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessViewUser</servlet-name>
+        <servlet-class>controller.ProcessViewUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessBanUser</servlet-name>
+        <servlet-class>controller.ProcessBanUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessUnbanUser</servlet-name>
+        <servlet-class>controller.ProcessUnbanUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessView</servlet-name>
+        <servlet-class>controller.ProcessView</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProcessRegister</servlet-name>
         <url-pattern>/ProcessRegister</url-pattern>
@@ -55,6 +75,26 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>ProcessSearchUsers</servlet-name>
+        <url-pattern>/ProcessSearchUsers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessViewUser</servlet-name>
+        <url-pattern>/ProcessViewUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessBanUser</servlet-name>
+        <url-pattern>/ProcessBanUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessUnbanUser</servlet-name>
+        <url-pattern>/ProcessUnbanUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessView</servlet-name>
+        <url-pattern>/ProcessView</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

@@ -14,7 +14,7 @@
     ServletListener.getMesStorage().clearMessage(usr.getUid());
     ServletListener.getNotiStorage().clearNoti(usr.getUid());
     //Get All Friends
-    System.out.println("FFFFF"+FriendDAO.getFriends(usr.getUid()).size());
+    System.out.println("FFFFF" + FriendDAO.getFriends(usr.getUid()).size());
     request.setAttribute("friends", FriendDAO.getFriends(usr.getUid()));
     //Get All User meet want
     request.setAttribute("wants", WantDAO.getUsrsMatchWant(usr.getUid()));
@@ -61,6 +61,7 @@
                 <!--- Khung tìm Kiếm ---->
                 <div class="container">
                     <div class="btn-group-vertical btn-block" style="width: 100%;">
+                        <a href="admin_home.jsp" id="btn-control-panel" class="btn btn-dark">Admin Control Panel</a>
                         <a id="btn-find-crush" class="btn btn-success">Find my Crush</a>
                         <a id="btn-who-crush" class="btn btn-primary">Who Crush Me?</a>
                         <a href="update_info.jsp" class="btn btn-secondary">Profile</a>
@@ -78,13 +79,17 @@
                         $("#chat").hide(400);
                         $("#crushOnMe").hide(400);
                         disableChat();
-                    })
+                    });
                     $("#btn-who-crush").click(function () {
                         $("#crushOnMe").show(200);
                         $("#findCrush").hide(400);
                         $("#chat").hide(400);
                         disableChat();
-                    })
+                    });
+                    var check = "${sessionScope.user.userRight}";
+                    if (check != 1) {
+                        $("#btn-control-panel").css("display", "none");
+                    }
                 </script>
                 <!--- Danh sách bạn bè ---->
                 <div id="contacts">
@@ -111,13 +116,14 @@
                     let header = $("#contacts");
                     let btns = $(header).find(".contact");
                     for (let i = 0; i < btns.length; i++) {
-                        btns[i].addEventListener("click",function(){
+                        btns[i].addEventListener("click", function () {
                             contactClick(this);
                         });
                     }
                     function disableChat() {
                         let active = $(header).find(".active")[0];
-                        if(active!=null) active.className = "contact";
+                        if (active != null)
+                            active.className = "contact";
                         curChatActive = -1
                     }
                 </script>
@@ -138,8 +144,8 @@
                                         <span class="count" id="dd-notifications-count"></span>
                                     </div>
                                     <div class="dropdown-body">
-<%--                                        <div class="notification new">--%>
-<%--                                        <div class="notification">--%>
+                                        <%--                                        <div class="notification new">--%>
+                                        <%--                                        <div class="notification">--%>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +184,7 @@
                         </div>
                         <script>
                             <c:forEach var="t" items="${wants}">
-                                want_list.push([${t.uid},'${t.fullName}',${t.age},'${t.gender}','${t.email}','${t.avatar}','${t.description}']);
+                            want_list.push([${t.uid}, '${t.fullName}',${t.age}, '${t.gender}', '${t.email}', '${t.avatar}', '${t.description}']);
                             </c:forEach>
                         </script>
                         <input type="text" value="${usr.uid}" name ="value" hidden>
@@ -264,17 +270,17 @@
     </body>
     <script src="js/chat.js"></script>
     <script>
-        //ADD FID & UInfo TO LIST AND ADD LAST MESSAGE TO EACH CONTACTS
-        let list = {};
+                                                    //ADD FID & UInfo TO LIST AND ADD LAST MESSAGE TO EACH CONTACTS
+                                                    let list = {};
         <c:forEach var="fri" items="${friends}">
-            list[${fri.key.fid}] = [${fri.value.uid}, "${fri.value.avatar}"];
-            updateContactMessage({
-                fid: ${fri.key.fid},
-                type: ('${fri.key.from}'==uid.toString()) ? 'sent':'',
-                content: '${fri.key.content}⠀'
-            });
+                                                    list[${fri.key.fid}] = [${fri.value.uid}, "${fri.value.avatar}"];
+                                                    updateContactMessage({
+                                                        fid: ${fri.key.fid},
+                                                        type: ('${fri.key.from}' == uid.toString()) ? 'sent' : '',
+                                                        content: '${fri.key.content}⠀'
+                                                    });
         </c:forEach>
-        config(list)
+                                                    config(list)
     </script>
 </div>
 <%--Chat Area--%>
